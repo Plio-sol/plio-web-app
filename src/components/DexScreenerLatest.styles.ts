@@ -146,67 +146,6 @@ export const TokenDescription = styled.p`
     text-overflow: ellipsis;
 `;
 
-
-// --- Chart Area Styles ---
-export const ChartAreaContainer = styled(motion.div)`
-    width: 100%;
-    /* Maintain a specific aspect ratio for consistency */
-    aspect-ratio: 3.5 / 1;
-    margin-bottom: 18px; /* Space between chart area and links */
-    border-radius: 6px;
-    overflow: hidden; /* Clip the iframe corners */
-    background-color: #0a192f; /* Placeholder bg */
-    display: flex; /* Center content like button/spinner/error */
-    justify-content: center;
-    align-items: center;
-    position: relative; // For absolute positioning of iframe if needed later
-`;
-
-export const ChartIframe = styled.iframe`
-    width: 100%;
-    height: 100%;
-    border: none; /* Remove iframe border */
-    display: block; // Ensure it takes up space correctly
-`;
-
-// --- NEW: View Chart Button ---
-export const ViewChartButton = styled(motion.button)`
-    padding: 8px 16px;
-    font-size: 0.9em;
-    cursor: pointer;
-    background-color: #233554; // Similar to link buttons
-    color: #ccd6f6;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-
-    &:hover:not(:disabled) {
-        background-color: #304a6d;
-    }
-    &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-`;
-
-// --- NEW: Inline Spinner (for chart loading) ---
-export const ChartSpinner = styled(motion.div)`
-    border: 3px solid rgba(204, 214, 246, 0.2);
-    border-left-color: #facc15; // DexScreener Yellow
-    border-radius: 50%;
-    width: 30px; // Smaller spinner
-    height: 30px;
-`;
-
-// --- NEW: Chart Error Message ---
-export const ChartErrorMessage = styled(motion.p)` // <-- Use motion.p    color: #ff7b7b;
-    font-size: 0.85em;
-    text-align: center;
-    padding: 10px;
-`;
-// --- End New Styles ---
-
 export const LinksContainer = styled.div`
     margin-top: auto; // Push links to the bottom
     display: flex;

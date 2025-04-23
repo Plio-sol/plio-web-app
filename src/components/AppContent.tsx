@@ -54,7 +54,7 @@ const AppContent: FC = () => {
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 300, damping: 15 }}
                 >
-                    Open Game Search
+                    Open Game Torrent Search
                 </S.StyledButton>
 
                 {/* Movie Search Button */}
@@ -65,7 +65,7 @@ const AppContent: FC = () => {
                     transition={{ type: "spring", stiffness: 300, damping: 15 }}
                     // style={{ borderColor: '#50fa7b', color: '#50fa7b' }} // Removed specific green style
                 >
-                    Open Movie Search (YTS)
+                    Open Movie Torrent Search
                 </S.StyledButton>
 
                 {/* DexScreener Latest Tokens Button */}
@@ -76,7 +76,7 @@ const AppContent: FC = () => {
                     transition={{ type: "spring", stiffness: 300, damping: 15 }}
                     style={{ borderColor: '#facc15', color: '#facc15' }} // Yellow style
                 >
-                    Latest DexScreener Tokens
+                    Latest 'Dex Paid' Tokens
                 </S.StyledButton>
 
             </S.ActionsWrapper>
