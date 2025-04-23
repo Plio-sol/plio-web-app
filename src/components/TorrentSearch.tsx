@@ -1,7 +1,7 @@
 // src/components/TorrentSearch.tsx
-import React, { FC, useState, FormEvent, useEffect } from 'react';
+import React, { FC, useState, FormEvent } from 'react';
 // Remove styled, keyframes imports as they are in the .styles file
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 // Import all styled components using an alias 'S'
 import * as S from './TorrentSearch.styles';

@@ -16,7 +16,7 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 const App: FC = () => {
     // --- Password Protection State ---
     // TODO: Use environment variable for production
-    const CORRECT_PASSWORD = "x";
+    const CORRECT_PASSWORD = process.env.REACT_APP_ACCESS_PASSWORD || "x";
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [passwordInput, setPasswordInput] = useState('');
     const [authError, setAuthError] = useState<string | null>(null);
