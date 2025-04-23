@@ -1,46 +1,88 @@
-# Getting Started with Create React App
+# Plio 🔎 - Solana Wallet Analysis Powerhouse
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Twitter Follow](https://img.shields.io/twitter/follow/YourTwitterHandle?style=social)](https://twitter.com/PlioSol)  **Dive deep into any Solana wallet with advanced analytics and insights, exclusively enhanced for $Plio token holders.**
 
-## Available Scripts
+Plio is a cutting-edge web3 application designed to provide comprehensive analysis of Solana wallets. Whether you're tracking your own portfolio, researching whale movements, or exploring NFT collections, Plio gives you the data you need.
 
-In the project directory, you can run:
+**[Visit Plio Now!]([https://plio-sol.netlify.app])**
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ✨ Key Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Plio offers a range of features for all users, with powerful additions reserved for our valued `$Plio` token holders.
 
-### `npm test`
+**Standard Features (Available to Everyone):**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* **Wallet Overview:** View SOL balance and token holdings (SPL tokens) for your solana wallet.
+* **Transaction History:** Browse and filter recent transactions associated with a wallet.
+* **Basic Portfolio Value:** Get an estimated total value based on current market prices for SOL and major SPL tokens.
 
-### `npm run build`
+**💎 Exclusive Features (Requires Holding $Plio):**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* **Advanced Portfolio Analytics:**
+    * Historical portfolio value tracking.
+    * Profit & Loss (P&L) calculations (beta).
+    * Asset allocation charts.
+* **In-Depth Transaction Analysis:**
+    * Categorization of transactions (Swaps, Transfers, Staking, etc.).
+    * Counterparty analysis (who the wallet interacts with most).
+* **DeFi Position Tracking:** Monitor staked assets, liquidity pool positions, and lending/borrowing status across supported protocols.
+* **Whale Watching & Alerts:** Track high-value wallets and set up basic alerts for significant transactions (configurable options coming soon).
+* **Custom Dashboards:** Arrange and save your preferred analytics views.
+* **Data Export:** Download transaction or portfolio data (CSV format).
+* **Priority Support:** Get faster responses from the Plio team.
+* **Early Access:** Be the first to try new features and modules as they are released.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Getting Started
 
-### `npm run eject`
+1.  **Visit Plio:** Navigate to `[https://plio-sol.netlify.app]`.
+2.  **Connect Your Wallet:** Use the "Connect Wallet" button to link your preferred Solana wallet (Phantom, Solflare, Backpack, etc.). This is required to verify `$Plio` holdings for exclusive features.
+4.  **Analyze:** Explore the standard analytics available for the entered wallet.
+5.  **Unlock Exclusive Features:** Ensure you hold `$Plio` tokens in your *connected* wallet. The exclusive features will automatically unlock upon successful verification.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 💰 The $Plio Token
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The `$Plio` token is the key to unlocking the full potential of the Plio platform.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* **Utility:** Holding `$Plio` in your connected wallet grants access to all exclusive features listed above. The amount required may be adjusted in the future (TBD - specify if you have a tier system or minimum amount).
+* **Token Address:** `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+* **How to Acquire $Plio:**
+    * Trade on Jupiter Aggregator: `[https://jup.ag/swap/SOL-USDC]`
+    * Trade on PumpSwap : `[https://pump.fun/]`
 
-## Learn More
+*(Disclaimer: Investing in cryptocurrencies involves risk. Always do your own research (DYOR) before purchasing any token.)*
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🛠 Technology Stack (Optional)
+
+* **Frontend:** React
+* **Blockchain Interaction:** Solana Web3.js / Helius API / 
+* **Data Indexing:** On-chain RPC calls 
+* **UI Library:** Tailwind CSS / Material UI 
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the community! If you'd like to contribute, please:
+
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/YourFeature`).
+3.  Make your changes.
+4.  Commit your changes (`git commit -m 'Add some feature'`).
+5.  Push to the branch (`git push origin feature/YourFeature`).
+6.  Open a Pull Request.
+
+Please read `CONTRIBUTING.md` for more details on our code of conduct and the process for submitting pull requests.
+
+---
+
+## ⚠️ Disclaimer
+
+Plio is an analytics tool provided for informational purposes only. It does not constitute financial advice, investment advice, trading advice, or any other sort of advice. You should not treat any of the website's content as such. Plio does not recommend that any cryptocurrency should be bought, sold, or held by you. Perform your own due diligence and consult your financial advisor before making any investment decisions. The data provided may sometimes be delayed or inaccurate; always verify information from multiple sources. Use Plio at your own risk.
