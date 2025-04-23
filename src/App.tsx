@@ -1,5 +1,6 @@
 // src/App.tsx
 import React, { FC, useMemo, useState, FormEvent } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
@@ -69,6 +70,7 @@ const App: FC = () => {
             ) : (
                 <AppContent />
             )}
+            <Analytics></Analytics>
         </div>
     );
 };
