@@ -38,7 +38,7 @@ Plio offers a range of features for all users, with powerful additions reserved 
 
 ## 🚀 Getting Started
 
-1.  **Visit Plio:** Navigate to `[https://plio-sol.netlify.app]`.
+1.  **Visit Plio:** Navigate to [https://plio-sol.netlify.app](https://plio-sol.netlify.app).
 2.  **Connect Your Wallet:** Use the "Connect Wallet" button to link your preferred Solana wallet (Phantom, Solflare, Backpack, etc.). This is required to verify `$Plio` holdings for exclusive features.
 4.  **Analyze:** Explore the standard analytics available for the entered wallet.
 5.  **Unlock Exclusive Features:** Ensure you hold `$Plio` tokens in your *connected* wallet. The exclusive features will automatically unlock upon successful verification.
@@ -52,8 +52,8 @@ The `$Plio` token is the key to unlocking the full potential of the Plio platfor
 * **Utility:** Holding `$Plio` in your connected wallet grants access to all exclusive features listed above. The amount required may be adjusted in the future (TBD - specify if you have a tier system or minimum amount).
 * **Token Address:** `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 * **How to Acquire $Plio:**
-    * Trade on Jupiter Aggregator: `[https://jup.ag/swap/SOL-USDC]`
-    * Trade on PumpSwap : `[https://pump.fun/]`
+   * Trade on [Jupiter](https://jup.ag/swap/So11111111111111111111111111111111111111112-YOUR_SOLANA_TOKEN_ADDRESS)
+   * Trade on [PumpSwap](https://pump.fun/YOUR_SOLANA_TOKEN_ADDRESS) 
 
 *(Disclaimer: Investing in cryptocurrencies involves risk. Always do your own research (DYOR) before purchasing any token.)*
 
@@ -78,8 +78,6 @@ We welcome contributions from the community! If you'd like to contribute, please
 4.  Commit your changes (`git commit -m 'Add some feature'`).
 5.  Push to the branch (`git push origin feature/YourFeature`).
 6.  Open a Pull Request.
-
-Please read `CONTRIBUTING.md` for more details on our code of conduct and the process for submitting pull requests.
 
 ---
 
