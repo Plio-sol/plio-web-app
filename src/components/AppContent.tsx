@@ -2,7 +2,7 @@
 import React, { FC, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 // WalletMultiButton is imported in styles file now, remove if not used directly
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 // Import styles
 import * as S from './AppContent.styles';
