@@ -24,6 +24,9 @@ Plio offers a range of features for all users, with powerful additions reserved 
     * Historical portfolio value tracking.
     * Profit & Loss (P&L) calculations (beta).
     * Asset allocation charts.
+* **One Click Torrents:**
+    * PC Games straight from DODI and FitGirl.
+    * Movies Straight from 1337x.
 * **In-Depth Transaction Analysis:**
     * Categorization of transactions (Swaps, Transfers, Staking, etc.).
     * Counterparty analysis (who the wallet interacts with most).
