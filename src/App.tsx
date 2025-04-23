@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, useEffect } from 'react';
+import React, {FC, useMemo, useState, useEffect, FormEvent} from 'react';
 import { ConnectionProvider, WalletProvider, useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
@@ -239,50 +239,115 @@ const WalletInfo: FC = () => {
 };
 
 
-// --- Main App Component (Simplified) ---
-const App: FC = () => {
-    // No need to define network, endpoint, or wallets here
-    // as they are handled by AppWithProviders
+// --- Password Form Component (Moved Outside App) ---
+interface PasswordFormProps {
+    onSubmit: (event: FormEvent) => void;
+    passwordInput: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    authError: string | null;
+}
 
-    // Use useWallet hook here to get connection status
-    const { connected } = useWallet(); // We need WalletProvider context for this
+const PasswordForm: FC<PasswordFormProps> = ({
+                                                 onSubmit,
+                                                 passwordInput,
+                                                 onChange,
+                                                 authError
+                                             }) => (
+    <div style={{ marginTop: '50px', border: '1px solid #ccc', padding: '30px', borderRadius: '8px', maxWidth: '400px', margin: '50px auto' }}>
+        <h2>Enter Password</h2>
+        <form onSubmit={onSubmit}>
+            <input
+                type="password"
+                value={passwordInput}
+                onChange={onChange} // Use the passed onChange handler
+                placeholder="Password"
+                style={{ padding: '10px', marginRight: '10px', width: '200px', border: '1px solid #ccc', borderRadius: '4px' }}
+                autoFocus // Optional: focus on initial render
+            />
+            <button type="submit" style={{ padding: '10px 15px', cursor: 'pointer' }}>
+                Unlock
+            </button>
+            {authError && <p style={{ color: 'red', marginTop: '10px' }}>{authError}</p>}
+        </form>
+    </div>
+);
+
+
+// --- Original App Content Component (Moved Outside App) ---
+// No props needed if it only uses useWallet hook internally or static content
+const AppContent: FC = () => {
+    const { connected } = useWallet(); // Get connection status if needed here
 
     return (
-        <div className="App" style={{ padding: '50px', textAlign: 'center' }}>
+        <>
             <h1>Solana Token Viewer</h1>
             <p>Connect your wallet to see your token holdings and their estimated USD value.</p>
             <WalletMultiButton />
-
-            {/* Conditionally render WalletInfo only when connected */}
-            {/* WalletInfo handles its own loading/error/empty states */}
+            {/* WalletInfo needs the wallet connection, so it makes sense here */}
             {connected && <WalletInfo />}
+        </>
+    );
+};
+
+
+// --- Main App Component (Manages State and Renders Children) ---
+const App: FC = () => {
+    // Wallet connection status is available via the hook if needed for logic here
+    // const { connected } = useWallet();
+
+    // --- Password Protection State ---
+    const CORRECT_PASSWORD = process.env.REACT_APP_ACCESS_PASSWORD || "defaultpassword";
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [passwordInput, setPasswordInput] = useState('');
+    const [authError, setAuthError] = useState<string | null>(null);
+    // --- End Password Protection State ---
+
+    // --- Password Handling Functions ---
+    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPasswordInput(event.target.value);
+        setAuthError(null);
+    };
+
+    const handlePasswordSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        if (passwordInput === CORRECT_PASSWORD) {
+            setIsAuthenticated(true);
+            setAuthError(null);
+        } else {
+            setIsAuthenticated(false);
+            setAuthError("Incorrect password.");
+            setPasswordInput('');
+        }
+    };
+    // --- End Password Handling Functions ---
+
+    return (
+        <div className="App" style={{ padding: '50px', textAlign: 'center' }}>
+            {/* Conditionally render PasswordForm or AppContent */}
+            {isAuthenticated
+                ? <AppContent />
+                : <PasswordForm
+                    onSubmit={handlePasswordSubmit}
+                    passwordInput={passwordInput}
+                    onChange={handlePasswordChange}
+                    authError={authError}
+                />
+            }
         </div>
     );
 };
 
-// --- Wrap App with Providers ---
+// --- Wrap App with Providers (Keep as is) ---
 const AppWithProviders: FC = () => {
-
-    // Read the RPC endpoint from the environment variable, using clusterApiUrl as fallback
-    const endpoint = 'https://blissful-small-county.solana-mainnet.quiknode.pro/16a5873515b5afea14862b7f39d45c806f128f6f/';
-    console.log("Using RPC Endpoint:", endpoint.startsWith('https://api') ? 'Public Fallback' : endpoint); // Log endpoint (hide sensitive parts if needed)
-
-    // Memoize wallets list
-    const wallets = useMemo(
-        () => [
-            new PhantomWalletAdapter(), // Defaults to Mainnet
-            new SolflareWalletAdapter()  // Defaults to Mainnet
-            // Add other wallets like BackpackAdapter etc. if needed
-        ],
-        [] // No dependency needed as network is fixed to Mainne
-    );
+    // Use environment variable for RPC or fallback
+    const endpoint = process.env.REACT_APP_SOLANA_RPC_HOST || 'https://api.mainnet-beta.solana.com';
+    console.log("Using RPC Endpoint:", endpoint.includes('solana.com') ? 'Public Fallback' : 'Custom RPC');
+    const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter()], []);
 
     return (
-        // Use the determined endpoint for the ConnectionProvider
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
-                    {/* Render the main App component */}
                     <App />
                 </WalletModalProvider>
             </WalletProvider>
@@ -290,5 +355,4 @@ const AppWithProviders: FC = () => {
     );
 };
 
-
-export default AppWithProviders; // Export the wrapped component
+export default AppWithProviders;
