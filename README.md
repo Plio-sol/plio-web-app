@@ -1,6 +1,6 @@
 # Plio 🔎 - Solana Wallet Analysis Powerhouse
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Twitter Follow](https://img.shields.io/twitter/follow/YourTwitterHandle?style=social)](https://twitter.com/PlioSol)  **Dive deep into any Solana wallet with advanced analytics and insights, exclusively enhanced for $Plio token holders.**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Twitter Follow](https://img.shields.io/twitter/follow/PlioSol?style=social)](https://twitter.com/PlioSol)  **Dive deep into any Solana wallet with advanced analytics and insights, exclusively enhanced for $Plio token holders.**
 
 Plio is a cutting-edge web3 application designed to provide comprehensive analysis of Solana wallets. Whether you're tracking your own portfolio, researching whale movements, or exploring NFT collections, Plio gives you the data you need.
 
