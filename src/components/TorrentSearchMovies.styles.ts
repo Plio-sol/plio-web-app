@@ -1,11 +1,6 @@
-// src/components/TorrentSearch.styles.ts
+// src/components/TorrentSearchMovies.styles.ts
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
-
-// --- Props Interface Needed for Styling ---
-export interface SourceTagProps {
-    source: 'DODI' | 'FitGirl';
-}
 
 // --- Keyframes (Spinner) ---
 export const spin = keyframes`
@@ -15,7 +10,6 @@ export const spin = keyframes`
 
 // --- Styled Components ---
 
-// Use motion.div for the main container
 export const OverlayContainer = styled(motion.div)`
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -32,7 +26,7 @@ export const OverlayContainer = styled(motion.div)`
     color: #ccd6f6;
 `;
 
-export const CloseButton = styled(motion.button)` // Make button motion component
+export const CloseButton = styled(motion.button)`
     position: absolute;
     top: 20px;
     right: 25px;
@@ -61,7 +55,7 @@ export const SearchForm = styled.form`
     background-color: rgba(23, 42, 69, 0.8);
     border: 1px solid #4a5568;
     transition: border-color 0.3s ease;
-    &:focus-within { border-color: #8A2BE2; }
+    &:focus-within { border-color: #61DAFB; } // YTS Blue?
 `;
 
 export const SearchInput = styled.input`
@@ -75,16 +69,16 @@ export const SearchInput = styled.input`
     outline: none;
 `;
 
-export const SearchButton = styled(motion.button)` // Make button motion component
+export const SearchButton = styled(motion.button)`
     padding: 14px 25px;
     font-size: 1.1em;
     cursor: pointer;
-    background-color: #8A2BE2;
-    color: white;
+    background-color: #61DAFB; // YTS Blue?
+    color: #0a192f; // Dark text
     border: none;
     border-radius: 0 8px 8px 0;
     font-weight: 600;
-    &:disabled { background-color: #555; cursor: not-allowed; }
+    &:disabled { background-color: #555; color: #aaa; cursor: not-allowed; }
 `;
 
 export const HintText = styled.p`
@@ -98,7 +92,7 @@ export const HintText = styled.p`
 
 export const ResultsArea = styled.div`
     width: 100%;
-    max-width: 950px;
+    max-width: 1100px; // Wider for movie cards potentially
     margin-top: 20px;
     min-height: 200px;
     display: flex;
@@ -106,79 +100,122 @@ export const ResultsArea = styled.div`
     align-items: flex-start;
 `;
 
-// Use motion.div for staggering children
 export const ResultsGrid = styled(motion.div)`
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
+    // Adjust grid: maybe fewer columns, wider cards?
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 30px; // Increase gap slightly
 `;
 
-export const Spinner = styled(motion.div)` // Make spinner motion component
+export const Spinner = styled(motion.div)`
     border: 4px solid rgba(204, 214, 246, 0.3);
-    border-left-color: #61DAFB;
+    border-left-color: #61DAFB; // YTS Blue
     border-radius: 50%;
     width: 50px;
     height: 50px;
     margin-top: 40px;
 `;
 
-// Use motion.div for list item animation
-export const ResultCard = styled(motion.div)`
+// Updated Card Style
+export const MovieResultCard = styled(motion.div)`
     background-color: #172a45;
     border-radius: 10px;
-    padding: 25px;
     border: 1px solid rgba(100, 116, 139, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden; // Hide overflowing parts of image/content
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+`;
+
+export const CardContent = styled.div`
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; // Allow content to fill space
+`;
+
+export const CardHeader = styled.div`
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: flex-start;
+`;
+
+export const CoverImage = styled.img`
+    display: block;
+    width: 80px; // Adjust size
+    height: auto;
+    border-radius: 4px;
+    object-fit: cover;
+    background-color: #0a192f; // Placeholder bg
+`;
+
+export const HeaderText = styled.div`
+    flex: 1;
 `;
 
 export const CardTitle = styled.h3`
     margin-top: 0;
-    margin-bottom: 12px;
+    margin-bottom: 5px;
     color: #ffffff;
     font-size: 1.2em;
-    line-height: 1.4;
+    line-height: 1.3;
 `;
 
-export const CardInfo = styled.p`
-    margin-bottom: 20px;
-    color: #a8b2d1;
-    font-size: 0.95em;
-    line-height: 1.5;
-`;
-
-export const SourceTag = styled.span<SourceTagProps>`
-    font-weight: bold;
-    color: ${(props) => props.source === 'DODI' ? '#e67e22' : '#9b59b6'};
-    margin-left: 8px;
-    padding: 3px 8px;
-    border-radius: 5px;
-    background-color: ${(props) => props.source === 'DODI' ? 'rgba(230, 126, 34, 0.15)' : 'rgba(155, 89, 182, 0.15)'};
+export const CardSubTitle = styled.p`
     font-size: 0.9em;
+    color: #a8b2d1;
+    margin: 0 0 10px 0;
 `;
 
-export const DownloadLink = styled(motion.a)` // Make link motion component
+// Updated Info line
+export const CardInfo = styled.div`
+    margin-bottom: 15px;
+    color: #a8b2d1;
+    font-size: 0.9em;
+    line-height: 1.6;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px; // Spacing between info items
+`;
+
+// Specific styles for info items
+export const InfoItem = styled.span`
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+
+    // Example icons (using text, replace with actual icons later if desired)
+    &.quality::before { content: '🎬'; margin-right: 3px; }
+    &.rating::before { content: '⭐'; margin-right: 3px; }
+    &.size::before { content: '💾'; margin-right: 3px; }
+    &.seeds::before { content: '▲'; color: #50fa7b; }
+    &.peers::before { content: '▼'; color: #ffb86c; } // Orange for peers?
+`;
+
+
+export const MagnetLink = styled(motion.a)`
     display: block;
-    margin-top: auto;
-    padding: 12px 15px;
-    background: linear-gradient(45deg, #61DAFB, #8A2BE2);
-    color: #ffffff;
+    margin-top: auto; // Pushes to bottom of CardContent
+    padding: 10px 15px;
+    background: linear-gradient(45deg, #61DAFB, #8be9fd); // YTS Blue gradient
+    color: #0a192f;
     text-decoration: none;
     border-radius: 6px;
     text-align: center;
     font-weight: 600;
+    font-size: 0.95em;
     box-shadow: 0 4px 10px rgba(97, 218, 251, 0.3);
 `;
 
-// Add styled components for messages previously using inline styles
+// Error/No Results messages (can reuse)
 export const ErrorMessage = styled.p`
     color: #ff7b7b;
     text-align: center;
     font-size: 1.1em;
-    margin-top: 30px; // Consistent margin
+    margin-top: 30px;
 `;
 
 export const NoResultsMessage = styled.p`

@@ -1,10 +1,10 @@
-// src/components/TorrentSearch.tsx
+// src/components/TorrentSearchGames.tsx
 import React, { FC, useState, FormEvent } from 'react';
 // Remove styled, keyframes imports as they are in the .styles file
 import { AnimatePresence } from 'framer-motion';
 
 // Import all styled components using an alias 'S'
-import * as S from './TorrentSearch.styles';
+import * as S from './TorrentSearchGames.styles';
 
 // --- Types ---
 interface SearchResultItem {
@@ -27,7 +27,7 @@ interface TorrentSearchProps {
 }
 
 // SourceTagProps is now imported via S if needed by other logic,
-// but primarily used within TorrentSearch.styles.ts
+// but primarily used within TorrentSearchGames.styles.ts
 
 // --- Framer Motion Variants (Defined within the component file) ---
 const overlayVariants = {
@@ -58,8 +58,8 @@ const resultCardVariants = {
     }
 };
 
-// --- TorrentSearch Component ---
-const TorrentSearch: FC<TorrentSearchProps> = ({ onClose }) => {
+// --- TorrentSearchGames Component ---
+const TorrentSearchGames: FC<TorrentSearchProps> = ({ onClose }) => {
     // State hooks
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState<SearchResultItem[]>([]);
@@ -284,4 +284,4 @@ const TorrentSearch: FC<TorrentSearchProps> = ({ onClose }) => {
     );
 };
 
-export default TorrentSearch;
+export default TorrentSearchGames;

@@ -8,12 +8,14 @@ import { AnimatePresence } from 'framer-motion';
 import * as S from './AppContent.styles';
 
 import WalletInfo from './WalletInfo';
-import TorrentSearch from './TorrentSearch';
+import TorrentSearchGames from './TorrentSearchGames';
+import TorrentSearchMovies from "./TorrentSearchMovies";
 
 // --- App Content Component ---
 const AppContent: FC = () => {
     const { connected } = useWallet();
     const [showTorrentSearch, setShowTorrentSearch] = useState(false);
+    const [showMovieSearch, setShowMovieSearch] = useState(false); // <-- State for Movie Search
 
     const handleOpenTorrentSearch = () => {
         setShowTorrentSearch(true);
@@ -21,6 +23,13 @@ const AppContent: FC = () => {
 
     const handleCloseTorrentSearch = () => {
         setShowTorrentSearch(false);
+    };
+
+    const handleOpenMovieSearch = () => {
+        setShowMovieSearch(true);
+    };
+    const handleCloseMovieSearch = () => {
+        setShowMovieSearch(false);
     };
 
     return (
@@ -53,6 +62,18 @@ const AppContent: FC = () => {
                 >
                     Open Torrent Game Search
                 </S.StyledButton>
+
+                {/* Movie Search Button */}
+                <S.StyledButton
+                    onClick={handleOpenMovieSearch} // <-- Use new handler
+                    whileHover={{ scale: 1.05, y: -3, boxShadow: "0 7px 20px rgba(80, 250, 123, 0.3)" }} // Different shadow?
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                    // Optional: Slightly different style?
+                    style={{ borderColor: '#50fa7b', color: '#50fa7b' }}
+                >
+                    Open Torrent Movie Search
+                </S.StyledButton>
             </S.ActionsWrapper>
 
             <AnimatePresence>
@@ -71,9 +92,19 @@ const AppContent: FC = () => {
 
             <AnimatePresence>
                 {showTorrentSearch && (
-                    <TorrentSearch
+                    <TorrentSearchGames
                         key="torrent-search"
                         onClose={handleCloseTorrentSearch}
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Movie Search Modal */}
+            <AnimatePresence>
+                {showMovieSearch && ( // <-- Conditional rendering for Movie Search
+                    <TorrentSearchMovies
+                        key="movie-search"
+                        onClose={handleCloseMovieSearch} // <-- Use new handler
                     />
                 )}
             </AnimatePresence>
