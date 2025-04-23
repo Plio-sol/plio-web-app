@@ -48,7 +48,7 @@ const AppContent: FC = () => {
             </S.Header>
 
             <S.Description variants={S.itemVariants}> {/* Use S.itemVariants */}
-                Access exclusive holder tools. Connect your wallet to view token details or search the game torrent index.
+                Access exclusive holder tools. Connect your wallet to view token details and use tools.
             </S.Description>
 
             <S.ActionsWrapper variants={S.itemVariants}> {/* Use S.itemVariants */}
