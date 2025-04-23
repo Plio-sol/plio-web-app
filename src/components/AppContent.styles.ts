@@ -84,13 +84,16 @@ export const Description = styled(motion.p)`
 `;
 
 export const ActionsWrapper = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 50px;
-  width: 100%;
-  max-width: 350px;
+    display: flex;
+    /* UPDATED: Arrange in a row, wrap when needed, center items */
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; /* Align items vertically if they wrap */
+    gap: 20px; /* Adjust gap for horizontal/vertical spacing */
+    margin-bottom: 50px;
+    width: 100%;
+    /* REMOVED max-width: 350px; */
 `;
 
 // Apply motion hover/tap effects directly if preferred over CSS :hover/:active
@@ -99,11 +102,14 @@ export const StyledWalletMultiButton = styled(WalletMultiButton)`
         background-color: #8A2BE2;
         color: #ffffff;
         font-weight: 600;
-        border-radius: 8px;
-        padding: 14px 25px;
-        font-size: 1.05em;
+        /* UPDATED: Adjust border-radius */
+        border-radius: 10px; /* Slightly more rounded */
+        padding: 12px 20px; /* Adjust padding for size */
+        font-size: 1em; /* Adjust font size if needed */
         transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-        width: 100%;
+        /* REMOVED width: 100%; */
+        min-width: 180px; /* Optional: Set a minimum width */
+        text-align: center; /* Ensure text is centered */
         box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
 
         &:hover {
@@ -118,21 +124,34 @@ export const StyledWalletMultiButton = styled(WalletMultiButton)`
 `;
 
 export const StyledButton = styled(motion.button)`
-    padding: 14px 25px;
-    font-size: 1.05em;
+    padding: 12px 20px; /* Adjust padding for size */
+    font-size: 1em; /* Adjust font size if needed */
     cursor: pointer;
     background-color: transparent;
     color: #61DAFB;
     border: 2px solid #61DAFB;
-    border-radius: 8px;
+    /* UPDATED: Adjust border-radius */
+    border-radius: 10px; /* Slightly more rounded */
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-    width: 100%;
+    /* REMOVED width: 100%; */
+    min-width: 180px; /* Optional: Set a minimum width */
+    text-align: center; /* Ensure text is centered */
     box-shadow: 0 4px 15px rgba(97, 218, 251, 0.2);
 
     /* Hover/Active effects can be handled by motion props or CSS */
     &:hover {
         background-color: rgba(97, 218, 251, 0.1);
+    }
+
+    /* Specific style overrides can still be applied inline if needed */
+    &[style*="borderColor: rgb(250, 204, 21)"] { /* Target the yellow button specifically */
+        color: #facc15;
+        border-color: #facc15;
+        box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
+        &:hover {
+            background-color: rgba(250, 204, 21, 0.1);
+        }
     }
 `;
 

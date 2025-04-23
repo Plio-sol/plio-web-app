@@ -39,13 +39,14 @@ const AppContent: FC = () => {
                 <S.Logo src={process.env.PUBLIC_URL + '/plio-logo.png'} alt="Plio Logo" />
                 <S.Title>$Plio Holder Panel</S.Title>
             </S.Header>
-
+            <S.StyledWalletMultiButton />
             <S.Description variants={S.itemVariants}>
+
                 Access exclusive holder tools. Connect your wallet to view token details and use tools.
             </S.Description>
 
             <S.ActionsWrapper variants={S.itemVariants}>
-                <S.StyledWalletMultiButton />
+
 
                 {/* Game Search Button */}
                 <S.StyledButton
