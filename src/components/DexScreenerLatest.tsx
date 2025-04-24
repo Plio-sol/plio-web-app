@@ -1,6 +1,6 @@
 // src/components/DexScreenerLatest.tsx
 import React, { FC, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 // Import all styled components using an alias 'S'
 import * as S from './DexScreenerLatest.styles';
