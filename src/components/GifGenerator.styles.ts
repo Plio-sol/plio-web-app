@@ -20,7 +20,7 @@ export const OverlayContainer = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; // Align content to top
-    padding: 60px 20px 20px 20px; // Add padding top for close button etc.
+    padding: 10px 20px 20px 20px; // Add padding top for close button etc.
     z-index: 1000;
     backdrop-filter: blur(5px); // Optional blur effect
 
@@ -61,18 +61,6 @@ export const CloseButton = styled(motion.button)`
 `;
 
 // --- Rest of the styles (unchanged from previous version) ---
-
-export const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    gap: 20px;
-    color: #ccd6f6;
-    align-items: center; // Center content vertically
-`;
-
 export const Title = styled.h2`
     color: #ccd6f6;
     margin-bottom: 20px;

@@ -1,14 +1,11 @@
 // src/components/TorrentSearchMovies.tsx
-import React, { FC, useState, FormEvent } from "react";
-import { AnimatePresence } from "framer-motion";
+import React, { FC, useState, useCallback, FormEvent } from 'react';
+// *** Make sure motion and AnimatePresence are imported ***
+import { AnimatePresence } from 'framer-motion';
+import * as S from './TorrentSearchMovies.styles';
 
-// Import all styled components using an alias 'S'
-import * as S from "./TorrentSearchMovies.styles";
-
-// --- Types ---
-
-// Structure of a single torrent object within the YTS API response
-interface YtsTorrent {
+// --- Interfaces (Assuming these exist based on styles) ---
+interface YtsMovieTorrent {
   url: string;
   hash: string;
   quality: string;
@@ -21,7 +18,6 @@ interface YtsTorrent {
   date_uploaded_unix: number;
 }
 
-// Structure of a single movie object within the YTS API response
 interface YtsMovie {
   id: number;
   url: string;
@@ -46,304 +42,243 @@ interface YtsMovie {
   medium_cover_image: string;
   large_cover_image: string;
   state: string;
-  torrents: YtsTorrent[]; // Array of torrents for different qualities
+  torrents: YtsMovieTorrent[];
   date_uploaded: string;
   date_uploaded_unix: number;
 }
 
-// Structure of the main YTS API response
-interface YtsApiResponse {
-  status: "ok" | "error";
-  status_message: string;
-  data?: {
-    // Data might be missing on error
-    movie_count: number;
-    limit: number;
-    page_number: number;
-    movies?: YtsMovie[]; // Movies array might be missing if no results
-  };
-  "@meta": {
-    server_time: number;
-    server_timezone: string;
-    api_version: number;
-    execution_time: string;
-  };
-}
-
-// Our internal structure for displaying results (one item per torrent quality)
-interface MovieResultItem {
-  id: string; // Unique ID for React key (e.g., movie_id + hash)
-  movieId: number;
-  title: string;
-  year: number;
-  rating: number;
-  coverImage: string;
-  size: string;
-  seeds: number;
-  peers: number; // YTS uses 'peers' instead of 'leeches'
-  quality: string;
-  link: string; // Magnet link
-  ytsUrl: string; // Link to YTS movie page
-}
-
-interface MovieSearchProps {
-  onClose?: () => void;
+interface TorrentSearchMoviesProps {
+  onClose: () => void;
 }
 
 // --- Framer Motion Variants ---
+// *** Define variants for the overlay container ***
 const overlayVariants = {
-  /* ... (same as before) ... */
-};
-const resultsGridVariants = {
-  /* ... (same as before) ... */
-};
-const resultCardVariants = {
-  /* ... (same as before) ... */
+  hidden: { opacity: 0, scale: 0.98 }, // Start slightly scaled down and invisible
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.3, ease: "easeOut" } // Smooth transition in
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.98,
+    transition: { duration: 0.2, ease: "easeIn" } // Smooth transition out
+  }
 };
 
-// --- MovieSearch Component ---
-const TorrentSearchMovies: FC<MovieSearchProps> = ({ onClose }) => {
-  // State hooks
-  const [searchTerm, setSearchTerm] = useState("");
-  const [results, setResults] = useState<MovieResultItem[]>([]);
+// Optional: Variants for the results grid and cards if you want stagger effects
+const resultsGridVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08, // Stagger card animation
+    },
+  },
+};
+
+const movieCardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
+
+
+// --- Component ---
+const TorrentSearchMovies: FC<TorrentSearchMoviesProps> = ({ onClose }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [movies, setMovies] = useState<YtsMovie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [searched, setSearched] = useState(false);
+  const [searched, setSearched] = useState(false); // Track if a search has been performed
 
-  // --- YTS API Endpoint ---
-  const YTS_API_URL = "https://yts.mx/api/v2/list_movies.json";
+  const YTS_API_URL = 'https://yts.mx/api/v2/list_movies.json';
 
-  // --- Event Handlers ---
-  const handleSearch = async (event?: FormEvent) => {
-    if (event) {
-      event.preventDefault();
-    }
+  const handleSearch = useCallback(async (event?: FormEvent) => {
+    event?.preventDefault(); // Prevent default form submission
     if (!searchTerm.trim()) {
-      setResults([]);
-      setError("Please enter a movie title to search for.");
+      setError("Please enter a movie title to search.");
+      setMovies([]);
       setSearched(true);
       return;
     }
 
     setIsLoading(true);
     setError(null);
-    setResults([]);
-    setSearched(true);
-
-    console.log(`Searching YTS API for: ${searchTerm}`);
+    setMovies([]);
+    setSearched(true); // Mark that a search was attempted
 
     try {
-      // Construct the API URL with query parameters
-      // Common params: query_term, limit, sort_by, quality, page
-      const apiUrl = `${YTS_API_URL}?query_term=${encodeURIComponent(searchTerm)}&limit=30&sort_by=seeds`; // Fetch more, sort by seeds
-
-      const response = await fetch(apiUrl);
+      const queryParams = new URLSearchParams({
+        limit: '20', // Limit results
+        query_term: searchTerm.trim(),
+        sort_by: 'seeds', // Sort by seeds for better availability
+        order_by: 'desc',
+      });
+      const response = await fetch(`${YTS_API_URL}?${queryParams.toString()}`);
 
       if (!response.ok) {
-        // Handle HTTP errors (e.g., 404, 500)
-        throw new Error(
-          `YTS API request failed: ${response.status} ${response.statusText}`,
-        );
+        throw new Error(`YTS API request failed: ${response.status}`);
       }
 
-      const data: YtsApiResponse = await response.json();
+      const data = await response.json();
 
-      // Check API status
-      if (data.status !== "ok") {
-        throw new Error(`YTS API Error: ${data.status_message}`);
+      if (data.status !== 'ok') {
+        throw new Error(data.status_message || 'YTS API returned an error.');
       }
 
-      // Check if movies data exists and is an array
-      const movies = data.data?.movies;
-      if (!movies || movies.length === 0) {
-        setResults([]); // No results found
+      if (data.data.movie_count === 0 || !data.data.movies) {
+        setMovies([]); // Ensure empty array for no results
       } else {
-        // Map the data: Create one result item for each TORRENT available
-        const mappedResults: MovieResultItem[] = movies.flatMap((movie) =>
-          movie.torrents.map((torrent) => {
-            // Construct Magnet Link
-            const encodedTitle = encodeURIComponent(movie.title_long);
-            const magnetLink = `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodedTitle}&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.opentrackr.org:1337/announce`; // Added common trackers
-
-            return {
-              id: `${movie.id}-${torrent.hash}`, // Unique ID
-              movieId: movie.id,
-              title: movie.title_long, // Use the long title
-              year: movie.year,
-              rating: movie.rating,
-              coverImage: movie.medium_cover_image || movie.small_cover_image, // Use medium or fallback to small
-              size: torrent.size,
-              seeds: torrent.seeds,
-              peers: torrent.peers,
-              quality: torrent.quality,
-              link: magnetLink,
-              ytsUrl: movie.url,
-            };
-          }),
-        );
-
-        // Optional: Sort results further if needed (e.g., by seeds descending)
-        mappedResults.sort((a, b) => b.seeds - a.seeds);
-
-        setResults(mappedResults);
+        setMovies(data.data.movies);
       }
     } catch (err: any) {
-      console.error("YTS Movie search failed:", err);
-      // Check if the error message indicates a CORS issue, although less likely with YTS API
-      if (err instanceof TypeError && err.message.includes("Failed to fetch")) {
-        setError(
-          `Network error or potential CORS issue fetching from YTS API. ${err.message}`,
-        );
-      } else {
-        setError(err.message || "An unknown error occurred during search.");
-      }
-      setResults([]);
+      console.error("Movie search failed:", err);
+      setError(err.message || "An unknown error occurred during search.");
+      setMovies([]);
     } finally {
       setIsLoading(false);
     }
+  }, [searchTerm]);
+
+  // Helper to create magnet link
+  const createMagnetLink = (hash: string, title: string): string => {
+    const trackers = [ // Add reliable trackers
+      'udp://tracker.opentrackr.org:1337/announce',
+      'udp://tracker.openbittorrent.com:6969/announce',
+      'udp://open.demonii.com:1337/announce',
+      'udp://tracker.coppersurfer.tk:6969/announce',
+      'udp://tracker.leechers-paradise.org:6969/announce',
+      'udp://exodus.desync.com:6969/announce',
+      'udp://tracker.torrent.eu.org:451/announce',
+      'udp://tracker.dler.org:6969/announce',
+    ];
+    const trackerParams = trackers.map(t => `tr=${encodeURIComponent(t)}`).join('&');
+    return `magnet:?xt=urn:btih:${hash}&dn=${encodeURIComponent(title)}&${trackerParams}`;
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      handleSearch(); // Trigger search on Enter
-    }
-  };
-
-  // --- Render Logic ---
   return (
-    <S.OverlayContainer
-      variants={overlayVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-    >
-      {/* Close Button */}
-      {onClose && (
-        <S.CloseButton
-          onClick={onClose}
-          aria-label="Close Movie Search"
-          whileHover={{ scale: 1.1, rotate: 90, color: "#61DAFB" }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 15 }}
-        >
+      // *** Apply animation props to OverlayContainer ***
+      <S.OverlayContainer
+          variants={overlayVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          // onClick={onClose} // Optional: Close on backdrop click
+      >
+        {/* Prevent clicks inside modal from closing it if backdrop click is enabled */}
+        {/* <div onClick={(e) => e.stopPropagation()}> NO - OverlayContainer IS the modal */}
+
+        <S.CloseButton onClick={onClose} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           &times;
         </S.CloseButton>
-      )}
 
-      <S.SearchTitle>Movie Search</S.SearchTitle>
+        <S.SearchTitle>Search Movies</S.SearchTitle>
 
-      {/* Search Form */}
-      <S.SearchForm onSubmit={handleSearch}>
-        <S.SearchInput
-          type="text"
-          placeholder="Search for Movies..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <S.SearchButton
-          type="submit"
-          disabled={isLoading}
-          whileHover={
-            !isLoading ? { scale: 1.03, backgroundColor: "#4aabbd" } : {}
-          }
-          whileTap={!isLoading ? { scale: 0.97 } : {}}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        >
-          {isLoading ? "Searching..." : "Search Movies"}
-        </S.SearchButton>
-      </S.SearchForm>
+        <S.SearchForm onSubmit={handleSearch}>
+          <S.SearchInput
+              type="text"
+              placeholder="Enter movie title (e.g., Inception, Dune 2021)"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              disabled={isLoading}
+          />
+          <S.SearchButton
+              type="submit"
+              disabled={isLoading || !searchTerm.trim()}
+              whileHover={!isLoading && searchTerm.trim() ? { scale: 1.05 } : {}}
+              whileTap={!isLoading && searchTerm.trim() ? { scale: 0.98 } : {}}
+          >
+            {isLoading ? 'Searching...' : 'Search'}
+          </S.SearchButton>
+        </S.SearchForm>
 
       <S.HintText>
         Tip: Use specific terms for better results (e.g., 'spider-man' works,
         'spiderman' might not).
       </S.HintText>
 
-      {/* Results Area */}
-      <S.ResultsArea>
-        <AnimatePresence>
-          {isLoading && (
-            <S.Spinner
-              key="spinner"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, rotate: 360 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                rotate: { repeat: Infinity, duration: 1, ease: "linear" },
-                opacity: { duration: 0.2 },
-              }}
-            />
-          )}
-        </AnimatePresence>
+        <S.ResultsArea>
+          <AnimatePresence mode="wait"> {/* Use mode="wait" for smoother transitions between states */}
+            {isLoading && (
+                <S.Spinner
+                    key="spinner"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                />
+            )}
+            {!isLoading && error && (
+                <S.ErrorMessage key="error">{error}</S.ErrorMessage>
+            )}
+            {!isLoading && !error && searched && movies.length === 0 && (
+                <S.NoResultsMessage key="no-results">
+                  No movies found matching "{searchTerm}". Try a different title.
+                </S.NoResultsMessage>
+            )}
+          </AnimatePresence>
 
-        {!isLoading && error && <S.ErrorMessage>Error: {error}</S.ErrorMessage>}
-        {!isLoading && !error && searched && results.length === 0 && (
-          <S.NoResultsMessage>
-            No results found for "{searchTerm}".
-          </S.NoResultsMessage>
-        )}
-
-        {/* Results Grid */}
-        {!isLoading && !error && results.length > 0 && (
-          <S.ResultsGrid
-            variants={resultsGridVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {results.map((item) => (
-              <S.MovieResultCard
-                key={item.id}
-                variants={resultCardVariants}
-                layout
-                whileHover={{
-                  y: -5,
-                  borderColor: "rgba(97, 218, 251, 0.6)",
-                  boxShadow: "0 8px 25px rgba(0, 0, 0, 0.3)",
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+          {!isLoading && !error && movies.length > 0 && (
+              <S.ResultsGrid
+                  variants={resultsGridVariants} // Apply grid variants
+                  initial="hidden"
+                  animate="visible"
+                  // No exit needed here usually, cards handle exit
               >
-                <S.CardContent>
-                  <S.CardHeader>
-                    {item.coverImage && (
-                      <S.CoverImage
-                        src={item.coverImage}
-                        alt={`${item.title} cover`}
-                      />
-                    )}
-                    <S.HeaderText>
-                      <S.CardTitle>{item.title}</S.CardTitle>
-                      {/* <S.CardSubTitle>Year: {item.year}</S.CardSubTitle> */}
-                    </S.HeaderText>
-                  </S.CardHeader>
+                {/* Wrap mapped items in AnimatePresence for exit animations */}
+                <AnimatePresence>
+                  {movies.map((movie) => (
+                      <S.MovieResultCard
+                          key={movie.id} // Use movie ID as key
+                          variants={movieCardVariants} // Apply card variants
+                          // initial, animate are handled by grid stagger
+                          exit="exit" // Define exit animation
+                          layout // Enable smooth layout changes on add/remove
+                      >
+                        <S.CardContent>
+                          <S.CardHeader>
+                            <S.CoverImage src={movie.medium_cover_image} alt={`${movie.title} cover`} />
+                            <S.HeaderText>
+                              <S.CardTitle>{movie.title_long}</S.CardTitle>
+                              <S.CardSubTitle>{movie.genres?.join(', ')}</S.CardSubTitle>
+                            </S.HeaderText>
+                          </S.CardHeader>
 
-                  <S.CardInfo>
-                    <S.InfoItem className="quality">{item.quality}</S.InfoItem>
-                    <S.InfoItem className="rating">{item.rating}/10</S.InfoItem>
-                    <S.InfoItem className="seeds">{item.seeds}</S.InfoItem>
-                    <S.InfoItem className="peers">{item.peers}</S.InfoItem>
-                    <S.InfoItem className="size">{item.size}</S.InfoItem>
-                  </S.CardInfo>
+                          <S.CardInfo>
+                            {/* Display best available torrent info */}
+                            {movie.torrents && movie.torrents.length > 0 && (
+                                <>
+                                  <S.InfoItem className="quality">{movie.torrents[0].quality}</S.InfoItem>
+                                  <S.InfoItem className="size">{movie.torrents[0].size}</S.InfoItem>
+                                  <S.InfoItem className="seeds">{movie.torrents[0].seeds}</S.InfoItem>
+                                  <S.InfoItem className="peers">{movie.torrents[0].peers}</S.InfoItem>
+                                </>
+                            )}
+                            <S.InfoItem className="rating">{movie.rating}/10</S.InfoItem>
+                          </S.CardInfo>
 
-                  <S.MagnetLink
-                    href={item.link}
-                    title={`Download ${item.title} (${item.quality})`}
-                    whileHover={{
-                      scale: 1.03,
-                      y: -2,
-                      boxShadow: "0 6px 12px rgba(97, 218, 251, 0.4)",
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                  >
-                    Magnet Link ({item.quality})
-                  </S.MagnetLink>
-                </S.CardContent>
-              </S.MovieResultCard>
-            ))}
-          </S.ResultsGrid>
-        )}
-      </S.ResultsArea>
-    </S.OverlayContainer>
+                          {/* Magnet Link for best torrent */}
+                          {movie.torrents && movie.torrents.length > 0 && (
+                              <S.MagnetLink
+                                  href={createMagnetLink(movie.torrents[0].hash, movie.title_long)}
+                                  title={`Download ${movie.title_long} (${movie.torrents[0].quality})`}
+                                  whileHover={{ scale: 1.03, boxShadow: "0 6px 15px rgba(97, 218, 251, 0.4)" }}
+                                  whileTap={{ scale: 0.99 }}
+                              >
+                                Get Torrent ({movie.torrents[0].quality})
+                              </S.MagnetLink>
+                          )}
+                        </S.CardContent>
+                      </S.MovieResultCard>
+                  ))}
+                </AnimatePresence>
+              </S.ResultsGrid>
+          )}
+        </S.ResultsArea>
+
+      </S.OverlayContainer>
   );
 };
 
