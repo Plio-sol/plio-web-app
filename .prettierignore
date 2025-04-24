@@ -1,0 +1,21 @@
+# .prettierignore
+
+# Dependencies
+node_modules
+
+# Build output
+build
+dist
+coverage
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Optional: Specific files if needed
+# public/particles.json # If you don't want it formatted
