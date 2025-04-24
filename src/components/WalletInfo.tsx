@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion'; // Import AnimatePresen
 import * as S from './WalletInfo.styles';
 
 // Define the specific token mint address for $Plio
-const PLIO_MINT_ADDRESS = new PublicKey("So11111111111111111111111111111111111111112");
+const PLIO_MINT_ADDRESS = new PublicKey("2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump");
 const PLIO_SYMBOL = "$Plio";
 // --- Corrected Jupiter Price API endpoint ---
 const JUPITER_PRICE_API = "https://lite-api.jup.ag/price/v2?ids="; // Correct v2 endpoint
