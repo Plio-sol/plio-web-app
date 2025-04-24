@@ -34,7 +34,7 @@ const AppContent: FC = () => {
     const [showTorrentSearch, setShowTorrentSearch] = useState(false);
     const [showMovieSearch, setShowMovieSearch] = useState(false);
     const [showDexTokens, setShowDexTokens] = useState(false);
-    const [showGifGenerator, setShowGifGenerator] = useState(false);
+    const [showImageGenerator, setShowImageGenerator] = useState(false);
 
     // --- Handlers (Keep these as they are) ---
     const handleOpenTorrentSearch = () => setShowTorrentSearch(true);
@@ -44,8 +44,8 @@ const AppContent: FC = () => {
     const handleCloseMovieSearch = () => setShowMovieSearch(false);
     const handleOpenDexTokens = () => setShowDexTokens(true);
     const handleCloseDexTokens = () => setShowDexTokens(false);
-    const handleOpenGifGenerator = () => setShowGifGenerator(true);
-    const handleCloseGifGenerator = () => setShowGifGenerator(false);
+    const handleOpenImageGenerator = () => setShowImageGenerator(true);
+    const handleCloseImageGenerator = () => setShowImageGenerator(false);
     // --- End Handlers ---
 
     useEffect(() => {
@@ -147,8 +147,8 @@ const AppContent: FC = () => {
                 <S.StyledButton onClick={handleOpenDexTokens} /* ...props */ style={{ borderColor: "#facc15", color: "#facc15" }}>
                     Latest 'Dex Paid' Tokens
                 </S.StyledButton>
-                <S.StyledButton onClick={handleOpenGifGenerator} /* ...props */ style={{ borderColor: '#50fa7b', color: '#50fa7b' }}>
-                    Open AI GIF Generator
+                <S.StyledButton onClick={handleOpenImageGenerator} /* ...props */ style={{ borderColor: '#50fa7b', color: '#50fa7b' }}>
+                    Google Gemini Image Generator
                 </S.StyledButton>
             </S.ActionsWrapper>
             {/* --- End Actions Wrapper --- */}
@@ -175,7 +175,7 @@ const AppContent: FC = () => {
                 {showTorrentSearch && <TorrentSearchGames key="game-search" onClose={handleCloseTorrentSearch} />}
                 {showMovieSearch && <TorrentSearchMovies key="movie-search" onClose={handleCloseMovieSearch} />}
                 {showDexTokens && <DexScreenerLatest key="dex-tokens" onClose={handleCloseDexTokens} />}
-                {showGifGenerator && <ImageGenerator key="gif-generator" onClose={handleCloseGifGenerator} />}
+                {showImageGenerator && <ImageGenerator key="image-generator" onClose={handleCloseImageGenerator} />}
             </AnimatePresence>
             {/* --- End Modals --- */}
 

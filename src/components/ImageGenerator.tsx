@@ -8,7 +8,7 @@ import {GoogleGenAI, Modality} from '@google/genai';
 
 
 // --- Renamed Props Interface ---
-interface GifGeneratorProps {
+interface ImageGeneratorProps {
     onClose: () => void;
 }
 
@@ -41,7 +41,7 @@ function parseError(error: any): string {
 }
 
 // --- Renamed Component ---
-const ImageGenerator: FC<GifGeneratorProps> = ({ onClose }) => {
+const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
     // --- State ---
     const [prompt, setPrompt] = useState('');
     const [status, setStatus] = useState('');
