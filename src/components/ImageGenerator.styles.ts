@@ -1,4 +1,3 @@
-// src/components/GifGenerator.styles.ts
 import styled, { keyframes } from 'styled-components'; // Added keyframes
 import { motion } from 'framer-motion';
 
@@ -37,6 +36,17 @@ export const OverlayContainer = styled(motion.div)`
         position: relative;
         z-index: 1;
     }
+`;
+export const HintText = styled.p`
+  font-size: 0.9em;
+  color: #a8b2d1;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  max-width: 700px; // Keep original max-width
+  text-align: center;
+  flex-shrink: 0; // Prevent shrinking
+  margin-left: auto; // Center hint text
+  margin-right: auto; // Center hint text
 `;
 
 // --- Define CloseButton directly (Example definition, adjust as needed) ---

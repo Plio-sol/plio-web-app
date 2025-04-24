@@ -94,7 +94,22 @@ export const ActionsWrapper = styled(motion.div)`
   width: 100%;
   /* REMOVED max-width: 350px; */
 `;
+// *** Add Styling for Jupiter Container ***
+export const JupiterTerminalContainer = styled(motion.div)`
+    width: 100%;
+    max-width: 420px; // Adjust max-width as desired
+    min-height: 400px; // Give it some initial height
+    margin: 20px auto 40px auto; // Center it and add vertical spacing
+    border-radius: 12px; // Optional: match modal rounding
+    overflow: hidden; // Hide potential overflow from the widget itself
+    background-color: #172a45; // Optional: background if needed
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); // Optional: shadow
 
+    /* Jupiter widget often uses its own theme, but you can add overrides */
+    /* Example: Ensure text inside is readable if background is dark */
+    color: #ccd6f6;
+`;
+// *** End Jupiter Container Styling ***
 // Apply motion hover/tap effects directly if preferred over CSS :hover/:active
 export const StyledWalletMultiButton = styled(WalletMultiButton)`
   &&& {

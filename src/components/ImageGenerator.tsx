@@ -1,10 +1,8 @@
-// C:/Users/tazzo/WebstormProjects/plio-web-app/src/components/GifGenerator.tsx
-
 import React, { FC, useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Updated Style Import ---
-import * as S from './GifGenerator.styles';
+import * as S from './ImageGenerator.styles';
 // --- Updated GenAI Import ---
 import {GoogleGenAI, Modality} from '@google/genai';
 
@@ -43,7 +41,7 @@ function parseError(error: any): string {
 }
 
 // --- Renamed Component ---
-const GifGenerator: FC<GifGeneratorProps> = ({ onClose }) => {
+const ImageGenerator: FC<GifGeneratorProps> = ({ onClose }) => {
     // --- State ---
     const [prompt, setPrompt] = useState('');
     const [status, setStatus] = useState('');
@@ -181,7 +179,9 @@ const GifGenerator: FC<GifGeneratorProps> = ({ onClose }) => {
                         {isLoading && <S.ButtonSpinner />}
                     </S.GenerateButton>
                 </S.PromptSection>
-
+                <S.HintText>
+                    If image fails to load, It was probably deemed inappropriate or the API is overloaded.
+                </S.HintText>
                 <S.StatusDisplay>{status}</S.StatusDisplay>
                 {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
 
@@ -216,4 +216,4 @@ const GifGenerator: FC<GifGeneratorProps> = ({ onClose }) => {
 };
 
 // --- Updated Default Export ---
-export default GifGenerator;
+export default ImageGenerator;

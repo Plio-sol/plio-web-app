@@ -1,6 +1,4 @@
-// src/components/TorrentSearchMovies.tsx
 import React, { FC, useState, useCallback, FormEvent } from 'react';
-// *** Make sure motion and AnimatePresence are imported ***
 import { AnimatePresence } from 'framer-motion';
 import * as S from './TorrentSearchMovies.styles';
 

@@ -10,7 +10,7 @@ export const spin = keyframes`
 
 // --- Styled Components ---
 
-// MODIFIED: Replaced with the exact style from GifGenerator.styles.ts
+// MODIFIED: Replaced with the exact style from ImageGenerator.styles.ts
 export const OverlayContainer = styled(motion.div)`
     position: fixed;
     top: 0;
@@ -29,10 +29,10 @@ export const OverlayContainer = styled(motion.div)`
     /* Add max-width/height and scrolling if needed */
     max-width: 95vw; // Max width relative to viewport
     max-height: 90vh; // Max height relative to viewport
-    width: 900px; /* Specific width like GifGenerator */
+    width: 900px; /* Specific width like ImageGenerator */
     margin: auto; /* Center the container horizontally if viewport is wider */
     border-radius: 12px; /* Rounded corners for the modal */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); // Shadow like GifGenerator
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); // Shadow like ImageGenerator
 
     /* Ensure direct children are layered correctly if needed */
     /* This might need adjustment based on how content is structured */
@@ -63,11 +63,11 @@ export const CloseButton = styled(motion.button)`
     color: #a8b2d1; // Keep color
     line-height: 1; // Keep style
     z-index: 2; // Ensure it's above other direct children
-    opacity: 0.7; // Match GifGenerator style
-    transition: opacity 0.2s ease; // Match GifGenerator style
+    opacity: 0.7; // Match ImageGenerator style
+    transition: opacity 0.2s ease; // Match ImageGenerator style
 
     &:hover {
-        opacity: 1; // Match GifGenerator style
+        opacity: 1; // Match ImageGenerator style
     }
 `;
 

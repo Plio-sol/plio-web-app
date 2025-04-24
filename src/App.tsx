@@ -51,6 +51,8 @@ const App: FC = () => {
   };
   // --- End Password Handling Functions ---
 
+
+
   return (
     // Apply centering styles here, background is now handled by tsparticles
     <div
@@ -66,7 +68,7 @@ const App: FC = () => {
           "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
         padding: "20px",
         position: "relative",
-        zIndex: 1, // Ensure content is above particles background
+        zIndex: 0, // Ensure content is above particles background
       }}
     >
       {/* Conditionally render PasswordForm or AppContent */}

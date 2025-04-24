@@ -1,4 +1,3 @@
-// src/components/TorrentSearchGames.styles.ts
 import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 
@@ -15,29 +14,28 @@ export const spin = keyframes`
 
 // --- Styled Components ---
 
-// MODIFIED: Replaced with the exact style from GifGenerator.styles.ts
 export const OverlayContainer = styled(motion.div)`
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(10, 25, 47, 0.9); // Match GifGenerator/DexScreener background
+    background-color: rgba(10, 25, 47, 0.9); // Match ImageGenerator/DexScreener background
     display: flex;
     flex-direction: column; // Use column layout for content inside
     align-items: center; // Center content horizontally
     justify-content: flex-start; // Align content to top
-    padding: 10px 20px 20px 20px; // Match GifGenerator/DexScreener padding
+    padding: 10px 20px 20px 20px; // Match ImageGenerator/DexScreener padding
     z-index: 1000;
     backdrop-filter: blur(5px); // Optional blur effect
 
     /* Add max-width/height and scrolling if needed */
     max-width: 95vw; // Max width relative to viewport
     max-height: 90vh; // Max height relative to viewport
-    width: 900px; /* Specific width like GifGenerator/DexScreener */
+    width: 900px; /* Specific width like ImageGenerator/DexScreener */
     margin: auto; /* Center the container horizontally if viewport is wider */
     border-radius: 12px; /* Rounded corners for the modal */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); // Shadow like GifGenerator/DexScreener
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); // Shadow like ImageGenerator/DexScreener
 
     /* Ensure direct children are layered correctly if needed */
     & > * {
@@ -66,7 +64,7 @@ export const OverlayContainer = styled(motion.div)`
 // MODIFIED: CloseButton positioning adjusted relative to the new OverlayContainer
 export const CloseButton = styled(motion.button)`
   position: absolute; // Position relative to OverlayContainer
-  top: 15px; // Match GifGenerator/DexScreener position
+  top: 15px; // Match ImageGenerator/DexScreener position
   right: -430px;
   padding: 5px 10px; // Keep padding
   cursor: pointer;
@@ -76,11 +74,11 @@ export const CloseButton = styled(motion.button)`
   color: #a8b2d1; // Keep color
   line-height: 1; // Keep style
   z-index: 2; // Ensure it's above other direct children
-  opacity: 0.7; // Match GifGenerator/DexScreener style
-  transition: opacity 0.2s ease; // Match GifGenerator/DexScreener style
+  opacity: 0.7; // Match ImageGenerator/DexScreener style
+  transition: opacity 0.2s ease; // Match ImageGenerator/DexScreener style
 
   &:hover {
-    opacity: 1; // Match GifGenerator/DexScreener style
+    opacity: 1; // Match ImageGenerator/DexScreener style
   }
 `;
 
