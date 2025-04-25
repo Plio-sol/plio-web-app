@@ -55,11 +55,11 @@ export const AppContentWrapper = styled(motion.div)`
   margin: 0 auto; /* Center the content */
 
   /* Mobile Padding (consider bottom bar height) */
-  padding: 60px 15px 80px 15px; /* top right bottom left - more bottom padding */
+  padding: 60px 15px 80px 0px; /* top right bottom left - more bottom padding */
 
   /* Desktop Overrides */
   @media (min-width: 769px) {
-    padding: 40px 20px 40px 85px; /* top right bottom left (restore desktop left padding) */
+    padding: 40px 20px 40px 20px; /* top right bottom left (restore desktop left padding) */
     margin-left: 65px; /* Restore desktop margin */
     margin-right: 0; /* Reset right margin */
   }
@@ -255,11 +255,19 @@ export const StyledButton = styled(motion.button)`
 
 // Use motion.div for animation control
 export const WalletInfoWrapper = styled(motion.div)`
-  width: 100%;
-  margin-top: 30px;
+  width: 80%; // Keep filling parent width
   background-color: rgba(23, 42, 69, 0.6);
   border-radius: 12px;
-  padding: 30px;
   border: 1px solid rgba(100, 116, 139, 0.3);
   backdrop-filter: blur(5px);
+
+  /* Mobile Styles (Default) */
+  margin-top: 20px; // Reduced margin for mobile
+  padding: 20px;    // Reduced padding for mobile
+
+  /* Desktop Overrides */
+  @media (min-width: 769px) {
+    margin-top: 30px; // Restore desktop margin
+    padding: 30px;    // Restore desktop padding
+  }
 `;

@@ -16,7 +16,7 @@ export const OverlayContainer = styled(motion.div)`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 10%;
   background-color: rgba(10, 25, 47, 0.9);
   display: flex;
   flex-direction: column;
@@ -49,6 +49,8 @@ export const OverlayContainer = styled(motion.div)`
 
   /* Desktop Overrides */
   @media (min-width: 769px) {
+    bottom: 0;
+    top: 0;
     padding: 10px 20px 20px 20px; // Restore desktop padding
     width: 900px; /* Restore specific width */
   }

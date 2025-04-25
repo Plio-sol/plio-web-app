@@ -20,8 +20,43 @@ import { loadSlim } from "@tsparticles/slim";
 // Import the components
 import PasswordForm from "./components/PasswordForm";
 import AppContent from "./components/AppContent";
+import styled, {createGlobalStyle} from "styled-components";
 
 require("@solana/wallet-adapter-react-ui/styles.css");
+
+
+// --- Styled Component for App Container ---
+const StyledAppContainer = styled.div`
+  min-height: 100vh;
+  /* Consider changing min-height to height if you truly never want scrolling *within* this container either */
+  /* height: 100vh; */
+  /* overflow: hidden; */ /* Add this if you want to prevent scrolling *inside* StyledAppContainer */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ccd6f6; // Default text color
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 20px;
+  position: relative; // Needed for z-index context with particles
+  z-index: 1; // Ensure content is rendered above the particles background
+  text-align: center; // Replicate the text-align from App.css if needed
+  box-sizing: border-box; // Good practice to include padding in height calculation
+`;
+// --- End Styled Component ---
+
+// --- Global Style to prevent body scrolling ---
+const GlobalStyle = createGlobalStyle`
+  body, html {
+    overflow: hidden; /* Prevent scrolling on the body/html */
+    margin: 0;      /* Reset default margin */
+    padding: 0;     /* Reset default padding */
+    height: 100%;   /* Ensure html/body take full height */
+    width: 100%;    /* Ensure html/body take full width */
+  }
+`;
+
 
 // --- Main App Component (Manages State and Renders Children) ---
 const App: FC = () => {
@@ -53,22 +88,7 @@ const App: FC = () => {
 
   return (
     // Apply centering styles here, background is now handled by tsparticles
-    <div
-      className="App"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#ccd6f6",
-        fontFamily:
-          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-        padding: "20px",
-        position: "relative",
-        zIndex: 0, // Ensure content is above particles background
-      }}
-    >
+      <StyledAppContainer>
       {/* Conditionally render PasswordForm or AppContent */}
       {!isAuthenticated ? (
         <PasswordForm
@@ -81,7 +101,7 @@ const App: FC = () => {
         <AppContent />
       )}
       <Analytics />
-    </div>
+      </StyledAppContainer>
   );
 };
 
@@ -123,8 +143,7 @@ const AppWithProviders: FC = () => {
 
   return (
     <>
-      {" "}
-      {/* Use Fragment to wrap particles and providers */}
+      <GlobalStyle/>
       {/* Render Particles conditionally after init */}
       {init && (
         <Particles
