@@ -20,10 +20,9 @@ import { loadSlim } from "@tsparticles/slim";
 // Import the components
 import PasswordForm from "./components/PasswordForm";
 import AppContent from "./components/AppContent";
-import styled, {createGlobalStyle} from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 require("@solana/wallet-adapter-react-ui/styles.css");
-
 
 // --- Styled Component for App Container ---
 const StyledAppContainer = styled.div`
@@ -36,8 +35,18 @@ const StyledAppContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: #ccd6f6; // Default text color
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
   padding: 20px;
   position: relative; // Needed for z-index context with particles
   z-index: 1; // Ensure content is rendered above the particles background
@@ -56,7 +65,6 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;    /* Ensure html/body take full width */
   }
 `;
-
 
 // --- Main App Component (Manages State and Renders Children) ---
 const App: FC = () => {
@@ -88,7 +96,7 @@ const App: FC = () => {
 
   return (
     // Apply centering styles here, background is now handled by tsparticles
-      <StyledAppContainer>
+    <StyledAppContainer>
       {/* Conditionally render PasswordForm or AppContent */}
       {!isAuthenticated ? (
         <PasswordForm
@@ -101,7 +109,7 @@ const App: FC = () => {
         <AppContent />
       )}
       <Analytics />
-      </StyledAppContainer>
+    </StyledAppContainer>
   );
 };
 
@@ -143,7 +151,7 @@ const AppWithProviders: FC = () => {
 
   return (
     <>
-      <GlobalStyle/>
+      <GlobalStyle />
       {/* Render Particles conditionally after init */}
       {init && (
         <Particles

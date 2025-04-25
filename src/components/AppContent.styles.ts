@@ -263,11 +263,11 @@ export const WalletInfoWrapper = styled(motion.div)`
 
   /* Mobile Styles (Default) */
   margin-top: 20px; // Reduced margin for mobile
-  padding: 20px;    // Reduced padding for mobile
+  padding: 20px; // Reduced padding for mobile
 
   /* Desktop Overrides */
   @media (min-width: 769px) {
     margin-top: 30px; // Restore desktop margin
-    padding: 30px;    // Restore desktop padding
+    padding: 30px; // Restore desktop padding
   }
 `;
