@@ -1,5 +1,5 @@
 // src/components/AppContent.styles.ts
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import { motion } from "framer-motion";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
@@ -39,6 +39,12 @@ export const componentFadeSlideVariants = {
 };
 
 // --- Styled Components ---
+// --- Keyframes for Rainbow Effect ---
+const rainbowAnimation = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
 
 // Use motion for elements that need individual animation control via variants
 export const AppContentWrapper = styled(motion.div)`
@@ -62,6 +68,72 @@ export const Logo = styled.img`
   height: auto;
   margin-bottom: 25px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+`;
+
+// --- ADDED: Social Links Styling ---
+export const SocialLinksContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 18px; /* Space between icons */
+  margin-bottom: 15px; /* Space below icons */
+`;
+
+export const SocialLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px; /* Icon container size */
+  height: 38px; /* Icon container size */
+  border-radius: 50%; /* Circular background */
+  background-color: rgba(42, 63, 90, 0.7); /* Semi-transparent background */
+  color: #a8b2d1; /* Icon color */
+  font-size: 1.1em; /* Adjust as needed if using text/icons */
+  font-weight: bold;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+  border: 1px solid rgba(100, 116, 139, 0.3); /* Subtle border */
+
+  &:hover {
+    background-color: rgba(58, 80, 107, 0.9); /* Darker on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+    color: #ffffff;
+  }
+
+  /* If using FontAwesome or SVG icons, you might target them like this: */
+  /* svg {
+    width: 18px;
+    height: 18px;
+  } */
+`;
+// --- END: Social Links Styling ---
+
+// --- ADDED: Contract Address Styling ---
+export const ContractAddress = styled.p`
+  font-size: 0.95em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+  padding: 5px 10px;
+  border-radius: 6px;
+
+  /* Rainbow Text Effect - UPDATED COLORS */
+  background: linear-gradient(
+      90deg,
+      #ffdd57, /* Bright Yellow */
+      #ff7f50, /* Coral (Bright Orange/Red) */
+      #ff69b4, /* Hot Pink */
+      #7fffd4, /* Aquamarine (Bright Cyan/Green) */
+      #90ee90, /* Light Green */
+      #add8e6, /* Light Blue */
+      #ffdd57  /* Loop back to Bright Yellow */
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ${rainbowAnimation} 5s linear infinite; /* Adjust speed (5s) */
 `;
 
 export const Title = styled.h1`
@@ -94,22 +166,7 @@ export const ActionsWrapper = styled(motion.div)`
   width: 100%;
   /* REMOVED max-width: 350px; */
 `;
-// *** Add Styling for Jupiter Container ***
-export const JupiterTerminalContainer = styled(motion.div)`
-    width: 100%;
-    max-width: 420px; // Adjust max-width as desired
-    min-height: 400px; // Give it some initial height
-    margin: 20px auto 40px auto; // Center it and add vertical spacing
-    border-radius: 12px; // Optional: match modal rounding
-    overflow: hidden; // Hide potential overflow from the widget itself
-    background-color: #172a45; // Optional: background if needed
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); // Optional: shadow
 
-    /* Jupiter widget often uses its own theme, but you can add overrides */
-    /* Example: Ensure text inside is readable if background is dark */
-    color: #ccd6f6;
-`;
-// *** End Jupiter Container Styling ***
 // Apply motion hover/tap effects directly if preferred over CSS :hover/:active
 export const StyledWalletMultiButton = styled(WalletMultiButton)`
   &&& {
@@ -156,7 +213,8 @@ export const StyledButton = styled(motion.button)`
     transform 0.1s ease,
     box-shadow 0.3s ease;
   /* REMOVED width: 100%; */
-  min-width: 180px; /* Optional: Set a minimum width */
+  min-width: 140px; /* Optional: Set a minimum width */
+  min-height: 100px;
   text-align: center; /* Ensure text is centered */
   box-shadow: 0 4px 15px rgba(97, 218, 251, 0.2);
 

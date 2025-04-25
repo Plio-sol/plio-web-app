@@ -117,7 +117,7 @@ const WalletInfo: FC = () => {
         setNumericBalance(fetchedNumericBalance);
       } catch (err: any) {
         console.error(`Failed to fetch ${PLIO_SYMBOL} balance:`, err);
-        setBalanceError(`Failed to load ${PLIO_SYMBOL} balance.`); // Simplified error
+        setBalanceError(`The connected wallet has no ${PLIO_SYMBOL}. Buy some on Jupiter through the bottom right widget!`); // Simplified error
       } finally {
         setIsBalanceLoading(false);
       }

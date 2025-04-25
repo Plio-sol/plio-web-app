@@ -12,6 +12,7 @@ import TorrentSearchGames from './TorrentSearchGames';
 import TorrentSearchMovies from './TorrentSearchMovies';
 import DexScreenerLatest from './DexScreenerLatest';
 import ImageGenerator from './ImageGenerator';
+import XIcon from "../icons/XIcon";
 
 // --- Type Definition for window.Jupiter ---
 declare global {
@@ -126,6 +127,23 @@ const AppContent: FC = () => {
                     src={process.env.PUBLIC_URL + "/plio-logo.png"}
                     alt="Plio Logo"
                 />
+
+                {/* --- ADDED Social Links & Contract --- */}
+                <S.SocialLinksContainer>
+                    {/* Replace 'X' and 'P' with actual icons (e.g., FontAwesome, SVG) if desired */}
+                    <S.SocialLink href="https://x.com/PlioSol" target="_blank" rel="noopener noreferrer" title="Plio on X">
+                        <XIcon></XIcon>
+                    </S.SocialLink>
+                    <S.SocialLink href="https://pump.fun/2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump" target="_blank" rel="noopener noreferrer" title="Plio on pump.fun">
+                        <img src={process.env.PUBLIC_URL + "/pumpfun.png"} alt={'pump.fun logo'} style={{scale:0.06}}></img>
+                    </S.SocialLink>
+                </S.SocialLinksContainer>
+
+                <S.ContractAddress>
+                    {/* TODO: Replace with actual contract address */}
+                    Contract: 2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump
+                </S.ContractAddress>
+                {/* --- END Added Content --- */}
                 <S.Title>$Plio Holder Panel</S.Title>
             </S.Header>
             <S.StyledWalletMultiButton />
