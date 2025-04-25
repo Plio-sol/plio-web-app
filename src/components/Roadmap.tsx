@@ -1,12 +1,10 @@
 import React, { FC } from "react";
 
-
-const Roadmap: FC = ({
-}) => (
+const Roadmap: FC = ({}) => (
   <div
     style={{
       backgroundColor: "rgba(23, 42, 69, 0.6)", // Semi-transparent dark blue
-      backdropFilter: 'blur(5px)',
+      backdropFilter: "blur(5px)",
       padding: "40px 50px",
       borderRadius: "15px",
       textAlign: "center",

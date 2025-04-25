@@ -1,5 +1,5 @@
 // src/components/AppContent.styles.ts
-import styled, {keyframes} from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
@@ -46,34 +46,22 @@ const rainbowAnimation = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
-// Use motion for elements that need individual animation control via variants
 export const AppContentWrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 900px;
-  padding: 40px 20px;
-`;
+  max-width: 900px; /* Keep max-width for desktop */
+  margin: 0 auto; /* Center the content */
 
-export const DrawerTriggerButton = styled.button`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(42, 63, 90, 0.7);
-  border: 1px solid rgba(100, 116, 139, 0.3);
-  color: #a8b2d1;
-  border-radius: 8px;
-  padding: 10px 12px;
-  cursor: pointer;
-  font-size: 1.3em; // Adjust icon size
-  line-height: 1;
-  z-index: 10; // Ensure it's above header content if overlapping
-  transition: background-color 0.2s ease, color 0.2s ease;
+  /* Mobile Padding (consider bottom bar height) */
+  padding: 60px 15px 80px 15px; /* top right bottom left - more bottom padding */
 
-  &:hover {
-    background-color: rgba(58, 80, 107, 0.9);
-    color: #ffffff;
+  /* Desktop Overrides */
+  @media (min-width: 769px) {
+    padding: 40px 20px 40px 85px; /* top right bottom left (restore desktop left padding) */
+    margin-left: 65px; /* Restore desktop margin */
+    margin-right: 0; /* Reset right margin */
   }
 `;
 
@@ -81,14 +69,25 @@ export const Header = styled(motion.header)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 40px;
+  width: 100%; /* Ensure header takes full width */
+  margin-bottom: 30px; /* Reduced margin for mobile */
+
+  @media (min-width: 769px) {
+    margin-bottom: 40px; /* Restore desktop margin */
+  }
 `;
 
+// Logo within the main Header (NOT the IconBar logo)
 export const Logo = styled.img`
-  max-width: 180px;
+  max-width: 140px; /* Smaller logo for mobile */
   height: auto;
-  margin-bottom: 25px;
+  margin-bottom: 20px; /* Reduced margin */
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+
+  @media (min-width: 769px) {
+    max-width: 180px; /* Restore desktop size */
+    margin-bottom: 25px; /* Restore desktop margin */
+  }
 `;
 
 // --- ADDED: Social Links Styling ---
@@ -141,8 +140,14 @@ export const ContractAddress = styled.p`
 
   /* Rainbow Text Effect - Use your preferred high-contrast gradient */
   background: linear-gradient(
-      90deg,
-      #39ff14, #ffdd57, #ff7f50, #ff69b4, #00ffff, #90ee90, #39ff14
+    90deg,
+    #39ff14,
+    #ffdd57,
+    #ff7f50,
+    #ff69b4,
+    #00ffff,
+    #90ee90,
+    #39ff14
   );
   background-size: 300% 100%;
   -webkit-background-clip: text;
@@ -155,20 +160,30 @@ export const Title = styled.h1`
   color: #ffffff;
   margin-bottom: 15px;
   font-weight: 700;
-  font-size: 2.8em;
-  letter-spacing: -0.5px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-align: center; /* Ensure centered */
+  font-size: 2em; /* Reduced font size for mobile */
+  letter-spacing: -0.5px;
+
+  @media (min-width: 769px) {
+    font-size: 2.8em; /* Restore desktop font size */
+  }
 `;
 
 export const Description = styled(motion.p)`
   color: #a8b2d1;
-  margin-bottom: 40px;
-  font-size: 1.15em;
+  margin-bottom: 30px; /* Reduced margin */
+  font-size: 1.05em; /* Slightly smaller font for mobile */
   max-width: 550px;
   text-align: center;
-  line-height: 1.7;
-`;
+  line-height: 1.6; /* Slightly tighter line height */
 
+  @media (min-width: 769px) {
+    margin-bottom: 40px; /* Restore desktop margin */
+    font-size: 1.15em; /* Restore desktop font size */
+    line-height: 1.7; /* Restore desktop line height */
+  }
+`;
 
 // Apply motion hover/tap effects directly if preferred over CSS :hover/:active
 export const StyledWalletMultiButton = styled(WalletMultiButton)`

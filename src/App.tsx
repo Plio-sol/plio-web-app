@@ -51,8 +51,6 @@ const App: FC = () => {
   };
   // --- End Password Handling Functions ---
 
-
-
   return (
     // Apply centering styles here, background is now handled by tsparticles
     <div
