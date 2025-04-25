@@ -1,3 +1,4 @@
+// src/components/DexScreenerLatest.tsx
 import React, { FC, useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion"; // Added motion import
 

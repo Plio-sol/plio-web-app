@@ -56,6 +56,27 @@ export const AppContentWrapper = styled(motion.div)`
   padding: 40px 20px;
 `;
 
+export const DrawerTriggerButton = styled.button`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(42, 63, 90, 0.7);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  color: #a8b2d1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 1.3em; // Adjust icon size
+  line-height: 1;
+  z-index: 10; // Ensure it's above header content if overlapping
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(58, 80, 107, 0.9);
+    color: #ffffff;
+  }
+`;
+
 export const Header = styled(motion.header)`
   display: flex;
   flex-direction: column;
@@ -100,12 +121,6 @@ export const SocialLink = styled.a`
     transform: translateY(-2px); /* Slight lift on hover */
     color: #ffffff;
   }
-
-  /* If using FontAwesome or SVG icons, you might target them like this: */
-  /* svg {
-    width: 18px;
-    height: 18px;
-  } */
 `;
 // --- END: Social Links Styling ---
 
@@ -117,23 +132,23 @@ export const ContractAddress = styled.p`
   margin-bottom: 15px;
   padding: 5px 10px;
   border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.2s ease;
 
-  /* Rainbow Text Effect - UPDATED COLORS */
+  &:hover {
+    filter: brightness(1.2);
+  }
+
+  /* Rainbow Text Effect - Use your preferred high-contrast gradient */
   background: linear-gradient(
       90deg,
-      #ffdd57, /* Bright Yellow */
-      #ff7f50, /* Coral (Bright Orange/Red) */
-      #ff69b4, /* Hot Pink */
-      #7fffd4, /* Aquamarine (Bright Cyan/Green) */
-      #90ee90, /* Light Green */
-      #add8e6, /* Light Blue */
-      #ffdd57  /* Loop back to Bright Yellow */
+      #39ff14, #ffdd57, #ff7f50, #ff69b4, #00ffff, #90ee90, #39ff14
   );
   background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: ${rainbowAnimation} 5s linear infinite; /* Adjust speed (5s) */
+  animation: ${rainbowAnimation} 5s linear infinite;
 `;
 
 export const Title = styled.h1`
@@ -154,18 +169,6 @@ export const Description = styled(motion.p)`
   line-height: 1.7;
 `;
 
-export const ActionsWrapper = styled(motion.div)`
-  display: flex;
-  /* UPDATED: Arrange in a row, wrap when needed, center items */
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center; /* Align items vertically if they wrap */
-  gap: 20px; /* Adjust gap for horizontal/vertical spacing */
-  margin-bottom: 50px;
-  width: 100%;
-  /* REMOVED max-width: 350px; */
-`;
 
 // Apply motion hover/tap effects directly if preferred over CSS :hover/:active
 export const StyledWalletMultiButton = styled(WalletMultiButton)`

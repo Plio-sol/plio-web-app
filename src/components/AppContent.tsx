@@ -6,13 +6,15 @@ import { AnimatePresence } from 'framer-motion';
 
 // Import styles
 import * as S from './AppContent.styles';
-
+import IconBar, {DrawerItemType} from './IconBar'; // Import the new drawer
 import WalletInfo from './WalletInfo';
+
+import XIcon from "../icons/XIcon";
+
 import TorrentSearchGames from './TorrentSearchGames';
 import TorrentSearchMovies from './TorrentSearchMovies';
 import DexScreenerLatest from './DexScreenerLatest';
 import ImageGenerator from './ImageGenerator';
-import XIcon from "../icons/XIcon";
 
 // --- Type Definition for window.Jupiter ---
 declare global {
@@ -25,29 +27,49 @@ declare global {
     }
 }
 // --- End Type Definition ---
-
+const CONTRACT_ADDRESS = "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump";
 // --- App Content Component ---
 const AppContent: FC = () => {
     // *** Get the full wallet state object ***
     const walletState = useWallet(); // Use a different variable name to avoid confusion
     const { connected } = walletState; // Destructure connected if needed elsewhere
 
-    const [showTorrentSearch, setShowTorrentSearch] = useState(false);
-    const [showMovieSearch, setShowMovieSearch] = useState(false);
-    const [showDexTokens, setShowDexTokens] = useState(false);
-    const [showImageGenerator, setShowImageGenerator] = useState(false);
+    const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+    const [activeOverlay, setActiveOverlay] = useState<DrawerItemType | null>(null); // State for overlay
 
-    // --- Handlers (Keep these as they are) ---
-    const handleOpenTorrentSearch = () => setShowTorrentSearch(true);
-    const handleCloseTorrentSearch = () => setShowTorrentSearch(false);
-    // ... other handlers ...
-    const handleOpenMovieSearch = () => setShowMovieSearch(true);
-    const handleCloseMovieSearch = () => setShowMovieSearch(false);
-    const handleOpenDexTokens = () => setShowDexTokens(true);
-    const handleCloseDexTokens = () => setShowDexTokens(false);
-    const handleOpenImageGenerator = () => setShowImageGenerator(true);
-    const handleCloseImageGenerator = () => setShowImageGenerator(false);
-    // --- End Handlers ---
+
+    // New handler for when an item is selected in the drawer
+    const handleSelectItem = (itemType: DrawerItemType) => {
+        setActiveOverlay(itemType); // Set which overlay to show
+        // Drawer is closed by its own internal logic now via onClose prop
+    };
+
+    // Handler to close the currently active overlay
+    const closeOverlay = () => {
+        setActiveOverlay(null);
+    };
+
+    const handleCopyAddress = () => {
+        if (!navigator.clipboard) {
+            // Clipboard API not available (older browsers, insecure context)
+            console.error("Clipboard API not supported");
+            setCopyStatus('error');
+            setTimeout(() => setCopyStatus('idle'), 2000); // Reset after 2s
+            return;
+        }
+
+        navigator.clipboard.writeText(CONTRACT_ADDRESS).then(() => {
+            // Success!
+            setCopyStatus('copied');
+            // Reset back to idle after a short delay
+            setTimeout(() => setCopyStatus('idle'), 1500); // 1.5 seconds
+        }).catch(err => {
+            // Error!
+            console.error('Failed to copy address: ', err);
+            setCopyStatus('error');
+            setTimeout(() => setCopyStatus('idle'), 2000); // Reset after 2s
+        });
+    };
 
     useEffect(() => {
         const initializeJupiter = () => {
@@ -114,90 +136,91 @@ const AppContent: FC = () => {
 
     // --- End Jupiter Integration ---
 
+    const renderActiveOverlay = () => {
+        switch (activeOverlay) {
+            case 'games':
+                return <TorrentSearchGames key="game-search" onClose={closeOverlay} />;
+            case 'movies':
+                return <TorrentSearchMovies key="movie-search" onClose={closeOverlay} />;
+            case 'dex':
+                return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
+            case 'image':
+                return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
+            default:
+                return null;
+        }
+    };
 
     return (
-        <S.AppContentWrapper
-            variants={S.containerVariants}
-            initial="hidden"
-            animate="visible"
-        >
-            {/* ... Header, Wallet Button, Description ... */}
-            <S.Header variants={S.itemVariants}>
-                <S.Logo
-                    src={process.env.PUBLIC_URL + "/plio-logo.png"}
-                    alt="Plio Logo"
-                />
-
-                {/* --- ADDED Social Links & Contract --- */}
-                <S.SocialLinksContainer>
-                    {/* Replace 'X' and 'P' with actual icons (e.g., FontAwesome, SVG) if desired */}
-                    <S.SocialLink href="https://x.com/PlioSol" target="_blank" rel="noopener noreferrer" title="Plio on X">
-                        <XIcon></XIcon>
-                    </S.SocialLink>
-                    <S.SocialLink href="https://pump.fun/2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump" target="_blank" rel="noopener noreferrer" title="Plio on pump.fun">
-                        <img src={process.env.PUBLIC_URL + "/pumpfun.png"} alt={'pump.fun logo'} style={{scale:0.06}}></img>
-                    </S.SocialLink>
-                </S.SocialLinksContainer>
-
-                <S.ContractAddress>
-                    {/* TODO: Replace with actual contract address */}
-                    Contract: 2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump
-                </S.ContractAddress>
-                {/* --- END Added Content --- */}
-                <S.Title>$Plio Holder Panel</S.Title>
-            </S.Header>
-            <S.StyledWalletMultiButton />
-            <S.Description variants={S.itemVariants}>
-                Access exclusive holder tools. Connect your wallet to view token details
-                and use tools.
-            </S.Description>
+        <> {/* Use Fragment because IconBar is outside the main flow */}
+            <IconBar onSelectItem={handleSelectItem}
+                     closeOverlay={closeOverlay}
+            />
+            <S.AppContentWrapper
+                variants={S.containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
 
 
-            {/* --- Actions Wrapper (Keep as is) --- */}
-            <S.ActionsWrapper variants={S.itemVariants}>
-                {/* Buttons... */}
-                <S.StyledButton onClick={handleOpenTorrentSearch} /* ...props */ >
-                    Open Game Torrent Search
-                </S.StyledButton>
-                <S.StyledButton onClick={handleOpenMovieSearch} /* ...props */ >
-                    Open Movie Torrent Search
-                </S.StyledButton>
-                <S.StyledButton onClick={handleOpenDexTokens} /* ...props */ style={{ borderColor: "#facc15", color: "#facc15" }}>
-                    Latest 'Dex Paid' Tokens
-                </S.StyledButton>
-                <S.StyledButton onClick={handleOpenImageGenerator} /* ...props */ style={{ borderColor: '#50fa7b', color: '#50fa7b' }}>
-                    Google Gemini Image Generator
-                </S.StyledButton>
-            </S.ActionsWrapper>
-            {/* --- End Actions Wrapper --- */}
-
-
-            {/* ... Wallet Info (Keep as is) ... */}
-            <AnimatePresence>
-                {connected && ( // Use connected from the destructured walletState
-                    <S.WalletInfoWrapper
-                        key="wallet-info"
-                        variants={S.componentFadeSlideVariants}
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
+                <S.Header variants={S.itemVariants}>
+                    <S.Logo
+                        src={process.env.PUBLIC_URL + "/plio-logo.png"}
+                        alt="Plio Logo"
+                    />
+                    <S.SocialLinksContainer>
+                        <S.SocialLink href="https://x.com/PlioSol" target="_blank" rel="noopener noreferrer" title="Plio on X">
+                            <XIcon />
+                        </S.SocialLink>
+                        <S.SocialLink href={`https://pump.fun/${CONTRACT_ADDRESS}`} target="_blank" rel="noopener noreferrer" title="Plio on pump.fun">
+                            <img src={process.env.PUBLIC_URL + "/pumpfun.png"} alt={'pump.fun logo'} style={{ width: '24px', height: '24px' }}/>
+                        </S.SocialLink>
+                    </S.SocialLinksContainer>
+                    <S.ContractAddress
+                        onClick={handleCopyAddress}
+                        title="Click to copy address"
                     >
-                        <WalletInfo />
-                    </S.WalletInfoWrapper>
-                )}
-            </AnimatePresence>
+                        {copyStatus === 'idle' && `Contract: ${CONTRACT_ADDRESS}`}
+                        {copyStatus === 'copied' && 'Copied!'}
+                        {copyStatus === 'error' && 'Copy Failed'}
+                    </S.ContractAddress>
+                    <S.Title>$Plio Holder Panel</S.Title>
+                </S.Header>
+
+                <S.StyledWalletMultiButton />
+
+                <S.Description variants={S.itemVariants}>
+                    Access exclusive holder tools. Connect your wallet to view token details
+                    and use tools.
+                </S.Description>
+
+                {/* REMOVED ActionsWrapper */}
+
+                {/* --- Wallet Info --- */}
+                <AnimatePresence>
+                    {connected && (
+                        <S.WalletInfoWrapper
+                            key="wallet-info"
+                            variants={S.componentFadeSlideVariants}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                        >
+                            <WalletInfo />
+                        </S.WalletInfoWrapper>
+                    )}
+                </AnimatePresence>
+
+                {/* REMOVED Modals AnimatePresence Block */}
+
+            </S.AppContentWrapper>
 
 
-            {/* --- Modals (Keep as is) --- */}
+            {/* Render the Active Overlay Component */}
             <AnimatePresence>
-                {showTorrentSearch && <TorrentSearchGames key="game-search" onClose={handleCloseTorrentSearch} />}
-                {showMovieSearch && <TorrentSearchMovies key="movie-search" onClose={handleCloseMovieSearch} />}
-                {showDexTokens && <DexScreenerLatest key="dex-tokens" onClose={handleCloseDexTokens} />}
-                {showImageGenerator && <ImageGenerator key="image-generator" onClose={handleCloseImageGenerator} />}
+                {renderActiveOverlay()}
             </AnimatePresence>
-            {/* --- End Modals --- */}
-
-        </S.AppContentWrapper>
+        </>
     );
 };
 
