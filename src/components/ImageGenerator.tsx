@@ -1,10 +1,8 @@
-import React, { FC, useState, useEffect, useCallback } from "react";
+import React, {FC, useState, useCallback, useRef} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // --- Updated Style Import ---
 import * as S from "./ImageGenerator.styles";
-// --- Updated GenAI Import ---
-import { GoogleGenAI, Modality } from "@google/genai";
 
 // --- Renamed Props Interface ---
 interface ImageGeneratorProps {
@@ -28,14 +26,10 @@ const imageVariants = {
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3 } },
 };
 
-// --- Constants ---
-const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
-// Use the model from the new example
-const IMAGE_MODEL_NAME = "gemini-2.0-flash-exp-image-generation";
 
-// --- Helper: Parse Error ---
+// --- Helper: Parse Error (Keep for fetch errors) ---
 function parseError(error: any): string {
-  // Simplified error parsing
+  console.error("Image Generation UI Error:", error); // Log frontend errors distinctly
   return String(error?.message || error || "An unknown error occurred.");
 }
 
@@ -48,30 +42,17 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // --- Refs ---
-  // No need for aiRef if we initialize inside handleGenerate based on example
-  // const aiRef = useRef<GoogleGenerativeAI | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // --- Effects ---
-  useEffect(() => {
-    // Effect only needed now to check for API Key existence on load
-    if (!API_KEY) {
-      setError(
-        "Google API Key not found. Please set REACT_APP_GOOGLE_API_KEY.",
-      );
-      console.error("Google API Key missing!");
-    }
-  }, []); // Check only once
 
-  // --- Generation Logic (Using generateImages) ---
+
   const handleGenerate = useCallback(async () => {
-    // Check for prompt and API key before starting
-    if (!prompt.trim() || isLoading || !API_KEY) {
-      if (!API_KEY) setError("API Key is missing.");
+    // Check only for prompt and loading state
+    if (!prompt.trim() || isLoading) {
       return;
     }
 
-    const currentPromptValue = prompt.trim();
+    const currentPromptValue = prompt.trim(); // Use consistent variable if needed
 
     // Reset state
     setIsLoading(true);
@@ -79,54 +60,58 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
     setError(null);
     setImageUrl(null);
 
-    // Initialize AI client inside the handler, as per the example structure
-    // Using vertexai: false for direct API key usage
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
+    // --- REMOVE AI client initialization ---
+    // const ai = new GoogleGenAI({ apiKey: API_KEY });
 
     try {
       console.log(
-        `Sending prompt to ${IMAGE_MODEL_NAME}: "${currentPromptValue}"`,
+          `Frontend: Sending prompt to backend: "${currentPromptValue}"`,
       );
 
-      // --- Use ai.models.generateImages ---
-      const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash-exp-image-generation",
-        contents: prompt,
-        config: {
-          responseModalities: [Modality.TEXT, Modality.IMAGE],
+      // --- Call the backend Netlify function ---
+      const response = await fetch("/.netlify/functions/image-generator", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ prompt: currentPromptValue }), // Send prompt
       });
-      // --- End generateImages call ---
+      // --- End fetch call ---
 
-      console.log("API Response:", response);
+      const data = await response.json(); // Always try parsing JSON
 
-      // @ts-ignore
-      for (const part of response.candidates[0].content.parts) {
-        // Based on the part type, either show the text or save the image
-        if (part.text) {
-          console.log(part.text);
-        } else if (part.inlineData) {
-          console.log("Image saved as gemini-native-image.png");
-        }
+      console.log("Frontend: Backend Response:", data);
 
-        const mimeType = part?.inlineData?.mimeType;
-
-        const base64Data = part?.inlineData?.data;
-        const dataUrl = `data:${mimeType};base64,${base64Data}`;
-        setImageUrl(dataUrl);
+      if (!response.ok) {
+        // Handle errors reported by the backend function
+        throw new Error(data.error || `API request failed: ${response.statusText}`);
       }
 
-      setStatus("Done!");
+      // --- Process successful response from backend ---
+      if (data.imageData && data.mimeType) {
+        // Construct data URL in the frontend
+        const dataUrl = `data:${data.mimeType};base64,${data.imageData}`;
+        setImageUrl(dataUrl);
+        setStatus("Done!"); // Update status on success
+      } else {
+        // If backend succeeded (200 OK) but didn't return expected data
+        console.error("Frontend: Backend returned success but missing image data.");
+        throw new Error("Received invalid image data from server.");
+      }
+      // --- End processing response ---
+
     } catch (err: any) {
-      console.error("Error generating image:", err);
-      // Attempt to parse specific API errors if possible
-      const message = parseError(err);
+      console.error("Frontend: Error generating image:", err);
+      const message = parseError(err); // Use parseError for fetch/JSON errors
       setError(`Error: ${message}`);
-      setStatus("Failed");
+      setStatus("Failed"); // Update status on failure
     } finally {
       setIsLoading(false);
+      // Refocus input after attempt
+      inputRef.current?.focus();
     }
-  }, [prompt, isLoading]); // Dependencies: prompt and isLoading
+  }, [prompt, isLoading]); // Dependencies remain prompt and isLoading
+
 
   // --- Event Handlers (handleKeyDown, handleDownload) remain the same ---
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -177,16 +162,17 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
 
         <S.PromptSection>
           <S.PromptInput
+            ref={inputRef}
             type="text"
             placeholder="Enter a prompt (e.g., 'astronaut riding a horse')"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={isLoading || !API_KEY} // Also disable if no API key
+            disabled={isLoading} // Also disable if no API key
           />
           <S.GenerateButton
             onClick={handleGenerate}
-            disabled={isLoading || !prompt.trim() || !API_KEY}
+            disabled={isLoading || !prompt.trim()}
             className={isLoading ? "loading" : ""}
             whileHover={!isLoading ? { scale: 1.05 } : {}}
             whileTap={!isLoading ? { scale: 0.98 } : {}}
@@ -221,18 +207,12 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
         </AnimatePresence>
 
         {!imageUrl &&
-          !isLoading &&
-          !error &&
-          API_KEY && ( // Only show placeholder if API key exists
-            <div style={{ marginTop: "50px", color: "#8892b0" }}>
-              Enter a prompt to generate an image.
-            </div>
-          )}
-        {!API_KEY && ( // Show API key error prominently if missing
-          <S.ErrorMessage style={{ marginTop: "50px" }}>
-            API Key is missing. Please configure REACT_APP_GOOGLE_API_KEY.
-          </S.ErrorMessage>
-        )}
+            !isLoading &&
+            !error && (
+                <div style={{ marginTop: "50px", color: "#8892b0" }}>
+                  Enter a prompt to generate an image.
+                </div>
+            )}
       </motion.div>
     </S.OverlayContainer>
   );
