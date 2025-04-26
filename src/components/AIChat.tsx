@@ -262,6 +262,7 @@ const AIChat: FC<AIChatProps> = ({
             </S.MessageBubble>
           )}
         </S.ChatArea>
+        
 
         {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
 
