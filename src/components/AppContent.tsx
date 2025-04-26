@@ -33,9 +33,9 @@ declare global {
   }
 }
 // --- End Type Definition ---
-const CONTRACT_ADDRESS = "temporary-contract-address";
+const CONTRACT_ADDRESS = "temporary-contract-address"; //TODO
 const PLIO_MINT_ADDRESS = new PublicKey(
-    "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump",
+    "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump", //TODO
 );
 const PLIO_SYMBOL = "$Plio"; // Define symbol for messages
 const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
@@ -217,7 +217,7 @@ const AppContent: FC = () => {
             formProps: {
               fixedOutputMint: true,
               initialInputMint: "So11111111111111111111111111111111111111112",
-              initialOutputMint: "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump",
+              initialOutputMint: "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump", //TODO
             },
             // containerClassName: '...', // Might apply to the modal opened by widget
             // onSwapError: ({ error }) => { /* ... */ },
@@ -298,7 +298,7 @@ const AppContent: FC = () => {
   return (
     <>
       <Toaster
-          position="bottom-center" // Or "top-right", "bottom-right", etc.
+          position="top-center" // Or "top-right", "bottom-right", etc.
           reverseOrder={false}
           toastOptions={{
             // Default options
@@ -306,16 +306,18 @@ const AppContent: FC = () => {
             style: {
               background: '#363636', // Dark background
               color: '#fff', // White text
+              zIndex: 2
             },
             // Default options for specific types
             success: {
-              duration: 3000,
+              duration: 1500,
             },
             error: {
-              duration: 3000, // Keep errors visible a bit longer
+              duration: 1500, // Keep errors visible a bit longer
               style: {
                 background: '#a41d2e', // Error background color
                 color: '#fff',
+                zIndex: 2
               },
               iconTheme: {
                 primary: '#fff',
@@ -350,7 +352,7 @@ const AppContent: FC = () => {
               <XIcon />
             </S.SocialLink>
             <S.SocialLink
-              href={`https://pump.fun/${CONTRACT_ADDRESS}`}
+              href={`https://pump.fun/coin/${CONTRACT_ADDRESS}`}
               target="_blank"
               rel="noopener noreferrer"
               title="Plio on pump.fun"

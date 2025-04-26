@@ -61,6 +61,12 @@ const roadmapItems = [
     status: "Planned",
   },
   {
+    title: "Dex Screener Volume Tracker",
+    description:
+        "Track real-time trading volume surges across Solana tokens on Dex Screener. Identify which coins are pumping *right now* so you don't miss the next big move.",
+    status: "Planned",
+  },
+  {
     title: "AI Chat Context Enhancement",
     description:
       "Giving the chatbot complete, real-time context over the entire application state (like live wallet balances, dynamic API content). This involves advanced techniques like Function Calling or Retrieval-Augmented Generation (RAG), which I am exploring for future integration.",

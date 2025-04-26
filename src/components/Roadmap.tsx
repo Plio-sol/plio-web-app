@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import * as S from "./Roadmap.styles";
-import { FaGasPump, FaChartBar, FaBrain } from "react-icons/fa";
+import { FaGasPump, FaChartBar, FaBrain, FaSearchDollar } from "react-icons/fa";
 
 interface RoadmapProps {
   onClose: () => void;
@@ -107,6 +107,20 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               content). This involves advanced techniques like Function Calling
               or Retrieval-Augmented Generation (RAG), which I am exploring for
               future integration.
+            </S.CardDescription>
+          </S.RoadmapCard>
+          <S.RoadmapCard variants={cardVariants}>
+            <S.CardHeader>
+              <S.FeatureIcon>
+                {/*@ts-ignore*/}
+                <FaSearchDollar />
+              </S.FeatureIcon>
+              <S.CardTitle>Dex Screener Volume Tracker</S.CardTitle>
+              <S.StatusBadge status="planned">Planned</S.StatusBadge>
+            </S.CardHeader>
+            <S.CardDescription>
+              Track real-time trading volume surges across Solana tokens on Dex Screener.
+              Identify which coins are pumping *right now* so you don't miss the next big move.
             </S.CardDescription>
           </S.RoadmapCard>
           {/* Add more cards here  */}
