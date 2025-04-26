@@ -1,41 +1,100 @@
 import React, { FC } from "react";
+import * as S from "./Roadmap.styles";
+import { FaGasPump, FaChartBar } from "react-icons/fa";
 
-const Roadmap: FC = ({}) => (
-  <div
-    style={{
-      backgroundColor: "rgba(23, 42, 69, 0.6)", // Semi-transparent dark blue
-      backdropFilter: "blur(5px)",
-      padding: "40px 50px",
-      borderRadius: "15px",
-      textAlign: "center",
-      maxWidth: "450px",
-      width: "100%",
-      boxShadow: "0 10px 30px rgba(0, 0, 0, 0.3)",
-      border: "1px solid rgba(100, 116, 139, 0.3)", // Subtle border
-    }}
-  >
-    {/* Logo */}
-    <img
-      src={process.env.PUBLIC_URL + "/plio-logo.png"} // Correct path
-      alt="Plio Logo"
-      style={{
-        maxWidth: "150px", // Adjust size as needed
-        height: "auto",
-        marginBottom: "30px", // Space below logo
-      }}
-    />
+interface RoadmapProps {
+    onClose: () => void;
+}
 
-    <h2
-      style={{
-        color: "#ffffff", // White heading
-        marginBottom: "30px",
-        fontWeight: 600,
-        fontSize: "1.8em",
-      }}
-    >
-      Enter Access Code
-    </h2>
-  </div>
-);
+// Animation variants
+const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.3 } },
+};
+
+const modalVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { type: "spring", stiffness: 100, damping: 15, delay: 0.1 },
+    },
+    exit: { opacity: 0, y: 30, scale: 0.95, transition: { duration: 0.2 } },
+};
+
+const cardVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+};
+
+const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
+    return (
+        <S.OverlayContainer
+            key="roadmap-overlay"
+            variants={backdropVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            onClick={onClose} // Close on overlay click
+        >
+            <S.ModalWindow
+                variants={modalVariants}
+                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            >
+                <S.CloseButton onClick={onClose} aria-label="Close Roadmap">
+                    &times;
+                </S.CloseButton>
+
+                <S.Title>Project Roadmap</S.Title>
+                <S.Subtitle>Upcoming Features & Enhancements</S.Subtitle>
+
+                <S.RoadmapGrid
+                    variants={{
+                        visible: { transition: { staggerChildren: 0.15 } }, // Stagger card animations
+                    }}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {/* Solana Network Status Card */}
+                    <S.RoadmapCard variants={cardVariants}>
+                        <S.CardHeader>
+                            <S.FeatureIcon>
+                                {/*@ts-ignore*/}
+                                <FaGasPump />
+                            </S.FeatureIcon>
+                            <S.CardTitle>Solana Status & Gas Tracker</S.CardTitle>
+                            <S.StatusBadge status="planned">Planned</S.StatusBadge>
+                        </S.CardHeader>
+                        <S.CardDescription>
+                            Display key network health indicators like current TPS and
+                            estimated priority fees (gas) for low, medium, and high priority
+                            transactions. Helps you decide the best time to transact and know when the market is heating up 🔥.
+                        </S.CardDescription>
+                    </S.RoadmapCard>
+
+                    {/* Crypto Price Ticker Card */}
+                    <S.RoadmapCard variants={cardVariants}>
+                        <S.CardHeader>
+                            <S.FeatureIcon>
+                                {/*@ts-ignore*/}
+                                <FaChartBar />
+                            </S.FeatureIcon>
+                            <S.CardTitle>Crypto Market Dashboard</S.CardTitle>
+                            <S.StatusBadge status="planned">Planned</S.StatusBadge>
+                        </S.CardHeader>
+                        <S.CardDescription>
+                            Show current prices for SOL and other major cryptos
+                            (BTC, ETH, PLIO, and more trending meme coins) directly within the panel. Automatic AI price analysis by Google Gemini so you always know where the market is headed.
+                            Powered by lightening fast price APIs.
+                        </S.CardDescription>
+                    </S.RoadmapCard>
+                    {/* Add more cards here  */}
+                </S.RoadmapGrid>
+            </S.ModalWindow>
+        </S.OverlayContainer>
+    );
+};
 
 export default Roadmap;

@@ -15,6 +15,7 @@ import TorrentSearchGames from "./TorrentSearchGames";
 import TorrentSearchMovies from "./TorrentSearchMovies";
 import DexScreenerLatest from "./DexScreenerLatest";
 import ImageGenerator from "./ImageGenerator";
+import Roadmap from "./Roadmap";
 
 // --- Type Definition for window.Jupiter ---
 declare global {
@@ -29,7 +30,7 @@ declare global {
   }
 }
 // --- End Type Definition ---
-const CONTRACT_ADDRESS = "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump";
+const CONTRACT_ADDRESS = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
 // --- App Content Component ---
 const AppContent: FC = () => {
@@ -176,6 +177,8 @@ const AppContent: FC = () => {
         return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
       case "image":
         return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
+      case "roadmap":
+        return <Roadmap key="roadmap-overlay" onClose={closeOverlay} />;
       default:
         return null;
     }
