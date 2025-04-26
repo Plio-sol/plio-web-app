@@ -94,9 +94,6 @@ const AppContent: FC = () => {
           console.log(
             "Skipping Jupiter Terminal initialization on mobile screen size.",
           );
-          // Optionally, if the widget was somehow already initialized and needs removal:
-          // const existingWidget = document.getElementById('jupiter-terminal'); // Or the correct ID/selector
-          // if (existingWidget) existingWidget.remove();
           return; // Exit initialization
         }
         // --- END HIDE ON MOBILE ---
@@ -105,7 +102,6 @@ const AppContent: FC = () => {
           window.Jupiter.init({
             // --- For Widget Mode ---
             displayMode: "widget", // Keep this
-            // integratedTargetId: "integrated-terminal", // <-- REMOVE THIS LINE
             enableWalletPassthrough: true, // Keep for wallet integration
 
             // --- Essential Props ---
