@@ -196,10 +196,16 @@ export const RoadmapCard = styled(motion.div)`
 export const CardHeader = styled.div`
   display: flex;
   align-items: center; // Align icon, title, badge vertically
-  gap: 10px;
+  gap: 10px; // Spacing between items
   margin-bottom: 12px;
-  flex-wrap: wrap; // Allow wrapping if needed on very small screens
+  width: 100%; // Ensure header takes full width for flexbox calculations
+  overflow: hidden; // Prevent content from spilling out if absolutely necessary
+
+  /* --- Explicitly prevent flex items from wrapping --- */
+  flex-wrap: nowrap;
+  /* --- End nowrap --- */
 `;
+// --- End UPDATED CardHeader ---
 
 export const FeatureIcon = styled.div`
   color: #8a2be2; // Accent color for icon
@@ -207,12 +213,17 @@ export const FeatureIcon = styled.div`
   flex-shrink: 0; // Prevent icon from shrinking
 `;
 
+// --- CardTitle (Keep previous change with min-width: 0) ---
 export const CardTitle = styled.h3`
-  flex-grow: 1; // Allow title to take available space
+  flex-grow: 1; // Allow title to take available space when possible
   margin: 0;
   color: #ffffff;
   font-weight: 600;
   line-height: 1.3;
+
+  /* Allows the element to shrink below its default minimum content size */
+  min-width: 0;
+  /* Text *within* the title can wrap if needed (default white-space: normal) */
 
   /* Mobile Styles */
   font-size: 1.1em;
@@ -222,31 +233,32 @@ export const CardTitle = styled.h3`
     font-size: 1.2em;
   }
 `;
+// --- End CardTitle ---
 
 // Define status colors/styles
 const getStatusColor = (status: string) => {
-    switch (status) {
-        case "planned":
-            return "#facc15"; // Yellow
-        case "in-progress":
-            return "#61dafb"; // Blue
-        case "completed":
-            return "#50fa7b"; // Green
-        default:
-            return "#a8b2d1"; // Default grey
-    }
+  switch (status) {
+    case "planned":
+      return "#facc15"; // Yellow
+    case "in-progress":
+      return "#61dafb"; // Blue
+    case "completed":
+      return "#50fa7b"; // Green
+    default:
+      return "#a8b2d1"; // Default grey
+  }
 };
 const getStatusBackgroundColor = (status: string) => {
-    switch (status) {
-        case "planned":
-            return "rgba(250, 204, 21, 0.15)";
-        case "in-progress":
-            return "rgba(97, 218, 251, 0.15)";
-        case "completed":
-            return "rgba(80, 250, 123, 0.15)";
-        default:
-            return "rgba(168, 178, 209, 0.15)";
-    }
+  switch (status) {
+    case "planned":
+      return "rgba(250, 204, 21, 0.15)";
+    case "in-progress":
+      return "rgba(97, 218, 251, 0.15)";
+    case "completed":
+      return "rgba(80, 250, 123, 0.15)";
+    default:
+      return "rgba(168, 178, 209, 0.15)";
+  }
 };
 
 export const StatusBadge = styled.span<{ status: string }>`

@@ -183,7 +183,7 @@ const TorrentSearchMovies: FC<TorrentSearchMoviesProps> = ({ onClose }) => {
         &times;
       </S.CloseButton>
 
-      <S.SearchTitle>Search Movies</S.SearchTitle>
+      <S.SearchTitle>Search Movie Torrents</S.SearchTitle>
 
       <S.SearchForm onSubmit={handleSearch}>
         <S.SearchInput

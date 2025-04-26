@@ -16,7 +16,7 @@ import TorrentSearchMovies from "./TorrentSearchMovies";
 import DexScreenerLatest from "./DexScreenerLatest";
 import ImageGenerator from "./ImageGenerator";
 import Roadmap from "./Roadmap";
-
+import AIChat, { Message, Personality } from "./AIChat"; // Import Message and Personality types
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -44,6 +44,10 @@ const AppContent: FC = () => {
   const [activeOverlay, setActiveOverlay] = useState<DrawerItemType | null>(
     null,
   ); // State for overlay
+
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [chatPersonality, setChatPersonality] = useState<Personality>("nice"); // Default personality
+  // --- **** End Chat State **** ---
 
   // New handler for when an item is selected in the drawer
   const handleSelectItem = (itemType: DrawerItemType) => {
@@ -109,7 +113,6 @@ const AppContent: FC = () => {
 
             // --- Optional: Widget-specific settings ---
             widgetStyle: {
-
               zIndex: 99,
               position: "bottom-right", // 'bottom-left', 'top-left', 'top-right'
               size: "default", // 'sm', 'default'
@@ -181,6 +184,17 @@ const AppContent: FC = () => {
         return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
       case "roadmap":
         return <Roadmap key="roadmap-overlay" onClose={closeOverlay} />;
+      case "chat":
+        return (
+          <AIChat
+            key="ai-chat-overlay"
+            onClose={closeOverlay}
+            messages={chatMessages}
+            setMessages={setChatMessages}
+            personality={chatPersonality}
+            setPersonality={setChatPersonality}
+          />
+        );
       default:
         return null;
     }
