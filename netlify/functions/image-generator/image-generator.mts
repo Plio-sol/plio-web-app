@@ -19,8 +19,7 @@ export default async (request: Request, context: Context) => {
         });
     }
 
-    // 2. Get API Key from Environment Variables
-    const apiKey = process.env.GOOGLE_API_KEY; // Use the key set in Netlify UI
+    const apiKey = process.env.GOOGLE_API_KEY;
     if (!apiKey) {
         console.error("Server Error: GOOGLE_API_KEY environment variable not set.");
         return new Response(

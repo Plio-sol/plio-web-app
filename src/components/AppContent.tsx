@@ -1,8 +1,9 @@
 // src/components/AppContent.tsx
 import React, { FC, useEffect, useState } from "react";
 // *** Import useWallet correctly ***
-import { useWallet, WalletContextState } from "@solana/wallet-adapter-react"; // Import WalletContextState type
+import {useConnection, useWallet, WalletContextState} from "@solana/wallet-adapter-react"; // Import WalletContextState type
 import { AnimatePresence } from "framer-motion";
+import toast, { Toaster } from 'react-hot-toast';
 
 // Import styles
 import * as S from "./AppContent.styles";
@@ -16,7 +17,9 @@ import TorrentSearchMovies from "./TorrentSearchMovies";
 import DexScreenerLatest from "./DexScreenerLatest";
 import ImageGenerator from "./ImageGenerator";
 import Roadmap from "./Roadmap";
-import AIChat, { Message, Personality } from "./AIChat"; // Import Message and Personality types
+import AIChat, { Message, Personality } from "./AIChat";
+import {PublicKey} from "@solana/web3.js";
+import {getAccount, getAssociatedTokenAddressSync, getMint} from "@solana/spl-token"; // Import Message and Personality types
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -30,29 +33,125 @@ declare global {
   }
 }
 // --- End Type Definition ---
-const CONTRACT_ADDRESS = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+const CONTRACT_ADDRESS = "temporary-contract-address";
+const PLIO_MINT_ADDRESS = new PublicKey(
+    "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump",
+);
+const PLIO_SYMBOL = "$Plio"; // Define symbol for messages
 const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
+
 // --- App Content Component ---
 const AppContent: FC = () => {
-  // *** Get the full wallet state object ***
-  const walletState = useWallet(); // Use a different variable name to avoid confusion
-  const { connected } = walletState; // Destructure connected if needed elsewhere
+  const walletState = useWallet();
+  const { connected, publicKey } = walletState; // Destructure publicKey
+  const { connection } = useConnection(); // Get connection here
 
-  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">(
-    "idle",
-  );
-  const [activeOverlay, setActiveOverlay] = useState<DrawerItemType | null>(
-    null,
-  ); // State for overlay
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
+  const [activeOverlay, setActiveOverlay] = useState<DrawerItemType | null>(null);
 
+  // Chat State (Keep as is)
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
-  const [chatPersonality, setChatPersonality] = useState<Personality>("nice"); // Default personality
+  const [chatPersonality, setChatPersonality] = useState<Personality>("nice");
+
+  // --- **** Add State for Plio Balance (Lifted from WalletInfo) **** ---
+  const [plioNumericBalance, setPlioNumericBalance] = useState<number | null>(null);
+  const [isPlioBalanceLoading, setIsPlioBalanceLoading] = useState<boolean>(false); // Start false, set true when fetching
+  const [plioBalanceError, setPlioBalanceError] = useState<string | null>(null);
   // --- **** End Chat State **** ---
+
+  useEffect(() => {
+    const fetchPlioBalance = async () => {
+      if (!publicKey || !connection) {
+        setPlioNumericBalance(null);
+        setIsPlioBalanceLoading(false);
+        setPlioBalanceError(null);
+        return;
+      }
+
+      setIsPlioBalanceLoading(true);
+      setPlioBalanceError(null);
+      setPlioNumericBalance(null); // Reset before fetching
+
+      try {
+        const associatedTokenAddress = getAssociatedTokenAddressSync(
+            PLIO_MINT_ADDRESS,
+            publicKey,
+        );
+
+        let decimals = 9; // Default decimals
+        try {
+          const mintInfo = await getMint(connection, PLIO_MINT_ADDRESS);
+          decimals = mintInfo.decimals;
+        } catch (mintError) {
+          console.warn(
+              `Could not fetch mint info for ${PLIO_SYMBOL}, using default decimals:`,
+              mintError,
+          );
+        }
+
+        let fetchedNumericBalance = 0; // Default to 0
+
+        try {
+          const accountInfo = await getAccount(
+              connection,
+              associatedTokenAddress,
+          );
+          const rawAmount = Number(accountInfo.amount);
+          fetchedNumericBalance = rawAmount / 10 ** decimals;
+        } catch (accountError: any) {
+          if (
+              accountError.message.includes("could not find account") ||
+              accountError.message.includes("Account does not exist")
+          ) {
+            console.log(`No ${PLIO_SYMBOL} token account found. Balance is 0.`);
+            // Balance remains 0
+          } else {
+            throw accountError; // Rethrow other account errors
+          }
+        }
+
+        setPlioNumericBalance(fetchedNumericBalance);
+      } catch (err: any) {
+        setPlioBalanceError('You have no $PLIO 😑. You will be restricted from using the Image Generation & Dex Screener Features. You are free to use all other features.')
+      } finally {
+        setIsPlioBalanceLoading(false);
+      }
+    };
+
+    fetchPlioBalance();
+    // Re-fetch if connection or publicKey changes
+  }, [connection, publicKey]);
 
   // New handler for when an item is selected in the drawer
   const handleSelectItem = (itemType: DrawerItemType) => {
-    setActiveOverlay(itemType); // Set which overlay to show
-    // Drawer is closed by its own internal logic now via onClose prop
+    const restrictedFeatures: DrawerItemType[] = ["image", "dex"]; // Features requiring token hold
+
+    if (restrictedFeatures.includes(itemType)) {
+      // 1. Check if wallet is connected
+      if (!connected) {
+        toast.error("Please connect your wallet to access this feature.");
+        return; // Stop processing
+      }
+
+      // 2. Check if balance is still loading
+      if (isPlioBalanceLoading) {
+        toast.loading("Checking $Plio balance...", { duration: 1500 });
+        return; // Stop processing
+      }
+
+      // 3. Check if balance is loaded and meets requirement (>= 1)
+      // Handle null (error or not loaded) and < 1 cases
+      if (plioNumericBalance === null || plioNumericBalance < 1) {
+        toast.error(`Requires at least 1 ${PLIO_SYMBOL} to access.`);
+        return; // Stop processing
+      }
+
+      // If all checks pass for restricted features
+      console.log(`Access granted to ${itemType}. Balance: ${plioNumericBalance}`);
+    }
+
+    // If checks passed OR the feature is not restricted, set the overlay
+    setActiveOverlay(itemType);
   };
 
   // Handler to close the currently active overlay
@@ -198,8 +297,38 @@ const AppContent: FC = () => {
 
   return (
     <>
-      {" "}
-      {/* Use Fragment because IconBar is outside the main flow */}
+      <Toaster
+          position="bottom-center" // Or "top-right", "bottom-right", etc.
+          reverseOrder={false}
+          toastOptions={{
+            // Default options
+            duration: 2000, // How long toasts stay visible
+            style: {
+              background: '#363636', // Dark background
+              color: '#fff', // White text
+            },
+            // Default options for specific types
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 3000, // Keep errors visible a bit longer
+              style: {
+                background: '#a41d2e', // Error background color
+                color: '#fff',
+              },
+              iconTheme: {
+                primary: '#fff',
+                secondary: '#a41d2e',
+              },
+            },
+            loading: {
+              style: {
+                background: '#4b5563', // Loading background color
+              }
+            }
+          }}
+      />
       <IconBar onSelectItem={handleSelectItem} closeOverlay={closeOverlay} />
       <S.AppContentWrapper
         variants={S.containerVariants}
@@ -251,24 +380,27 @@ const AppContent: FC = () => {
           details and use tools.
         </S.Description>
 
-        {/* REMOVED ActionsWrapper */}
-
         {/* --- Wallet Info --- */}
         <AnimatePresence>
-          {connected && (
-            <S.WalletInfoWrapper
-              key="wallet-info"
-              variants={S.componentFadeSlideVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <WalletInfo />
-            </S.WalletInfoWrapper>
+          {connected && ( // Only render WalletInfo if connected
+              <S.WalletInfoWrapper
+                  key="wallet-info"
+                  variants={S.componentFadeSlideVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+              >
+                {/* **** Pass Balance State Down to WalletInfo **** */}
+                <WalletInfo
+                    numericBalance={plioNumericBalance}
+                    isBalanceLoading={isPlioBalanceLoading}
+                    balanceError={plioBalanceError}
+                    isConnected={connected} // Pass connection status
+                />
+              </S.WalletInfoWrapper>
           )}
         </AnimatePresence>
 
-        {/* REMOVED Modals AnimatePresence Block */}
       </S.AppContentWrapper>
       {/* Render the Active Overlay Component */}
       <AnimatePresence>{renderActiveOverlay()}</AnimatePresence>

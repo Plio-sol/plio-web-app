@@ -60,9 +60,6 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
     setError(null);
     setImageUrl(null);
 
-    // --- REMOVE AI client initialization ---
-    // const ai = new GoogleGenAI({ apiKey: API_KEY });
-
     try {
       console.log(
           `Frontend: Sending prompt to backend: "${currentPromptValue}"`,
@@ -168,7 +165,7 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
-            disabled={isLoading} // Also disable if no API key
+            disabled={isLoading}
           />
           <S.GenerateButton
             onClick={handleGenerate}
