@@ -49,7 +49,7 @@ const StyledAppContainer = styled.div`
     sans-serif;
   padding: 20px;
   position: relative; // Needed for z-index context with particles
-  z-index: 1; // Ensure content is rendered above the particles background
+  z-index: 0; // Ensure content is rendered above the particles background
   text-align: center; // Replicate the text-align from App.css if needed
   box-sizing: border-box; // Good practice to include padding in height calculation
 `;
