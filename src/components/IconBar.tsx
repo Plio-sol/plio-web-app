@@ -7,6 +7,7 @@ import {
   FaImage,
   FaMapSigns,
   FaComments,
+    FaCoins
 } from "react-icons/fa"; // Import appropriate icons
 
 export type DrawerItemType =
@@ -15,7 +16,9 @@ export type DrawerItemType =
   | "dex"
   | "image"
   | "roadmap"
-  | "chat";
+  | "chat"
+  | "market";
+
 
 interface IconBarProps {
   onSelectItem: (itemType: DrawerItemType) => void;
@@ -64,6 +67,10 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay }) => {
         {/*@ts-ignore*/}
         <FaComments />
       </S.IconButton>
+        <S.IconButton onClick={() => onSelectItem("market")} title="Crypto Market">
+            {/*@ts-ignore*/}
+            <FaCoins />
+        </S.IconButton>
     </S.IconBarContainer>
   );
 };

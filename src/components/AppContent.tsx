@@ -19,7 +19,8 @@ import ImageGenerator from "./ImageGenerator";
 import Roadmap from "./Roadmap";
 import AIChat, { Message, Personality } from "./AIChat";
 import {PublicKey} from "@solana/web3.js";
-import {getAccount, getAssociatedTokenAddressSync, getMint} from "@solana/spl-token"; // Import Message and Personality types
+import {getAccount, getAssociatedTokenAddressSync, getMint} from "@solana/spl-token";
+import CryptoMarketTracker from "./CryptoMarketTracker"; // Import Message and Personality types
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -275,6 +276,8 @@ const AppContent: FC = () => {
         );
       case "dex":
         return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
+      case "market":
+        return <CryptoMarketTracker key="market-tracker" onClose={closeOverlay} />;
       case "image":
         return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
       case "roadmap":
