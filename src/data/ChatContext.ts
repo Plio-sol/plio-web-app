@@ -4,7 +4,7 @@
 
 const appName = "Plio";
 
-const contractAddress = "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump"; // Make sure this is correct
+const contractAddress = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump"; // Make sure this is correct
 
 const socials = [
   { name: "X (Twitter)", url: "https://x.com/PlioSol" },
