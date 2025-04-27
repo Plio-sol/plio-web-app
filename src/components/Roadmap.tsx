@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import * as S from "./Roadmap.styles";
-import { FaGasPump, FaChartBar, FaBrain, FaSearchDollar } from "react-icons/fa";
+import {FaGasPump, FaChartBar, FaBrain, FaSearchDollar, FaBullhorn} from "react-icons/fa";
 
 interface RoadmapProps {
   onClose: () => void;
@@ -124,6 +124,22 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               don't miss the next big move.
             </S.CardDescription>
           </S.RoadmapCard>
+          <S.RoadmapCard variants={cardVariants}>
+            <S.CardHeader>
+              <S.FeatureIcon>
+                <FaBullhorn />
+              </S.FeatureIcon>
+              <S.CardTitle>Ad-Funded Buybacks</S.CardTitle>
+              <S.StatusBadge status="planned">Planned</S.StatusBadge>
+            </S.CardHeader>
+            <S.CardDescription>
+              Incorporate unobtrusive advertisements for users who do not meet
+              the $Plio holding requirement. Revenue generated from these ads
+              will be used to facilitate buybacks of $Plio tokens, directly
+              benefiting holders.
+            </S.CardDescription>
+          </S.RoadmapCard>
+
           {/* Add more cards here  */}
         </S.RoadmapGrid>
       </S.ModalWindow>
