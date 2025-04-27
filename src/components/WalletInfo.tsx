@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as S from "./WalletInfo.styles";
 
 // Keep constants needed for price fetching
-const PLIO_MINT_ADDRESS_STR = "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump";
+const PLIO_MINT_ADDRESS_STR = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump";
 const JUPITER_PRICE_API = "https://lite-api.jup.ag/price/v2?ids=";
 
 // Animation variants (Keep as they are)
