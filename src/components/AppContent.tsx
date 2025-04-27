@@ -29,7 +29,7 @@ import {
   getMint,
 } from "@solana/spl-token";
 import CryptoMarketTracker from "./CryptoMarketTracker";
-import {FaTelegram, FaTelegramPlane} from "react-icons/fa"; // Import Message and Personality types
+import { FaTelegramPlane } from "react-icons/fa"; // Import Message and Personality types
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -375,10 +375,10 @@ const AppContent: FC = () => {
               <XIcon />
             </S.SocialLink>
             <S.SocialLink
-                href={`https://t.me/pliosol`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Plio Community on Telegram"
+              href={`https://t.me/pliosol`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Plio Community on Telegram"
             >
               <FaTelegramPlane></FaTelegramPlane>
             </S.SocialLink>

@@ -45,9 +45,11 @@ const availableTools = [
       "Chat with PlioBot for assistance and information about the panel.",
     icon: "FaComments",
   },
-  { // Added Market Tracker Tool
+  {
+    // Added Market Tracker Tool
     name: "Crypto Market Tracker",
-    description: "View live prices for Large Cap cryptocurrencies (BTC, ETH, SOL, etc.). Meme coin tracker coming soon.",
+    description:
+      "View live prices for Large Cap cryptocurrencies (BTC, ETH, SOL, etc.). Meme coin tracker coming soon.",
     icon: "FaChartPie",
   },
 ];
@@ -79,12 +81,14 @@ const roadmapItems = [
   },
   {
     title: "Ad-Funded Buybacks",
-    description: "Incorporate unobtrusive advertisements for users who do not meet the $Plio holding requirement. Revenue generated from these ads will be used to facilitate buybacks of $Plio tokens, directly benefiting holders.",
+    description:
+      "Incorporate unobtrusive advertisements for users who do not meet the $Plio holding requirement. Revenue generated from these ads will be used to facilitate buybacks of $Plio tokens, directly benefiting holders.",
     status: "Planned",
   },
   {
     title: "Android Mobile App",
-    description: "Develop a native Android application to bring the Plio Holder Panel features to mobile devices for enhanced accessibility and convenience. Potential for push notifications for market alerts and search feature for cracked APKs (free paid apps).",
+    description:
+      "Develop a native Android application to bring the Plio Holder Panel features to mobile devices for enhanced accessibility and convenience. Potential for push notifications for market alerts and search feature for cracked APKs (free paid apps).",
     status: "Planned",
   },
   // Add more items here as they are defined in Roadmap.tsx

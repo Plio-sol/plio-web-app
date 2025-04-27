@@ -1,12 +1,7 @@
 // src/components/CryptoMarketTracker.tsx
 import React, { FC, JSX, useEffect, useMemo, useState } from "react";
 import * as S from "./CryptoMarketTracker.styles";
-import {
-  FaBitcoin,
-  FaEthereum,
-  FaQuestionCircle,
-  FaDollarSign, // Keep for stablecoins if needed
-} from "react-icons/fa"; // Base icons
+import { FaBitcoin, FaEthereum, FaQuestionCircle } from "react-icons/fa"; // Base icons
 // Import specific icons
 import {
   SiCardano,
@@ -100,45 +95,45 @@ const MEME_COIN_DISPLAY_INFO: {
     name: "Shiba Inu",
     symbol: "SHIB",
     icon: (
-        <img
-            src={process.env.PUBLIC_URL + "/shib_logo.png"}
-            alt="SHIB"
-            style={{ width: "40px", height: "40px" }}
-        />
+      <img
+        src={process.env.PUBLIC_URL + "/shib_logo.png"}
+        alt="SHIB"
+        style={{ width: "40px", height: "40px" }}
+      />
     ),
   }, // Use specific icon if available or fallback
   pepe: {
     name: "Pepe",
     symbol: "PEPE",
     icon: (
-        <img
-            src={process.env.PUBLIC_URL + "/pepe_logo.png"}
-            alt="PEPE"
-            style={{ width: "40px", height: "40px" }}
-        />
+      <img
+        src={process.env.PUBLIC_URL + "/pepe_logo.png"}
+        alt="PEPE"
+        style={{ width: "40px", height: "40px" }}
+      />
     ),
   }, // Use specific icon if available or fallback
   dogwifcoin: {
     name: "dogwifhat",
     symbol: "WIF",
     icon: (
-        <img
-            // Ensure the correct file extension is used (svg or png)
-            src={process.env.PUBLIC_URL + "/wif_logo.png"} // Assuming png based on previous context
-            alt="WIF"
-            style={{ width: "40px", height: "40px" }}
-        />
+      <img
+        // Ensure the correct file extension is used (svg or png)
+        src={process.env.PUBLIC_URL + "/wif_logo.png"} // Assuming png based on previous context
+        alt="WIF"
+        style={{ width: "40px", height: "40px" }}
+      />
     ),
   }, // Placeholder - find/add WIF icon/image
   bonk: {
     name: "Bonk",
     symbol: "BONK",
     icon: (
-        <img
-            src={process.env.PUBLIC_URL + "/bonk_logo.png"}
-            alt="BONK"
-            style={{ width: "40px", height: "40px" }}
-        />
+      <img
+        src={process.env.PUBLIC_URL + "/bonk_logo.png"}
+        alt="BONK"
+        style={{ width: "40px", height: "40px" }}
+      />
     ),
   }, // Placeholder - find/add BONK icon/image
 };
@@ -204,7 +199,7 @@ const CryptoMarketTracker: FC<CryptoMarketTrackerProps> = ({ onClose }) => {
 
       // Use the correct IDs based on the current state
       const idsToFetch =
-          activeTab === "largeCap" ? LARGE_CAP_IDS : MEME_COIN_IDS;
+        activeTab === "largeCap" ? LARGE_CAP_IDS : MEME_COIN_IDS;
 
       // Prevent fetching if the ID list is empty (safety check)
       if (idsToFetch.length === 0) {
@@ -218,7 +213,7 @@ const CryptoMarketTracker: FC<CryptoMarketTrackerProps> = ({ onClose }) => {
       setError(null); // Clear previous error
 
       console.log(
-          `Fetching prices ONCE for ${activeTab}: ${idsToFetch.join(", ")}`,
+        `Fetching prices ONCE for ${activeTab}: ${idsToFetch.join(", ")}`,
       );
 
       try {
@@ -242,7 +237,7 @@ const CryptoMarketTracker: FC<CryptoMarketTrackerProps> = ({ onClose }) => {
         setPrices((prevPrices) => ({ ...prevPrices, ...data }));
         // --- Mark this tab as loaded ---
         setLoadedTabs((prevLoadedTabs) =>
-            new Set(prevLoadedTabs).add(activeTab),
+          new Set(prevLoadedTabs).add(activeTab),
         );
       } catch (err: any) {
         console.error(`Error fetching ${activeTab} prices:`, err);
@@ -280,123 +275,125 @@ const CryptoMarketTracker: FC<CryptoMarketTrackerProps> = ({ onClose }) => {
   const isCurrentTabDataAvailable = loadedTabs.has(activeTab);
 
   return (
-      <S.OverlayContainer
-          key="market-overlay"
-          variants={backdropVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          onClick={onClose}
+    <S.OverlayContainer
+      key="market-overlay"
+      variants={backdropVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      onClick={onClose}
+    >
+      {/* Apply modalVariants for full screen */}
+      <S.ModalWindow
+        variants={modalVariants} // Use the full-screen variants
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Apply modalVariants for full screen */}
-        <S.ModalWindow
-            variants={modalVariants} // Use the full-screen variants
-            onClick={(e) => e.stopPropagation()}
-        >
-          <S.CloseButton onClick={onClose} aria-label="Close Market Tracker">
-            &times;
-          </S.CloseButton>
+        <S.CloseButton onClick={onClose} aria-label="Close Market Tracker">
+          &times;
+        </S.CloseButton>
 
-          <S.Title>Crypto Market Overview</S.Title>
-          <S.Subtitle>Live prices from CoinGecko</S.Subtitle>
+        <S.Title>Crypto Market Overview</S.Title>
+        <S.Subtitle>Live prices from CoinGecko</S.Subtitle>
 
-          {/* Wrap the main content area (Tabs + Grid/Loading/Error) */}
-          <S.ContentContainer>
-            {/* --- Tab Buttons --- */}
-            <S.TabContainer>
-              <S.TabButton
-                  isActive={activeTab === "largeCap"}
-                  onClick={() => setActiveTab("largeCap")}
+        {/* Wrap the main content area (Tabs + Grid/Loading/Error) */}
+        <S.ContentContainer>
+          {/* --- Tab Buttons --- */}
+          <S.TabContainer>
+            <S.TabButton
+              isActive={activeTab === "largeCap"}
+              onClick={() => setActiveTab("largeCap")}
+            >
+              Large Cap
+            </S.TabButton>
+            <S.TabButton
+              isActive={activeTab === "meme"}
+              onClick={() => setActiveTab("meme")}
+            >
+              Meme Coins
+            </S.TabButton>
+          </S.TabContainer>
+          {/* --- End Tab Buttons --- */}
+
+          {/* --- Conditional Rendering --- */}
+
+          {/* Show loading spinner ONLY when a fetch is actively in progress */}
+          {isLoading && (
+            <S.LoadingContainer>
+              <S.LoadingSpinner
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              />
+            </S.LoadingContainer>
+          )}
+
+          {/* Show error state if not loading AND an error occurred */}
+          {!isLoading && error && <S.ErrorMessage>{error}</S.ErrorMessage>}
+
+          {/* Grid - Show if NOT loading, NO error, AND data for this tab is available */}
+          {!isLoading && !error && isCurrentTabDataAvailable && prices && (
+            <AnimatePresence mode="wait">
+              <S.MarketGrid
+                key={activeTab} // Key ensures animation on tab change
+                variants={gridVariants}
+                initial="hidden"
+                animate="visible"
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
               >
-                Large Cap
-              </S.TabButton>
-              <S.TabButton
-                  isActive={activeTab === "meme"}
-                  onClick={() => setActiveTab("meme")}
+                {/* Map over the IDs for the CURRENT active tab */}
+                {currentCoinIds.map((coinId) => {
+                  const displayInfo = ALL_COIN_DISPLAY_INFO[coinId] || {
+                    name: coinId.charAt(0).toUpperCase() + coinId.slice(1),
+                    symbol: coinId.substring(0, 4).toUpperCase(),
+                    icon: <FaQuestionCircle />,
+                  };
+                  // Get price safely from the potentially merged state
+                  const priceInfo = prices ? prices[coinId] : undefined;
+
+                  return (
+                    <S.CoinCard key={coinId} variants={cardVariants}>
+                      <S.CoinIcon>{displayInfo.icon}</S.CoinIcon>
+                      <S.CoinInfo>
+                        <S.CoinName>{displayInfo.name}</S.CoinName>
+                        <S.CoinSymbol>{displayInfo.symbol}</S.CoinSymbol>
+                      </S.CoinInfo>
+                      <S.CoinPrice>
+                        {/* Show N/A if price is truly missing after load attempt, otherwise format */}
+                        {priceInfo === undefined
+                          ? "N/A"
+                          : formatPrice(priceInfo?.usd)}
+                      </S.CoinPrice>
+                    </S.CoinCard>
+                  );
+                })}
+              </S.MarketGrid>
+            </AnimatePresence>
+          )}
+
+          {/* Optional: Message if data couldn't load for a tab */}
+          {!isLoading && !error && !isCurrentTabDataAvailable && (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`${activeTab}-not-loaded`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                Meme Coins
-              </S.TabButton>
-            </S.TabContainer>
-            {/* --- End Tab Buttons --- */}
-
-            {/* --- Conditional Rendering --- */}
-
-            {/* Show loading spinner ONLY when a fetch is actively in progress */}
-            {isLoading && (
-                <S.LoadingContainer>
-                  <S.LoadingSpinner
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                  />
-                </S.LoadingContainer>
-            )}
-
-            {/* Show error state if not loading AND an error occurred */}
-            {!isLoading && error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-
-            {/* Grid - Show if NOT loading, NO error, AND data for this tab is available */}
-            {!isLoading && !error && isCurrentTabDataAvailable && prices && (
-                <AnimatePresence mode="wait">
-                  <S.MarketGrid
-                      key={activeTab} // Key ensures animation on tab change
-                      variants={gridVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                  >
-                    {/* Map over the IDs for the CURRENT active tab */}
-                    {currentCoinIds.map((coinId) => {
-                      const displayInfo = ALL_COIN_DISPLAY_INFO[coinId] || {
-                        name: coinId.charAt(0).toUpperCase() + coinId.slice(1),
-                        symbol: coinId.substring(0, 4).toUpperCase(),
-                        icon: <FaQuestionCircle />,
-                      };
-                      // Get price safely from the potentially merged state
-                      const priceInfo = prices ? prices[coinId] : undefined;
-
-                      return (
-                          <S.CoinCard key={coinId} variants={cardVariants}>
-                            <S.CoinIcon>{displayInfo.icon}</S.CoinIcon>
-                            <S.CoinInfo>
-                              <S.CoinName>{displayInfo.name}</S.CoinName>
-                              <S.CoinSymbol>{displayInfo.symbol}</S.CoinSymbol>
-                            </S.CoinInfo>
-                            <S.CoinPrice>
-                              {/* Show N/A if price is truly missing after load attempt, otherwise format */}
-                              {priceInfo === undefined
-                                  ? "N/A"
-                                  : formatPrice(priceInfo?.usd)}
-                            </S.CoinPrice>
-                          </S.CoinCard>
-                      );
-                    })}
-                  </S.MarketGrid>
-                </AnimatePresence>
-            )}
-
-            {/* Optional: Message if data couldn't load for a tab */}
-            {!isLoading && !error && !isCurrentTabDataAvailable && (
-                <AnimatePresence mode="wait">
-                  <motion.div
-                      key={`${activeTab}-not-loaded`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                  >
-                    <ComingSoonText>
-                      {/* Adjust message based on tab or keep generic */}
-                      {activeTab === 'meme' ? 'Meme coin data loading...' : 'Could not load market data. Please try reopening the tool.'}
-                    </ComingSoonText>
-                  </motion.div>
-                </AnimatePresence>
-            )}
-            {/* --- End Conditional Rendering --- */}
-          </S.ContentContainer>
-          {/* End ContentContainer */}
-        </S.ModalWindow>
-      </S.OverlayContainer>
+                <ComingSoonText>
+                  {/* Adjust message based on tab or keep generic */}
+                  {activeTab === "meme"
+                    ? "Meme coin data loading..."
+                    : "Could not load market data. Please try reopening the tool."}
+                </ComingSoonText>
+              </motion.div>
+            </AnimatePresence>
+          )}
+          {/* --- End Conditional Rendering --- */}
+        </S.ContentContainer>
+        {/* End ContentContainer */}
+      </S.ModalWindow>
+    </S.OverlayContainer>
   );
 };
 

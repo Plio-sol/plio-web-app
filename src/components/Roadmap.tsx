@@ -1,6 +1,13 @@
 import React, { FC } from "react";
 import * as S from "./Roadmap.styles";
-import {FaGasPump, FaChartBar, FaBrain, FaSearchDollar, FaBullhorn, FaAndroid} from "react-icons/fa";
+import {
+  FaGasPump,
+  FaChartBar,
+  FaBrain,
+  FaSearchDollar,
+  FaBullhorn,
+  FaAndroid,
+} from "react-icons/fa";
 
 interface RoadmapProps {
   onClose: () => void;
@@ -128,7 +135,8 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
             <S.CardDescription>
               Develop a native Android application to bring the Plio Holder
               Panel features to mobile devices for enhanced accessibility and
-              convenience. Potential for push notifications for market alerts and search feature for cracked APKs (free paid apps).
+              convenience. Potential for push notifications for market alerts
+              and search feature for cracked APKs (free paid apps).
             </S.CardDescription>
           </S.RoadmapCard>
           <S.RoadmapCard variants={cardVariants}>
