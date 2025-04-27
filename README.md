@@ -33,7 +33,7 @@ Plio offers a range of features for all users, with powerful additions reserved 
 
 ## 🚀 Getting Started
 
-1.  **Visit Plio:** Navigate to [https://plio-sol.netlify.app](https://plio-sol.netlify.app).
+1.  **Visit Plio:** Navigate to [https://pplio.fun](https://plio.fun).
 2.  **Connect Your Wallet:** Use the "Connect Wallet" button to link your preferred Solana wallet (Phantom, Solflare, Backpack, etc.). This is required to verify `$Plio` holdings for exclusive features.
 4.  **Analyze:** Explore the standard analytics available for the entered wallet.
 5.  **Unlock Exclusive Features:** Ensure you hold `$Plio` tokens in your *connected* wallet. The exclusive features will automatically unlock upon successful verification.
@@ -47,8 +47,8 @@ The `$Plio` token is the key to unlocking the full potential of the Plio platfor
 * **Utility:** Holding `$Plio` in your connected wallet grants access to all exclusive features listed above. The amount required may be adjusted in the future based on # of users and costs of tokens/APIs.
 * **Token Address:** `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 * **How to Acquire $Plio:**
-   * Trade on [Jupiter](https://jup.ag/swap/So11111111111111111111111111111111111111112-YOUR_SOLANA_TOKEN_ADDRESS)
-   * Trade on [PumpSwap](https://pump.fun/YOUR_SOLANA_TOKEN_ADDRESS) 
+   * Trade on [Jupiter](https://jup.ag/swap/So11111111111111111111111111111111111111112-2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump)
+   * Trade on [PumpSwap](https://pump.fun/coin/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump) 
 
 *(Disclaimer: Investing in cryptocurrencies involves risk. Always do your own research (DYOR) before purchasing any token.)*
 
