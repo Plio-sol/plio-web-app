@@ -33,7 +33,7 @@ Plio offers a range of features for all users, with powerful additions reserved 
 
 ## 🚀 Getting Started
 
-1.  **Visit Plio:** Navigate to [https://pplio.fun](https://plio.fun).
+1.  **Visit Plio:** Navigate to [https://plio.fun](https://plio.fun).
 2.  **Connect Your Wallet:** Use the "Connect Wallet" button to link your preferred Solana wallet (Phantom, Solflare, Backpack, etc.). This is required to verify `$Plio` holdings for exclusive features.
 4.  **Analyze:** Explore the standard analytics available for the entered wallet.
 5.  **Unlock Exclusive Features:** Ensure you hold `$Plio` tokens in your *connected* wallet. The exclusive features will automatically unlock upon successful verification.
