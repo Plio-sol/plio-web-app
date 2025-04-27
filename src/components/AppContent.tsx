@@ -33,9 +33,9 @@ declare global {
   }
 }
 // --- End Type Definition ---
-const CONTRACT_ADDRESS = "temporary-contract-address"; //TODO
+const CONTRACT_ADDRESS = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump"; //TODO
 const PLIO_MINT_ADDRESS = new PublicKey(
-    "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump", //TODO
+    "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump", //TODO
 );
 const PLIO_SYMBOL = "$Plio"; // Define symbol for messages
 const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
@@ -217,7 +217,7 @@ const AppContent: FC = () => {
             formProps: {
               fixedOutputMint: true,
               initialInputMint: "So11111111111111111111111111111111111111112",
-              initialOutputMint: "2eXamy7t3kvKhfV6aJ6Uwe3eh8cuREFcTKs1mFKZpump", //TODO
+              initialOutputMint: "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump", //TODO
             },
             // containerClassName: '...', // Might apply to the modal opened by widget
             // onSwapError: ({ error }) => { /* ... */ },
