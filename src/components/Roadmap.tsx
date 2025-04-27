@@ -57,6 +57,22 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
           initial="hidden"
           animate="visible"
         >
+          <S.RoadmapCard variants={cardVariants}>
+            <S.CardHeader>
+              <S.FeatureIcon>
+                {/*@ts-ignore*/}
+                <FaChartBar />
+              </S.FeatureIcon>
+              <S.CardTitle>Crypto Market Dashboard</S.CardTitle>
+              <S.StatusBadge status="in-progress">In-Progress</S.StatusBadge>
+            </S.CardHeader>
+            <S.CardDescription>
+              Show current prices for SOL and other major cryptos (BTC, ETH,
+              PLIO, and more trending meme coins) directly within the panel.
+              Automatic AI price analysis by Google Gemini so you always know
+              where the market is headed. Powered by lightening fast price APIs.
+            </S.CardDescription>
+          </S.RoadmapCard>
           {/* Solana Network Status Card */}
           <S.RoadmapCard variants={cardVariants}>
             <S.CardHeader>
@@ -76,22 +92,7 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
           </S.RoadmapCard>
 
           {/* Crypto Price Ticker Card */}
-          <S.RoadmapCard variants={cardVariants}>
-            <S.CardHeader>
-              <S.FeatureIcon>
-                {/*@ts-ignore*/}
-                <FaChartBar />
-              </S.FeatureIcon>
-              <S.CardTitle>Crypto Market Dashboard</S.CardTitle>
-              <S.StatusBadge status="planned">Planned</S.StatusBadge>
-            </S.CardHeader>
-            <S.CardDescription>
-              Show current prices for SOL and other major cryptos (BTC, ETH,
-              PLIO, and more trending meme coins) directly within the panel.
-              Automatic AI price analysis by Google Gemini so you always know
-              where the market is headed. Powered by lightening fast price APIs.
-            </S.CardDescription>
-          </S.RoadmapCard>
+
           <S.RoadmapCard variants={cardVariants}>
             <S.CardHeader>
               <S.FeatureIcon>
