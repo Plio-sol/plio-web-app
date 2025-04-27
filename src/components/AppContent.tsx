@@ -28,7 +28,8 @@ import {
   getAssociatedTokenAddressSync,
   getMint,
 } from "@solana/spl-token";
-import CryptoMarketTracker from "./CryptoMarketTracker"; // Import Message and Personality types
+import CryptoMarketTracker from "./CryptoMarketTracker";
+import {FaTelegram, FaTelegramPlane} from "react-icons/fa"; // Import Message and Personality types
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -279,8 +280,6 @@ const AppContent: FC = () => {
       console.log("window.Jupiter.syncProps not available yet.");
       // No automatic retry here, relies on the effect re-running when walletState changes
     }
-    // *** Depend on the entire walletState object ***
-    // This ensures syncProps is called whenever connection status OR other relevant wallet details change.
   }, [walletState]);
 
   // --- End Jupiter Integration ---
@@ -374,6 +373,14 @@ const AppContent: FC = () => {
               title="Plio on X"
             >
               <XIcon />
+            </S.SocialLink>
+            <S.SocialLink
+                href={`https://t.me/pliosol`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Plio Community on Telegram"
+            >
+              <FaTelegramPlane></FaTelegramPlane>
             </S.SocialLink>
             <S.SocialLink
               href={`https://pump.fun/coin/${CONTRACT_ADDRESS}`}
