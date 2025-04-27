@@ -53,7 +53,7 @@ We are constantly working to expand the utility of the Plio panel. Key items on 
 
 ## 🚀 Getting Started
 
-1.  **Visit Plio:** Navigate to https://plio-sol.netlify.app/.
+1.  **Visit Plio:** Navigate to https://plio.fun/.
 2.  **Connect Your Wallet:** Use the "Connect Wallet" button (top right) to link your preferred Solana wallet (Phantom, Solflare, Backpack, etc.).
 3.  **Explore Standard Features:** Access tools like Torrent Search, AI Chat, and the Roadmap via the sidebar icons.
 4.  **Unlock Exclusive Features:** Ensure you hold at least **50,000 $Plio** tokens in your *connected* wallet. Features like the Market Tracker, Image Generator, and Dex Screener New Pairs will become accessible upon successful verification (a page refresh might be needed after acquiring tokens).
