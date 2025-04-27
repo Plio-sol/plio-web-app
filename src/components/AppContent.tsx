@@ -378,7 +378,7 @@ const AppContent: FC = () => {
         <S.StyledWalletMultiButton />
 
         <S.Description variants={S.itemVariants}>
-          Access exclusive holder tools. Connect your wallet to view token
+          Access exclusive holder tools. <br/>Current Requirement: 50,000 $Plio.<br/> Connect your wallet to view token
           details and use tools.
         </S.Description>
 
