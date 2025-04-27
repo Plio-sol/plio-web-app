@@ -86,7 +86,10 @@ export const Subtitle = styled.p`
 // Specific styles for the market tracker
 export const MarketGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); // Responsive grid
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(180px, 1fr)
+  ); // Responsive grid
   gap: 20px;
 `;
 
@@ -99,7 +102,9 @@ export const CoinCard = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out;
 
   &:hover {
     transform: translateY(-5px);
@@ -186,7 +191,8 @@ export const TabButton = styled.button<{ isActive: boolean }>`
   font-size: 1.1em;
   font-weight: 500;
   cursor: pointer;
-  color: ${(props) => (props.isActive ? "#61dafb" : "#8892b0")}; // Active vs inactive color
+  color: ${(props) =>
+    props.isActive ? "#61dafb" : "#8892b0"}; // Active vs inactive color
   position: relative;
   transition: color 0.2s ease;
 
@@ -205,5 +211,7 @@ export const TabButton = styled.button<{ isActive: boolean }>`
   }
 
   &:hover {
-    color: ${(props) => (props.isActive ? "#61dafb" : "#ccd6f6")}; // Hover color
-  }`;
+    color: ${(props) =>
+      props.isActive ? "#61dafb" : "#ccd6f6"}; // Hover color
+  }
+`;

@@ -68,11 +68,14 @@ const GlobalStyle = createGlobalStyle`
 
 // --- Main App Component (Manages State and Renders Children) ---
 const App: FC = () => {
-  const passwordProtectionEnabled = process.env.REACT_APP_PASSWORD_PROTECTION_ENABLED === 'true';
+  const passwordProtectionEnabled =
+    process.env.REACT_APP_PASSWORD_PROTECTION_ENABLED === "true";
   console.log("Password Protection Enabled:", passwordProtectionEnabled); // For debugging
   // --- Password Protection State ---
   const CORRECT_PASSWORD = process.env.REACT_APP_ACCESS_PASSWORD || "x";
-  const [isAuthenticated, setIsAuthenticated] = useState(!passwordProtectionEnabled);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !passwordProtectionEnabled,
+  );
   const [passwordInput, setPasswordInput] = useState("");
   const [authError, setAuthError] = useState<string | null>(null);
   // --- End Password Protection State ---

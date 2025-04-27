@@ -1,9 +1,13 @@
 // src/components/AppContent.tsx
 import React, { FC, useEffect, useState } from "react";
 // *** Import useWallet correctly ***
-import {useConnection, useWallet, WalletContextState} from "@solana/wallet-adapter-react"; // Import WalletContextState type
+import {
+  useConnection,
+  useWallet,
+  WalletContextState,
+} from "@solana/wallet-adapter-react"; // Import WalletContextState type
 import { AnimatePresence } from "framer-motion";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 // Import styles
 import * as S from "./AppContent.styles";
@@ -18,8 +22,12 @@ import DexScreenerLatest from "./DexScreenerLatest";
 import ImageGenerator from "./ImageGenerator";
 import Roadmap from "./Roadmap";
 import AIChat, { Message, Personality } from "./AIChat";
-import {PublicKey} from "@solana/web3.js";
-import {getAccount, getAssociatedTokenAddressSync, getMint} from "@solana/spl-token";
+import { PublicKey } from "@solana/web3.js";
+import {
+  getAccount,
+  getAssociatedTokenAddressSync,
+  getMint,
+} from "@solana/spl-token";
 import CryptoMarketTracker from "./CryptoMarketTracker"; // Import Message and Personality types
 // --- Type Definition for window.Jupiter ---
 declare global {
@@ -36,7 +44,7 @@ declare global {
 // --- End Type Definition ---
 const CONTRACT_ADDRESS = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump"; //TODO
 const PLIO_MINT_ADDRESS = new PublicKey(
-    "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump", //TODO
+  "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump", //TODO
 );
 const PLIO_SYMBOL = "$Plio"; // Define symbol for messages
 const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
@@ -47,16 +55,23 @@ const AppContent: FC = () => {
   const { connected, publicKey } = walletState; // Destructure publicKey
   const { connection } = useConnection(); // Get connection here
 
-  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
-  const [activeOverlay, setActiveOverlay] = useState<DrawerItemType | null>(null);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">(
+    "idle",
+  );
+  const [activeOverlay, setActiveOverlay] = useState<DrawerItemType | null>(
+    null,
+  );
 
   // Chat State (Keep as is)
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [chatPersonality, setChatPersonality] = useState<Personality>("nice");
 
   // --- **** Add State for Plio Balance (Lifted from WalletInfo) **** ---
-  const [plioNumericBalance, setPlioNumericBalance] = useState<number | null>(null);
-  const [isPlioBalanceLoading, setIsPlioBalanceLoading] = useState<boolean>(false); // Start false, set true when fetching
+  const [plioNumericBalance, setPlioNumericBalance] = useState<number | null>(
+    null,
+  );
+  const [isPlioBalanceLoading, setIsPlioBalanceLoading] =
+    useState<boolean>(false); // Start false, set true when fetching
   const [plioBalanceError, setPlioBalanceError] = useState<string | null>(null);
   // --- **** End Chat State **** ---
 
@@ -75,8 +90,8 @@ const AppContent: FC = () => {
 
       try {
         const associatedTokenAddress = getAssociatedTokenAddressSync(
-            PLIO_MINT_ADDRESS,
-            publicKey,
+          PLIO_MINT_ADDRESS,
+          publicKey,
         );
 
         let decimals = 9; // Default decimals
@@ -85,8 +100,8 @@ const AppContent: FC = () => {
           decimals = mintInfo.decimals;
         } catch (mintError) {
           console.warn(
-              `Could not fetch mint info for ${PLIO_SYMBOL}, using default decimals:`,
-              mintError,
+            `Could not fetch mint info for ${PLIO_SYMBOL}, using default decimals:`,
+            mintError,
           );
         }
 
@@ -94,15 +109,15 @@ const AppContent: FC = () => {
 
         try {
           const accountInfo = await getAccount(
-              connection,
-              associatedTokenAddress,
+            connection,
+            associatedTokenAddress,
           );
           const rawAmount = Number(accountInfo.amount);
           fetchedNumericBalance = rawAmount / 10 ** decimals;
         } catch (accountError: any) {
           if (
-              accountError.message.includes("could not find account") ||
-              accountError.message.includes("Account does not exist")
+            accountError.message.includes("could not find account") ||
+            accountError.message.includes("Account does not exist")
           ) {
             console.log(`No ${PLIO_SYMBOL} token account found. Balance is 0.`);
             // Balance remains 0
@@ -113,7 +128,9 @@ const AppContent: FC = () => {
 
         setPlioNumericBalance(fetchedNumericBalance);
       } catch (err: any) {
-        setPlioBalanceError('You have no $PLIO 😑. You will be restricted from using the Image Generation & Dex Screener Features. You are free to use all other features.')
+        setPlioBalanceError(
+          "You have no $PLIO 😑. You will be restricted from using the Image Generation & Dex Screener Features. You are free to use all other features.",
+        );
       } finally {
         setIsPlioBalanceLoading(false);
       }
@@ -148,7 +165,9 @@ const AppContent: FC = () => {
       }
 
       // If all checks pass for restricted features
-      console.log(`Access granted to ${itemType}. Balance: ${plioNumericBalance}`);
+      console.log(
+        `Access granted to ${itemType}. Balance: ${plioNumericBalance}`,
+      );
     }
 
     // If checks passed OR the feature is not restricted, set the overlay
@@ -277,7 +296,9 @@ const AppContent: FC = () => {
       case "dex":
         return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
       case "market":
-        return <CryptoMarketTracker key="market-tracker" onClose={closeOverlay} />;
+        return (
+          <CryptoMarketTracker key="market-tracker" onClose={closeOverlay} />
+        );
       case "image":
         return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
       case "roadmap":
@@ -301,38 +322,38 @@ const AppContent: FC = () => {
   return (
     <>
       <Toaster
-          position="top-center" // Or "top-right", "bottom-right", etc.
-          reverseOrder={false}
-          toastOptions={{
-            // Default options
-            duration: 2000, // How long toasts stay visible
+        position="top-center" // Or "top-right", "bottom-right", etc.
+        reverseOrder={false}
+        toastOptions={{
+          // Default options
+          duration: 2000, // How long toasts stay visible
+          style: {
+            background: "#363636", // Dark background
+            color: "#fff", // White text
+            zIndex: 2,
+          },
+          // Default options for specific types
+          success: {
+            duration: 1500,
+          },
+          error: {
+            duration: 1500, // Keep errors visible a bit longer
             style: {
-              background: '#363636', // Dark background
-              color: '#fff', // White text
-              zIndex: 2
+              background: "#a41d2e", // Error background color
+              color: "#fff",
+              zIndex: 2,
             },
-            // Default options for specific types
-            success: {
-              duration: 1500,
+            iconTheme: {
+              primary: "#fff",
+              secondary: "#a41d2e",
             },
-            error: {
-              duration: 1500, // Keep errors visible a bit longer
-              style: {
-                background: '#a41d2e', // Error background color
-                color: '#fff',
-                zIndex: 2
-              },
-              iconTheme: {
-                primary: '#fff',
-                secondary: '#a41d2e',
-              },
+          },
+          loading: {
+            style: {
+              background: "#4b5563", // Loading background color
             },
-            loading: {
-              style: {
-                background: '#4b5563', // Loading background color
-              }
-            }
-          }}
+          },
+        }}
       />
       <IconBar onSelectItem={handleSelectItem} closeOverlay={closeOverlay} />
       <S.AppContentWrapper
@@ -367,15 +388,15 @@ const AppContent: FC = () => {
               />
             </S.SocialLink>
             <S.SocialLink
-                href={`https://dexscreener.com/solana/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Plio on Dex Screener"
+              href={`https://dexscreener.com/solana/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Plio on Dex Screener"
             >
               <img
-                  src={process.env.PUBLIC_URL + "/dex_bria.png"}
-                  alt={"dex logo"}
-                  style={{ width: "24px", height: "24px" }}
+                src={process.env.PUBLIC_URL + "/dex_bria.png"}
+                alt={"dex logo"}
+                style={{ width: "24px", height: "24px" }}
               />
             </S.SocialLink>
           </S.SocialLinksContainer>
@@ -393,31 +414,31 @@ const AppContent: FC = () => {
         <S.StyledWalletMultiButton />
 
         <S.Description variants={S.itemVariants}>
-          Access exclusive holder tools. <br/>Current Requirement: 50,000 $Plio.<br/> Connect your wallet to view token
-          details and use tools.
+          Access exclusive holder tools. <br />
+          Current Requirement: 50,000 $Plio.
+          <br /> Connect your wallet to view token details and use tools.
         </S.Description>
 
         {/* --- Wallet Info --- */}
         <AnimatePresence>
           {connected && ( // Only render WalletInfo if connected
-              <S.WalletInfoWrapper
-                  key="wallet-info"
-                  variants={S.componentFadeSlideVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-              >
-                {/* **** Pass Balance State Down to WalletInfo **** */}
-                <WalletInfo
-                    numericBalance={plioNumericBalance}
-                    isBalanceLoading={isPlioBalanceLoading}
-                    balanceError={plioBalanceError}
-                    isConnected={connected} // Pass connection status
-                />
-              </S.WalletInfoWrapper>
+            <S.WalletInfoWrapper
+              key="wallet-info"
+              variants={S.componentFadeSlideVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              {/* **** Pass Balance State Down to WalletInfo **** */}
+              <WalletInfo
+                numericBalance={plioNumericBalance}
+                isBalanceLoading={isPlioBalanceLoading}
+                balanceError={plioBalanceError}
+                isConnected={connected} // Pass connection status
+              />
+            </S.WalletInfoWrapper>
           )}
         </AnimatePresence>
-
       </S.AppContentWrapper>
       {/* Render the Active Overlay Component */}
       <AnimatePresence>{renderActiveOverlay()}</AnimatePresence>

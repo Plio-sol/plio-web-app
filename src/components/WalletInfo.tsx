@@ -28,11 +28,11 @@ interface WalletInfoProps {
 }
 
 const WalletInfo: FC<WalletInfoProps> = ({
-                                           numericBalance,
-                                           isBalanceLoading,
-                                           balanceError,
-                                           isConnected,
-                                         }) => {
+  numericBalance,
+  isBalanceLoading,
+  balanceError,
+  isConnected,
+}) => {
   const { connection } = useConnection(); // Still needed for price fetching
 
   // --- REMOVE State for token balance ---
@@ -54,11 +54,11 @@ const WalletInfo: FC<WalletInfoProps> = ({
     const fetchPriceAndCalculateValue = async () => {
       // Only fetch price if balance is known, not loading, no error, and connection exists
       if (
-          numericBalance === null ||
-          numericBalance < 0 || // Should not happen, but good check
-          isBalanceLoading ||
-          balanceError ||
-          !connection
+        numericBalance === null ||
+        numericBalance < 0 || // Should not happen, but good check
+        isBalanceLoading ||
+        balanceError ||
+        !connection
       ) {
         setUsdValue(null);
         setIsPriceLoading(false);
@@ -72,31 +72,31 @@ const WalletInfo: FC<WalletInfoProps> = ({
 
       try {
         const priceResponse = await fetch(
-            `${JUPITER_PRICE_API}${PLIO_MINT_ADDRESS_STR}`,
+          `${JUPITER_PRICE_API}${PLIO_MINT_ADDRESS_STR}`,
         );
         if (!priceResponse.ok) {
           throw new Error(
-              `Failed to fetch price (Status: ${priceResponse.status})`,
+            `Failed to fetch price (Status: ${priceResponse.status})`,
           );
         }
         const priceData = await priceResponse.json();
         const priceInfo = priceData.data?.[PLIO_MINT_ADDRESS_STR];
 
         if (
-            priceInfo &&
-            typeof priceInfo.price === "string" &&
-            priceInfo.price.length > 0
+          priceInfo &&
+          typeof priceInfo.price === "string" &&
+          priceInfo.price.length > 0
         ) {
           const price = parseFloat(priceInfo.price);
           if (!isNaN(price)) {
             const calculatedUsdValue = numericBalance * price;
             setUsdValue(
-                calculatedUsdValue.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                }),
+              calculatedUsdValue.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
             );
           } else {
             console.warn("Could not parse price string:", priceInfo.price);
@@ -104,8 +104,8 @@ const WalletInfo: FC<WalletInfoProps> = ({
           }
         } else {
           console.warn(
-              "Price data not found or invalid for $Plio in v2 API response:",
-              priceData,
+            "Price data not found or invalid for $Plio in v2 API response:",
+            priceData,
           );
           setPriceError("Could not retrieve price.");
         }
@@ -126,82 +126,80 @@ const WalletInfo: FC<WalletInfoProps> = ({
 
   // Format balance for display (derived from prop)
   const formattedBalance =
-      numericBalance !== null
-          ? Math.round(numericBalance).toLocaleString()
-          : "0";
+    numericBalance !== null ? Math.round(numericBalance).toLocaleString() : "0";
 
   return (
-      <S.WalletInfoContainer>
-        <S.BalanceTitle>Your $Plio Balance</S.BalanceTitle>
+    <S.WalletInfoContainer>
+      <S.BalanceTitle>Your $Plio Balance</S.BalanceTitle>
 
-        {/* Show main spinner only during initial balance load (using prop) */}
-        {showMainSpinner && (
-            <S.LoadingSpinner
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            />
-        )}
+      {/* Show main spinner only during initial balance load (using prop) */}
+      {showMainSpinner && (
+        <S.LoadingSpinner
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+        />
+      )}
 
-        {/* Display Balance and USD Value when not in initial load */}
-        {!showMainSpinner && (
-            <>
-              {/* Display Balance Error (using prop) */}
-              {balanceError && <S.ErrorMessage>{balanceError}</S.ErrorMessage>}
+      {/* Display Balance and USD Value when not in initial load */}
+      {!showMainSpinner && (
+        <>
+          {/* Display Balance Error (using prop) */}
+          {balanceError && <S.ErrorMessage>{balanceError}</S.ErrorMessage>}
 
-              {/* Display Balance (using prop) */}
-              {!balanceError && numericBalance !== null && (
-                  <AnimatePresence mode="wait">
-                    <S.BalanceDisplayContainer
-                        key={`balance-${formattedBalance}`} // Animate when formatted balance changes
-                        variants={valueVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
+          {/* Display Balance (using prop) */}
+          {!balanceError && numericBalance !== null && (
+            <AnimatePresence mode="wait">
+              <S.BalanceDisplayContainer
+                key={`balance-${formattedBalance}`} // Animate when formatted balance changes
+                variants={valueVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+              >
+                <S.BalanceAmount>{formattedBalance}</S.BalanceAmount>{" "}
+              </S.BalanceDisplayContainer>
+            </AnimatePresence>
+          )}
+
+          {/* Display USD Value or Price Loading/Error */}
+          {!balanceError &&
+            numericBalance !== null && ( // Only show USD section if balance loaded ok
+              <S.UsdValueDisplay>
+                <AnimatePresence mode="wait">
+                  {isPriceLoading ? (
+                    <S.PriceLoadingIndicator
+                      key="price-loading"
+                      /* ... animation props ... */
+                    />
+                  ) : priceError ? (
+                    <S.ErrorMessage
+                      key="price-error"
+                      style={{ fontSize: "0.9em", marginTop: 0 }}
                     >
-                      <S.BalanceAmount>{formattedBalance}</S.BalanceAmount>{" "}
-                    </S.BalanceDisplayContainer>
-                  </AnimatePresence>
-              )}
+                      {priceError}
+                    </S.ErrorMessage>
+                  ) : usdValue !== null ? (
+                    <motion.span
+                      key={`usd-${usdValue}`}
+                      variants={valueVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                    >
+                      ~ {usdValue} USD
+                    </motion.span>
+                  ) : null}
+                </AnimatePresence>
+              </S.UsdValueDisplay>
+            )}
+        </>
+      )}
 
-              {/* Display USD Value or Price Loading/Error */}
-              {!balanceError &&
-                  numericBalance !== null && ( // Only show USD section if balance loaded ok
-                      <S.UsdValueDisplay>
-                        <AnimatePresence mode="wait">
-                          {isPriceLoading ? (
-                              <S.PriceLoadingIndicator
-                                  key="price-loading"
-                                  /* ... animation props ... */
-                              />
-                          ) : priceError ? (
-                              <S.ErrorMessage
-                                  key="price-error"
-                                  style={{ fontSize: "0.9em", marginTop: 0 }}
-                              >
-                                {priceError}
-                              </S.ErrorMessage>
-                          ) : usdValue !== null ? (
-                              <motion.span
-                                  key={`usd-${usdValue}`}
-                                  variants={valueVariants}
-                                  initial="hidden"
-                                  animate="visible"
-                                  exit="hidden"
-                              >
-                                ~ {usdValue} USD
-                              </motion.span>
-                          ) : null}
-                        </AnimatePresence>
-                      </S.UsdValueDisplay>
-                  )}
-            </>
-        )}
-
-        {/* Prompt to connect wallet (using prop) */}
-        {!isConnected && !isBalanceLoading && (
-            <S.ConnectPrompt>Connect wallet to view balance.</S.ConnectPrompt>
-        )}
-      </S.WalletInfoContainer>
+      {/* Prompt to connect wallet (using prop) */}
+      {!isConnected && !isBalanceLoading && (
+        <S.ConnectPrompt>Connect wallet to view balance.</S.ConnectPrompt>
+      )}
+    </S.WalletInfoContainer>
   );
 };
 

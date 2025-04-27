@@ -119,8 +119,9 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               <S.StatusBadge status="planned">Planned</S.StatusBadge>
             </S.CardHeader>
             <S.CardDescription>
-              Track real-time trading volume surges across Solana tokens on Dex Screener.
-              Identify which coins are pumping *right now* so you don't miss the next big move.
+              Track real-time trading volume surges across Solana tokens on Dex
+              Screener. Identify which coins are pumping *right now* so you
+              don't miss the next big move.
             </S.CardDescription>
           </S.RoadmapCard>
           {/* Add more cards here  */}

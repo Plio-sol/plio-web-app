@@ -12,7 +12,6 @@ import { FaAngry, FaPaperPlane, FaSmile } from "react-icons/fa"; // Send icon
 // --- Style Import ---
 import * as S from "./AIChat.styles"; // We'll create/update this next
 
-
 // --- **** Define Types to Export **** ---
 export interface Message {
   role: "user" | "model";
@@ -48,14 +47,12 @@ const modalVariants = {
   exit: { opacity: 0, y: 30, scale: 0.95, transition: { duration: 0.2 } },
 };
 
-
-
 // --- Helper: Parse Error (Keep or simplify if only parsing fetch errors) ---
 function parseError(error: any): string {
   console.error("Chat Error:", error);
   // Can simplify if backend provides structured errors
   return String(
-      error?.message ||
+    error?.message ||
       error?.toString() ||
       "An unknown error occurred communicating with the chat service.",
   );
@@ -80,7 +77,6 @@ const AIChat: FC<AIChatProps> = ({
   const inputRef = useRef<HTMLInputElement>(null); // <-- Add ref for input
   // --- Effects ---
 
-
   // Scroll effect remains the same
   useEffect(() => {
     if (chatAreaRef.current) {
@@ -94,8 +90,6 @@ const AIChat: FC<AIChatProps> = ({
       inputRef.current.focus();
     }
   }, [isLoading]);
-
-
 
   // --- Handlers ---
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +142,7 @@ const AIChat: FC<AIChatProps> = ({
       if (!response.ok) {
         // Handle errors returned from the function
         throw new Error(
-            data.error || `API request failed: ${response.statusText}`,
+          data.error || `API request failed: ${response.statusText}`,
         );
       }
 
@@ -262,7 +256,6 @@ const AIChat: FC<AIChatProps> = ({
             </S.MessageBubble>
           )}
         </S.ChatArea>
-
 
         {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
 

@@ -1,4 +1,4 @@
-import React, {FC, useState, useCallback, useRef} from "react";
+import React, { FC, useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // --- Updated Style Import ---
@@ -26,7 +26,6 @@ const imageVariants = {
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.3 } },
 };
 
-
 // --- Helper: Parse Error (Keep for fetch errors) ---
 function parseError(error: any): string {
   console.error("Image Generation UI Error:", error); // Log frontend errors distinctly
@@ -44,8 +43,6 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-
-
   const handleGenerate = useCallback(async () => {
     // Check only for prompt and loading state
     if (!prompt.trim() || isLoading) {
@@ -62,7 +59,7 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
 
     try {
       console.log(
-          `Frontend: Sending prompt to backend: "${currentPromptValue}"`,
+        `Frontend: Sending prompt to backend: "${currentPromptValue}"`,
       );
 
       // --- Call the backend Netlify function ---
@@ -81,7 +78,9 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
 
       if (!response.ok) {
         // Handle errors reported by the backend function
-        throw new Error(data.error || `API request failed: ${response.statusText}`);
+        throw new Error(
+          data.error || `API request failed: ${response.statusText}`,
+        );
       }
 
       // --- Process successful response from backend ---
@@ -92,11 +91,12 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
         setStatus("Done!"); // Update status on success
       } else {
         // If backend succeeded (200 OK) but didn't return expected data
-        console.error("Frontend: Backend returned success but missing image data.");
+        console.error(
+          "Frontend: Backend returned success but missing image data.",
+        );
         throw new Error("Received invalid image data from server.");
       }
       // --- End processing response ---
-
     } catch (err: any) {
       console.error("Frontend: Error generating image:", err);
       const message = parseError(err); // Use parseError for fetch/JSON errors
@@ -108,7 +108,6 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
       inputRef.current?.focus();
     }
   }, [prompt, isLoading]); // Dependencies remain prompt and isLoading
-
 
   // --- Event Handlers (handleKeyDown, handleDownload) remain the same ---
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -203,13 +202,11 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
           )}
         </AnimatePresence>
 
-        {!imageUrl &&
-            !isLoading &&
-            !error && (
-                <div style={{ marginTop: "50px", color: "#8892b0" }}>
-                  Enter a prompt to generate an image.
-                </div>
-            )}
+        {!imageUrl && !isLoading && !error && (
+          <div style={{ marginTop: "50px", color: "#8892b0" }}>
+            Enter a prompt to generate an image.
+          </div>
+        )}
       </motion.div>
     </S.OverlayContainer>
   );

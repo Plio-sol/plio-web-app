@@ -63,7 +63,7 @@ const roadmapItems = [
   {
     title: "Dex Screener Volume Tracker",
     description:
-        "Track real-time trading volume surges across Solana tokens on Dex Screener. Identify which coins are pumping *right now* so you don't miss the next big move.",
+      "Track real-time trading volume surges across Solana tokens on Dex Screener. Identify which coins are pumping *right now* so you don't miss the next big move.",
     status: "Planned",
   },
   {
