@@ -118,13 +118,12 @@ const MEME_COIN_DISPLAY_INFO: {
     symbol: "WIF",
     icon: (
       <img
-        // Ensure the correct file extension is used (svg or png)
-        src={process.env.PUBLIC_URL + "/wif_logo.png"} // Assuming png based on previous context
+        src={process.env.PUBLIC_URL + "/wif_logo.svg"}
         alt="WIF"
         style={{ width: "40px", height: "40px" }}
       />
     ),
-  }, // Placeholder - find/add WIF icon/image
+  },
   bonk: {
     name: "Bonk",
     symbol: "BONK",
@@ -135,7 +134,7 @@ const MEME_COIN_DISPLAY_INFO: {
         style={{ width: "40px", height: "40px" }}
       />
     ),
-  }, // Placeholder - find/add BONK icon/image
+  },
 };
 
 // Combine all display info for easy lookup
