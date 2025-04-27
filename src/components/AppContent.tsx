@@ -363,6 +363,18 @@ const AppContent: FC = () => {
                 style={{ width: "24px", height: "24px" }}
               />
             </S.SocialLink>
+            <S.SocialLink
+                href={`https://dexscreener.com/solana/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Plio on Dex Screener"
+            >
+              <img
+                  src={process.env.PUBLIC_URL + "/dex_bria.png"}
+                  alt={"dex logo"}
+                  style={{ width: "24px", height: "24px" }}
+              />
+            </S.SocialLink>
           </S.SocialLinksContainer>
           <S.ContractAddress
             onClick={handleCopyAddress}
