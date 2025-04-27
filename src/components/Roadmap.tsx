@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import * as S from "./Roadmap.styles";
-import {FaGasPump, FaChartBar, FaBrain, FaSearchDollar, FaBullhorn} from "react-icons/fa";
+import {FaGasPump, FaChartBar, FaBrain, FaSearchDollar, FaBullhorn, FaAndroid} from "react-icons/fa";
 
 interface RoadmapProps {
   onClose: () => void;
@@ -52,7 +52,7 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
 
         <S.RoadmapGrid
           variants={{
-            visible: { transition: { staggerChildren: 0.15 } }, // Stagger card animations
+            visible: { transition: { staggerChildren: 0.15 } },
           }}
           initial="hidden"
           animate="visible"
@@ -60,7 +60,6 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
           <S.RoadmapCard variants={cardVariants}>
             <S.CardHeader>
               <S.FeatureIcon>
-                {/*@ts-ignore*/}
                 <FaChartBar />
               </S.FeatureIcon>
               <S.CardTitle>Crypto Market Dashboard</S.CardTitle>
@@ -73,11 +72,9 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               where the market is headed. Powered by lightening fast price APIs.
             </S.CardDescription>
           </S.RoadmapCard>
-          {/* Solana Network Status Card */}
           <S.RoadmapCard variants={cardVariants}>
             <S.CardHeader>
               <S.FeatureIcon>
-                {/*@ts-ignore*/}
                 <FaGasPump />
               </S.FeatureIcon>
               <S.CardTitle>Solana Status & Gas Tracker</S.CardTitle>
@@ -90,13 +87,9 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               when the market is heating up 🔥.
             </S.CardDescription>
           </S.RoadmapCard>
-
-          {/* Crypto Price Ticker Card */}
-
           <S.RoadmapCard variants={cardVariants}>
             <S.CardHeader>
               <S.FeatureIcon>
-                {/*@ts-ignore*/}
                 <FaBrain />
               </S.FeatureIcon>
               <S.CardTitle>AI Chat Context Enhancement</S.CardTitle>
@@ -113,7 +106,6 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
           <S.RoadmapCard variants={cardVariants}>
             <S.CardHeader>
               <S.FeatureIcon>
-                {/*@ts-ignore*/}
                 <FaSearchDollar />
               </S.FeatureIcon>
               <S.CardTitle>Dex Screener Volume Tracker</S.CardTitle>
@@ -123,6 +115,20 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               Track real-time trading volume surges across Solana tokens on Dex
               Screener. Identify which coins are pumping *right now* so you
               don't miss the next big move.
+            </S.CardDescription>
+          </S.RoadmapCard>
+          <S.RoadmapCard variants={cardVariants}>
+            <S.CardHeader>
+              <S.FeatureIcon>
+                <FaAndroid />
+              </S.FeatureIcon>
+              <S.CardTitle>Android Mobile App</S.CardTitle>
+              <S.StatusBadge status="planned">Planned</S.StatusBadge>
+            </S.CardHeader>
+            <S.CardDescription>
+              Develop a native Android application to bring the Plio Holder
+              Panel features to mobile devices for enhanced accessibility and
+              convenience. Potential for push notifications for market alerts and search feature for cracked APKs (free paid apps).
             </S.CardDescription>
           </S.RoadmapCard>
           <S.RoadmapCard variants={cardVariants}>
@@ -140,7 +146,6 @@ const Roadmap: FC<RoadmapProps> = ({ onClose }) => {
               benefiting holders.
             </S.CardDescription>
           </S.RoadmapCard>
-
           {/* Add more cards here  */}
         </S.RoadmapGrid>
       </S.ModalWindow>
