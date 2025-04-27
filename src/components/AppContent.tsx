@@ -141,8 +141,8 @@ const AppContent: FC = () => {
 
       // 3. Check if balance is loaded and meets requirement (>= 1)
       // Handle null (error or not loaded) and < 1 cases
-      if (plioNumericBalance === null || plioNumericBalance < 1) {
-        toast.error(`Requires at least 1 ${PLIO_SYMBOL} to access.`);
+      if (plioNumericBalance === null || plioNumericBalance < 50000) {
+        toast.error(`Requires at least 50000 ${PLIO_SYMBOL} to access.`);
         return; // Stop processing
       }
 
