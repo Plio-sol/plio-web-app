@@ -45,7 +45,7 @@ Plio offers a range of features for all users, with powerful additions reserved 
 The `$Plio` token is the key to unlocking the full potential of the Plio platform.
 
 * **Utility:** Holding `$Plio` in your connected wallet grants access to all exclusive features listed above. The amount required may be adjusted in the future based on # of users and costs of tokens/APIs.
-* **Token Address:** `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+* **Token Address:** `2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump`
 * **How to Acquire $Plio:**
    * Trade on [Jupiter](https://jup.ag/swap/So11111111111111111111111111111111111111112-2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump)
    * Trade on [PumpSwap](https://pump.fun/coin/2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump) 
