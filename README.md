@@ -1,4 +1,4 @@
-# Plio 🔎 - Solana Wallet Analysis Powerhouse
+# Plio 🔎 - Solana AI, Analysis, and Torrent Powerhouse
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/1e13aef6-6174-471c-8802-02ab6c6137ae/deploy-status)](https://app.netlify.com/sites/plio-sol/deploys) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Twitter Follow](https://img.shields.io/twitter/follow/PlioSol?style=social)](https://twitter.com/PlioSol)  **Dive deep into advanced Solana insights along with incredibly useful tools, exclusively enhanced for $Plio token holders.**
 
