@@ -43,20 +43,6 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
                 alt="Plio Logo"
             />
             <S.IconButton
-                onClick={() => onSelectItem("games")}
-                title="Game Torrents"
-                isGated={isGated("games")} // <-- Check if gated
-            >
-                <FaGamepad />
-            </S.IconButton>
-            <S.IconButton
-                onClick={() => onSelectItem("movies")}
-                title="Movie Torrents"
-                isGated={isGated("movies")} // <-- Check if gated
-            >
-                <FaFilm />
-            </S.IconButton>
-            <S.IconButton
                 onClick={() => onSelectItem("roadmap")}
                 title="Project Roadmap"
                 isGated={isGated("roadmap")} // <-- Check if gated

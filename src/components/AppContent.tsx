@@ -16,8 +16,6 @@ import WalletInfo from "./WalletInfo";
 
 import XIcon from "../icons/XIcon";
 
-import TorrentSearchGames from "./TorrentSearchGames";
-import TorrentSearchMovies from "./TorrentSearchMovies";
 import DexScreenerLatest from "./DexScreenerLatest";
 import ImageGenerator from "./ImageGenerator";
 import Roadmap from "./Roadmap";
@@ -299,12 +297,6 @@ const AppContent: FC = () => {
 
   const renderActiveOverlay = () => {
     switch (activeOverlay) {
-      case "games":
-        return <TorrentSearchGames key="game-search" onClose={closeOverlay} />;
-      case "movies":
-        return (
-          <TorrentSearchMovies key="movie-search" onClose={closeOverlay} />
-        );
       case "dex":
         return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
       case "volume":
