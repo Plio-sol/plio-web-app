@@ -30,7 +30,7 @@ Plio offers a range of features accessible via a sidebar, with powerful addition
 *   **Project Roadmap:** View the planned development and future features for the Plio panel.
 *   **Wallet Connection & Basic Info:** Connect your Solana wallet and view basic project links.
 
-**💎 Exclusive Features (Requires Holding 50,000+ $Plio):**
+**💎 Exclusive Features (Requires Holding 1,000,000+ $Plio):**
 
 *   **$Plio Balance & Value:** See your current $Plio token balance and its estimated USD value.
 *   **Dex Screener New Pairs:** Discover the latest token pairs promoted on DexScreener, with direct links.
@@ -56,7 +56,7 @@ We are constantly working to expand the utility of the Plio panel. Key items on 
 1.  **Visit Plio:** Navigate to https://plio.fun/.
 2.  **Connect Your Wallet:** Use the "Connect Wallet" button (top right) to link your preferred Solana wallet (Phantom, Solflare, Backpack, etc.).
 3.  **Explore Standard Features:** Access tools like Torrent Search, AI Chat, and the Roadmap via the sidebar icons.
-4.  **Unlock Exclusive Features:** Ensure you hold at least **50,000 $Plio** tokens in your *connected* wallet. Features like the Market Tracker, Image Generator, and Dex Screener New Pairs will become accessible upon successful verification (a page refresh might be needed after acquiring tokens).
+4.  **Unlock Exclusive Features:** Ensure you hold at least **1,000,000 $Plio** tokens in your *connected* wallet. Features like the Market Tracker, Image Generator, and Dex Screener New Pairs will become accessible upon successful verification (a page refresh might be needed after acquiring tokens).
 
 ---
 
@@ -64,7 +64,7 @@ We are constantly working to expand the utility of the Plio panel. Key items on 
 
 The `$Plio` token is the key to unlocking the full potential of the Plio platform.
 
-*   **Utility:** Holding **50,000+ $Plio** in your connected wallet grants access to all exclusive features. This threshold ensures that core users benefit most from the platform's development and utility.
+*   **Utility:** Holding **1,000,000+ $Plio** in your connected wallet grants access to all exclusive features. This threshold ensures that core users benefit most from the platform's development and utility.
 *   **Token Address:** `2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump`
 *   **How to Acquire $Plio:**
     *   Trade on pump.fun
