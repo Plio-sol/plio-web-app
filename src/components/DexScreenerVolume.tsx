@@ -175,7 +175,7 @@ const DexScreenerVolume: FC<DexScreenerVolumeProps> = ({ onClose }) => {
           <S.Title>DexScreener Volume Leaders</S.Title>
           <S.Subtitle>
             Top tokens sorted by{" "}
-            {activeTimeFrame === "5m" ? "5 minute" : "24 hour"} volume
+            {activeTimeFrame === "5m" ? "5 minute" : "24 hour"} volume/trending score
           </S.Subtitle>
           {/* --- Add Switch --- */}
           <S.SwitchContainer>
