@@ -4,7 +4,6 @@ import {
   FaGasPump,
   FaChartBar,
   FaBrain,
-  FaSearchDollar,
   FaBullhorn,
   FaAndroid,
 } from "react-icons/fa";
