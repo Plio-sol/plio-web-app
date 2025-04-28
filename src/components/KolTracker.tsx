@@ -43,7 +43,7 @@ interface KolTokenData {
 
 // --- API Endpoint (Replace with your actual endpoint) ---
 const KOL_API_ENDPOINT =
-  "https://api.apify.com/v2/datasets/UT7cv892FcvvZDACt/items?token=apify_api_CydE3y3Iz0e9Uk1dr3vxmGZZS0xVf93cn8mN"; // TODO: Replace this!
+  "https://api.apify.com/v2/actor-tasks/plio-sol~gmgn-kol-monitor-scraper-task/runs/last/dataset/items?token=apify_api_CydE3y3Iz0e9Uk1dr3vxmGZZS0xVf93cn8mN"; // TODO: Replace this!
 
 // --- Animation Variants (Using basic ones) ---
 const backdropVariants = {
@@ -201,7 +201,9 @@ const KolTracker: FC<KolTrackerProps> = ({ onClose }) => {
                       wallet.tags.includes("kol") && wallet.twitter_username,
                   );
                   const isCopied = copiedAddress === token.address;
-                  const marketCapValue = token.market_cap ? parseFloat(token.market_cap) : null;
+                  const marketCapValue = token.market_cap
+                    ? parseFloat(token.market_cap)
+                    : null;
                   return (
                     <S.TokenCard key={token.address} variants={cardVariants}>
                       {/* Token Info */}

@@ -81,7 +81,7 @@ export const Subtitle = styled.p`
   text-align: center;
   margin-top: 0;
   margin-bottom: 30px; // Space below subtitle
-    margin-right: 2.5%;
+  margin-right: 2.5%;
   font-size: 1em;
   flex-shrink: 0;
 `;

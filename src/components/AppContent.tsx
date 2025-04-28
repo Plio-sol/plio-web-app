@@ -147,7 +147,12 @@ const AppContent: FC = () => {
 
   // New handler for when an item is selected in the drawer
   const handleSelectItem = (itemType: DrawerItemType) => {
-    const restrictedFeatures: DrawerItemType[] = ["image", "dex", "volume"]; // Features requiring token hold
+    const restrictedFeatures: DrawerItemType[] = [
+      "image",
+      "dex",
+      "volume",
+      "kol",
+    ]; // Features requiring token hold
 
     if (restrictedFeatures.includes(itemType)) {
       // 1. Check if wallet is connected
