@@ -25,7 +25,7 @@ Plio offers a range of features accessible via a sidebar, with powerful addition
     *   Get information about Plio, Solana, and the available tools.
 *   **Crypto Market Tracker:**
     *   View live prices for Large Cap cryptocurrencies (BTC, ETH, SOL, etc.) via CoinGecko.
-    *   (Coming Soon) Tab for tracking popular Meme Coins.
+    *   Tab for tracking popular Meme Coins.
 *   **Jupiter Swap Integration:** Conveniently swap tokens directly within the panel (Desktop).
 *   **Project Roadmap:** View the planned development and future features for the Plio panel.
 *   **Wallet Connection & Basic Info:** Connect your Solana wallet and view basic project links.
@@ -34,6 +34,7 @@ Plio offers a range of features accessible via a sidebar, with powerful addition
 
 *   **$Plio Balance & Value:** See your current $Plio token balance and its estimated USD value.
 *   **Dex Screener New Pairs:** Discover the latest token pairs promoted on DexScreener, with direct links.
+*   **Dex Screener Volume Tracker:** Identify trending tokens by tracking volume surges.
 *   **AI Image Generator:** Generate unique images from your text prompts using Google Gemini.
 *   **Early Access:** Be the first to try new features and modules as they are released.
 
@@ -44,7 +45,6 @@ Plio offers a range of features accessible via a sidebar, with powerful addition
 We are constantly working to expand the utility of the Plio panel. Key items on our roadmap include:
 
 *   **(Planned)** **Solana Status & Gas Tracker:** Display real-time network TPS and priority fee estimates.
-*   **(Planned)** **Dex Screener Volume Tracker:** Identify trending tokens by tracking volume surges.
 *   **(Researching)** **AI Chat Context Enhancement:** Enable the AI to access real-time application data (e.g., live balances) using RAG or Function Calling.
 *   **(Planned)** **Android Mobile App:** Bring the Plio panel features to a native Android app, potentially including push notifications and APK search.
 *   **(Planned)** **Ad-Funded Buybacks:** Implement unobtrusive ads for non-holders, using the revenue to buy back $Plio tokens, benefiting holders.

@@ -65,13 +65,7 @@ const roadmapItems = [
     title: "Crypto Market Dashboard",
     description:
       "Show current prices for SOL and other major cryptos (BTC, ETH, PLIO, and more trending meme coins) directly within the panel. Automatic AI price analysis by Google Gemini so you always know where the market is headed. Powered by lightening fast price APIs.",
-    status: "Planned",
-  },
-  {
-    title: "Dex Screener Volume Tracker",
-    description:
-      "Track real-time trading volume surges across Solana tokens on Dex Screener. Identify which coins are pumping *right now* so you don't miss the next big move.",
-    status: "Planned",
+    status: "In-Progress",
   },
   {
     title: "AI Chat Context Enhancement",
