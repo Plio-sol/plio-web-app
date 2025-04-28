@@ -12,7 +12,7 @@ Plio is a cutting-edge web application built on Solana, designed to provide user
 
 ## ✨ Key Features
 
-Plio offers a range of features accessible via a sidebar, with powerful additions reserved for our valued `$Plio` token holders (currently requiring **50,000 $Plio**).
+Plio offers a range of features accessible via a sidebar, with powerful additions reserved for our valued `$Plio` token holders (currently requiring **1,000,000 $Plio**).
 
 **Standard Features (Available to Everyone):**
 
