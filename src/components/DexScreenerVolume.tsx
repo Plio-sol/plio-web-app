@@ -34,8 +34,8 @@ const APIFY_API_KEY = "apify_api_CydE3y3Iz0e9Uk1dr3vxmGZZS0xVf93cn8mN";
 
 // Define endpoints clearly
 const ENDPOINTS = {
-  "24h": `https://api.apify.com/v2/actor-tasks/plio-sol~dexscreener-tokens-scraper-24h/runs/last/dataset/items?token=${APIFY_API_KEY}`, // Original endpoint (assuming 24h volume sort)
-  "5m": `https://api.apify.com/v2/actor-tasks/plio-sol~dexscreener-tokens-scraper-15m/runs/last/dataset/items?token=${APIFY_API_KEY}`, // New endpoint (assuming 5m volume sort)
+  "24h": `https://api.apify.com/v2/actor-tasks/plio-sol~dexscreener-tokens-scraper-24h/runs/last/dataset/items?token=${APIFY_API_KEY}&status=SUCCEEDED`, // Original endpoint (assuming 24h volume sort)
+  "5m": `https://api.apify.com/v2/actor-tasks/plio-sol~dexscreener-tokens-scraper-15m/runs/last/dataset/items?token=${APIFY_API_KEY}&status=SUCCEEDED`, // New endpoint (assuming 5m volume sort)
 };
 
 type TimeFrame = keyof typeof ENDPOINTS; // '24h' | '5m'
