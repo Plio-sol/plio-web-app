@@ -22,6 +22,7 @@ import DexScreenerLatest from "./DexScreenerLatest";
 import ImageGenerator from "./ImageGenerator";
 import Roadmap from "./Roadmap";
 import AIChat, { Message, Personality } from "./AIChat";
+import DexScreenerVolume from "./DexScreenerVolume";
 import { PublicKey } from "@solana/web3.js";
 import {
   getAccount,
@@ -143,7 +144,7 @@ const AppContent: FC = () => {
 
   // New handler for when an item is selected in the drawer
   const handleSelectItem = (itemType: DrawerItemType) => {
-    const restrictedFeatures: DrawerItemType[] = ["image", "dex"]; // Features requiring token hold
+    const restrictedFeatures: DrawerItemType[] = ["image", "dex", "volume"]; // Features requiring token hold
 
     if (restrictedFeatures.includes(itemType)) {
       // 1. Check if wallet is connected
@@ -160,8 +161,8 @@ const AppContent: FC = () => {
 
       // 3. Check if balance is loaded and meets requirement (>= 1)
       // Handle null (error or not loaded) and < 1 cases
-      if (plioNumericBalance === null || plioNumericBalance < 50000) {
-        toast.error(`Requires at least 50000 ${PLIO_SYMBOL} to access.`);
+      if (plioNumericBalance === null || plioNumericBalance < 1000000) {
+        toast.error(`Requires at least 1000000 ${PLIO_SYMBOL} to access.`);
         return; // Stop processing
       }
 
@@ -294,6 +295,10 @@ const AppContent: FC = () => {
         );
       case "dex":
         return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
+      case "volume":
+        return (
+            <DexScreenerVolume key="dex-volume" onClose={closeOverlay} />
+        );
       case "market":
         return (
           <CryptoMarketTracker key="market-tracker" onClose={closeOverlay} />
@@ -422,7 +427,7 @@ const AppContent: FC = () => {
 
         <S.Description variants={S.itemVariants}>
           Access exclusive holder tools. <br />
-          Current Requirement: 50,000 $Plio.
+          Current Requirement: 1,000,000 $Plio.
           <br /> Connect your wallet to view token details and use tools.
         </S.Description>
 

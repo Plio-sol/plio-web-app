@@ -1,19 +1,20 @@
 import React from "react";
 import * as S from "./IconBar.styles"; // Renamed styles import
 import {
-  FaGamepad,
-  FaFilm,
-  FaChartLine,
-  FaImage,
-  FaMapSigns,
-  FaComments,
-  FaCoins,
+    FaGamepad,
+    FaFilm,
+    FaChartLine,
+    FaImage,
+    FaMapSigns,
+    FaComments,
+    FaCoins, FaSearchDollar,
 } from "react-icons/fa"; // Import appropriate icons
 
 export type DrawerItemType =
   | "games"
   | "movies"
   | "dex"
+  | "volume"
   | "image"
   | "roadmap"
   | "chat"
@@ -48,6 +49,9 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay }) => {
         {/*@ts-ignore*/}
         <FaChartLine />
       </S.IconButton>
+        <S.IconButton onClick={() => onSelectItem("volume")} title="Tokens Pumping NOW">
+            <FaSearchDollar />
+        </S.IconButton>
       <S.IconButton
         onClick={() => onSelectItem("image")}
         title="Image Generator"
