@@ -214,7 +214,7 @@ const DexScreenerVolume: FC<DexScreenerVolumeProps> = ({ onClose }) => {
                 initial="hidden"
                 animate="visible"
               >
-                {volumeData.map((token) => {
+                {volumeData.filter((token) => token.priceUsd !== null).map((token) => {
                   const { rank, symbol } = parseTokenInfo(token.tokenSymbol);
                   const dexScreenerLink = `https://dexscreener.com/solana/${token.address}`;
 
