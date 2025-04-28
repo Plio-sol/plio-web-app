@@ -191,11 +191,11 @@ export const Title = styled.h1`
   font-weight: 700;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   text-align: center; /* Ensure centered */
-  font-size: 2em; /* Reduced font size for mobile */
+  font-size: 1.5em; /* Reduced font size for mobile */
   letter-spacing: -0.5px;
 
   @media (min-width: 769px) {
-    font-size: 2.8em; /* Restore desktop font size */
+    font-size: 1.8em; /* Restore desktop font size */
   }
 `;
 

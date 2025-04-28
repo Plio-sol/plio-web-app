@@ -448,13 +448,12 @@ const AppContent: FC = () => {
             {copyStatus === "copied" && "Copied!"}
             {copyStatus === "error" && "Copy Failed"}
           </S.ContractAddress>
-          <S.Title>$Plio Holder Panel</S.Title>
+          <S.Title>Dive deep into advanced Solana insights, AI-powered tools, and unique utilities, exclusively enhanced for $Plio token holders.</S.Title>
         </S.Header>
 
         <S.StyledWalletMultiButton />
 
         <S.Description variants={S.itemVariants}>
-          Access exclusive holder tools. <br />
           Exclusive tools are indicated by{" "}
           <S.GlowingText>glowing icons</S.GlowingText>. {/* <-- Wrap text */}
           <br /> {/* Added line break for clarity */}
