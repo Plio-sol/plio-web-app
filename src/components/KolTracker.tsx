@@ -85,10 +85,8 @@ const formatUpdateTime = (date: Date | null): string => {
         hour: "numeric",
         minute: "2-digit",
         hour12: true,
-        timeZone: "America/New_York", // Handles EST/EDT
-        timeZoneName: "shortOffset", // e.g., GMT-4, GMT-5
+        timeZoneName: "short",
       })
-      .replace("GMT", "UTC"); // Optional: Replace GMT with UTC for clarity
   } catch (e) {
     console.error("Error formatting date:", e);
     return "invalid time"; // Fallback on error
