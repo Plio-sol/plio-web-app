@@ -255,7 +255,25 @@ export const CopyButton = styled.button`
   }
 `;
 // --- End Address and Copy Button Styles ---
+export const TokenMarketCapContainer = styled.div`
+  display: flex;
+  align-items: baseline; // Align text baselines
+  gap: 5px; // Space between label and value
+  margin-top: 2px; // Small space above
+`;
 
+export const TokenMarketCapLabel = styled.span`
+  color: #8892b0;
+  font-size: 0.85em; // Slightly smaller than symbol
+  font-weight: 500;
+  flex-shrink: 0; // Prevent label from shrinking
+`;
+
+export const TokenMarketCapValue = styled.span`
+  color: #ccd6f6; // Same as TokenName
+  font-size: 0.95em; // Slightly larger than label
+  font-weight: 500;
+`;
 export const KolSection = styled.div`
   margin-top: 10px;
 `;

@@ -64,6 +64,16 @@ const cardVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
+const formatCompactNumber = (value: number | null | undefined): string => {
+  if (value === null || value === undefined) return "N/A";
+  // Handle potential NaN from parseFloat
+  if (isNaN(value)) return "N/A";
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
 interface KolAvatarWithFallbackProps {
   src: string;
   alt: string;
@@ -191,6 +201,7 @@ const KolTracker: FC<KolTrackerProps> = ({ onClose }) => {
                       wallet.tags.includes("kol") && wallet.twitter_username,
                   );
                   const isCopied = copiedAddress === token.address;
+                  const marketCapValue = token.market_cap ? parseFloat(token.market_cap) : null;
                   return (
                     <S.TokenCard key={token.address} variants={cardVariants}>
                       {/* Token Info */}
@@ -204,7 +215,12 @@ const KolTracker: FC<KolTrackerProps> = ({ onClose }) => {
                             {token.name}
                           </S.TokenName>
                           <S.TokenSymbol>{token.symbol}</S.TokenSymbol>
-                          {/* --- Add Address and Copy Button --- */}
+                          <S.TokenMarketCapContainer>
+                            <S.TokenMarketCapLabel>MCap:</S.TokenMarketCapLabel>
+                            <S.TokenMarketCapValue>
+                              ${formatCompactNumber(marketCapValue)}
+                            </S.TokenMarketCapValue>
+                          </S.TokenMarketCapContainer>
                           <S.AddressContainer>
                             <S.AddressText title={token.address}>
                               {" "}
