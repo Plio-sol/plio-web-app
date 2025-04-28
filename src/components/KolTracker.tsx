@@ -41,9 +41,13 @@ interface KolTokenData {
   wallets: KolWalletInfo[]; // Array of wallets/KOLs
 }
 
-// --- API Endpoint (Replace with your actual endpoint) ---
-const KOL_API_ENDPOINT =
-  "https://api.apify.com/v2/actor-tasks/plio-sol~gmgn-kol-monitor-scraper-task/runs/last/dataset/items?token=apify_api_CydE3y3Iz0e9Uk1dr3vxmGZZS0xVf93cn8mN"; // TODO: Replace this!
+// --- Apify API Info ---
+const APIFY_TOKEN = "apify_api_CydE3y3Iz0e9Uk1dr3vxmGZZS0xVf93cn8mN";
+const APIFY_TASK_ID = "plio-sol~gmgn-kol-monitor-scraper-task";
+
+// --- API Endpoints ---
+const KOL_DATA_ENDPOINT = `https://api.apify.com/v2/actor-tasks/${APIFY_TASK_ID}/runs/last/dataset/items?token=${APIFY_TOKEN}&status=SUCCEEDED`;
+const KOL_RUN_META_ENDPOINT = `https://api.apify.com/v2/actor-tasks/${APIFY_TASK_ID}/runs/last?token=${APIFY_TOKEN}&status=SUCCEEDED`; // Endpoint for last run metadata
 
 // --- Animation Variants (Using basic ones) ---
 const backdropVariants = {
@@ -72,6 +76,23 @@ const formatCompactNumber = (value: number | null | undefined): string => {
     notation: "compact",
     maximumFractionDigits: 2,
   }).format(value);
+};
+const formatUpdateTime = (date: Date | null): string => {
+  if (!date) return "fetching time..."; // Placeholder while loading
+  try {
+    return date
+      .toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "America/New_York", // Handles EST/EDT
+        timeZoneName: "shortOffset", // e.g., GMT-4, GMT-5
+      })
+      .replace("GMT", "UTC"); // Optional: Replace GMT with UTC for clarity
+  } catch (e) {
+    console.error("Error formatting date:", e);
+    return "invalid time"; // Fallback on error
+  }
 };
 
 interface KolAvatarWithFallbackProps {
@@ -107,28 +128,58 @@ const KolTracker: FC<KolTrackerProps> = ({ onClose }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
+  const [lastUpdateTime, setLastUpdateTime] = useState<Date | null>(null);
 
   useEffect(() => {
+    // --- *** Modify fetchData to get both data and metadata *** ---
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
+      setKolData([]); // Clear previous data
+      setLastUpdateTime(null); // Clear previous time
 
       try {
-        const response = await fetch(KOL_API_ENDPOINT);
-        if (!response.ok) {
+        // Fetch both endpoints concurrently
+        const [dataResponse, metaResponse] = await Promise.all([
+          fetch(KOL_DATA_ENDPOINT),
+          fetch(KOL_RUN_META_ENDPOINT),
+        ]);
+
+        // --- Process Metadata Response ---
+        if (!metaResponse.ok) {
+          console.warn(
+            // Warn instead of throwing immediately, maybe data is still useful
+            `Failed to fetch run metadata (Status: ${metaResponse.status})`,
+          );
+        } else {
+          const metaData = await metaResponse.json();
+          if (metaData?.data?.finishedAt) {
+            setLastUpdateTime(new Date(metaData.data.finishedAt));
+          } else {
+            console.warn(
+              "Could not find 'finishedAt' in run metadata response.",
+            );
+          }
+        }
+
+        // --- Process Data Response ---
+        if (!dataResponse.ok) {
+          // If data fails, it's a more critical error
           throw new Error(
-            `Failed to fetch KOL data (Status: ${response.status})`,
+            `Failed to fetch KOL data (Status: ${dataResponse.status})`,
           );
         }
-        const data: KolTokenData[] = await response.json();
+        const data: KolTokenData[] = await dataResponse.json();
         setKolData(data);
       } catch (err: any) {
         console.error("Error fetching KOL tracker data:", err);
         setError(err.message || "Could not load KOL data.");
+        setLastUpdateTime(null); // Clear time on error
       } finally {
         setIsLoading(false);
       }
     };
+    // --- *** End fetchData modification *** ---
 
     fetchData();
     // Fetch only once on mount
@@ -173,8 +224,12 @@ const KolTracker: FC<KolTrackerProps> = ({ onClose }) => {
         </S.CloseButton>
 
         <S.Title>KOL Tracker</S.Title>
-        <S.Subtitle>Tokens recently bought by tracked KOLs</S.Subtitle>
-
+        {/* --- *** Update Subtitle to use dynamic time *** --- */}
+        <S.Subtitle>
+          Tokens recently bought by tracked KOLs
+          <br /> {/* Optional: line break for clarity */}
+          (Last Updated: {formatUpdateTime(lastUpdateTime)})
+        </S.Subtitle>
         <S.ContentContainer>
           {isLoading && (
             <S.LoadingContainer>
@@ -244,7 +299,7 @@ const KolTracker: FC<KolTrackerProps> = ({ onClose }) => {
                       {/* KOL Section */}
                       <S.KolSection>
                         <S.KolSectionTitle>
-                          Tracked KOLs Holding
+                          Tracked KOLs That Aped 🦍
                         </S.KolSectionTitle>
                         {kols.length > 0 ? (
                           <S.KolAvatarGrid>
