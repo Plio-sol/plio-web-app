@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 // --- Reusable styles from other components ---
-const SIDEBAR_WIDTH_DESKTOP = "70px"; // Adjust if your sidebar width is different
+const SIDEBAR_WIDTH_DESKTOP = "65px"; // Adjust if your sidebar width is different
 
 export const OverlayContainer = styled(motion.div)`
   position: fixed;
@@ -81,6 +81,7 @@ export const Subtitle = styled.p`
   text-align: center;
   margin-top: 0;
   margin-bottom: 30px; // Space below subtitle
+    margin-right: 2.5%;
   font-size: 1em;
   flex-shrink: 0;
 `;
