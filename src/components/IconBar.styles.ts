@@ -1,5 +1,5 @@
 // src/components/IconBar.styles.ts
-import styled from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 
 // --- Desktop Styles (Screen width > 768px) ---
 export const IconBarContainer = styled.div`
@@ -57,38 +57,69 @@ export const Logo = styled.img`
   }
 `;
 
-export const IconButton = styled.button`
-  /* Shared styles */
-  background: none;
-  border: none;
-  color: #a8b2d1;
-  padding: 8px; /* Adjusted padding for mobile */
-  cursor: pointer;
-  border-radius: 8px;
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5em; /* Slightly smaller icons for mobile bar */
-  width: 40px; /* Mobile button size */
-  height: 40px; /* Mobile button size */
+const neonColor = "#61dafb"; // Use your accent color
 
-  &:hover {
-    color: #ffffff;
-    background-color: rgba(58, 80, 107, 0.7);
+const neonGlow = keyframes`
+  0%, 100% {
+    /* Slightly less intense base glow */
+    filter: drop-shadow(0 0 4px ${neonColor}) drop-shadow(0 0 8px ${neonColor});
+    color: ${neonColor}; /* Keep icon color consistent */
   }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  /* Desktop Overrides */
-  @media (min-width: 769px) {
-    font-size: 1.6em; /* Restore desktop icon size */
-    padding: 10px; /* Restore desktop padding */
-    width: 44px; /* Restore desktop button size */
-    height: 44px; /* Restore desktop button size */
+  50% {
+    /* More intense peak glow */
+    filter: drop-shadow(0 0 6px ${neonColor}) drop-shadow(0 0 12px ${neonColor});
+     color: #ffffff; /* Optional: Flash icon to white at peak */
   }
 `;
+
+// --- Update IconButton to accept isGated prop ---
+export const IconButton = styled.button<{ isGated?: boolean }>`
+    background: none;
+    border: none;
+    color: #8892b0; // Default icon color
+    font-size: 1.6rem; // Adjust icon size
+    margin-bottom: 25px; // Spacing between icons
+    cursor: pointer;
+    padding: 8px; // Add some padding for easier clicking
+    border-radius: 50%; // Make the click area rounded
+    transition:
+            color 0.2s ease,
+            transform 0.2s ease,
+            filter 0.3s ease; /* Add filter transition */
+
+    &:hover {
+        color: ${neonColor}; // Hover color for non-gated
+        transform: scale(1.15);
+    }
+
+    &:last-child {
+        margin-bottom: 0; // No margin for the last icon
+    }
+
+    @media (max-width: 768px) {
+        margin-bottom: 0; // No vertical margin on mobile
+        font-size: 1.5rem; // Slightly smaller icons on mobile
+        padding: 10px; // Adjust padding for horizontal layout
+    }
+
+    /* --- Apply Glow Conditionally --- */
+    ${(props) =>
+            props.isGated &&
+            css`
+      /* Apply a base glow immediately */
+      filter: drop-shadow(0 0 4px ${neonColor}) drop-shadow(0 0 8px ${neonColor});
+      color: ${neonColor}; /* Make the icon itself glowy */
+      /* Apply the pulsing animation */
+      animation: ${neonGlow} 2s infinite ease-in-out;
+
+      &:hover {
+        /* Enhance glow on hover for gated icons */
+        filter: drop-shadow(0 0 7px ${neonColor}) drop-shadow(0 0 14px ${neonColor});
+        color: #ffffff; /* Ensure hover color is bright */
+        /* Optional: Pause animation on hover if distracting */
+        /* animation-play-state: paused; */
+      }
+    `}
+        /* --- End Conditional Glow --- */
+`;
+

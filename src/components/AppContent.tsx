@@ -47,12 +47,22 @@ declare global {
   }
 }
 // --- End Type Definition ---
-const CONTRACT_ADDRESS = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump"; //TODO
+const CONTRACT_ADDRESS = "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump";
 const PLIO_MINT_ADDRESS = new PublicKey(
-  "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump", //TODO
+  "2E7ZJe3n9mAnyW1AvouZY8EbfWBssvxov116Mma3pump",
 );
+const REQUIRED_PLIO_BALANCE = 1000000; // 1,000,000
 const PLIO_SYMBOL = "$Plio"; // Define symbol for messages
 const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
+
+// --- *** Define Restricted Features List Here *** ---
+const restrictedFeatures: DrawerItemType[] = [
+  "image",
+  "dex",
+  "volume",
+  "kol",
+];
+// --- *** End Definition *** ---
 
 // --- App Content Component ---
 const AppContent: FC = () => {
@@ -147,12 +157,6 @@ const AppContent: FC = () => {
 
   // New handler for when an item is selected in the drawer
   const handleSelectItem = (itemType: DrawerItemType) => {
-    const restrictedFeatures: DrawerItemType[] = [
-      "image",
-      "dex",
-      "volume",
-      "kol",
-    ]; // Features requiring token hold
 
     if (restrictedFeatures.includes(itemType)) {
       // 1. Check if wallet is connected
@@ -167,7 +171,7 @@ const AppContent: FC = () => {
         return; // Stop processing
       }
 
-      // 3. Check if balance is loaded and meets requirement (>= 1)
+      // 3. Check if balance is loaded and meets requirement (>= 1,000,000)
       // Handle null (error or not loaded) and < 1 cases
       if (plioNumericBalance === null || plioNumericBalance < 1000000) {
         toast.error(`Requires at least 1000000 ${PLIO_SYMBOL} to access.`);
@@ -367,7 +371,7 @@ const AppContent: FC = () => {
           },
         }}
       />
-      <IconBar onSelectItem={handleSelectItem} closeOverlay={closeOverlay} />
+      <IconBar onSelectItem={handleSelectItem} closeOverlay={closeOverlay}  restrictedFeatures={restrictedFeatures} />
       <S.AppContentWrapper
         variants={S.containerVariants}
         initial="hidden"
@@ -451,7 +455,11 @@ const AppContent: FC = () => {
 
         <S.Description variants={S.itemVariants}>
           Access exclusive holder tools. <br />
-          Current Requirement: 1,000,000 $Plio.
+          Exclusive tools are indicated by{" "}
+          <S.GlowingText>glowing icons</S.GlowingText>. {/* <-- Wrap text */}
+          <br /> {/* Added line break for clarity */}
+          Current Requirement: {REQUIRED_PLIO_BALANCE.toLocaleString()}{" "}
+          {PLIO_SYMBOL}.
           <br /> Connect your wallet to view token details and use tools.
         </S.Description>
 

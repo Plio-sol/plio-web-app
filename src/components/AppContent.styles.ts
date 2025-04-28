@@ -122,7 +122,36 @@ export const SocialLink = styled.a`
   }
 `;
 // --- END: Social Links Styling ---
+// --- Define Neon Glow (can be shared or redefined) ---
+const neonColor = "#61dafb"; // Use your accent color
 
+const neonGlow = keyframes`
+  0%, 100% {
+    /* Slightly less intense base glow */
+    filter: drop-shadow(0 0 3px ${neonColor}) drop-shadow(0 0 6px ${neonColor});
+    color: ${neonColor}; /* Keep text color consistent */
+    text-shadow: 0 0 3px ${neonColor}; /* Add text-shadow for better inline glow */
+  }
+  50% {
+    /* More intense peak glow */
+    filter: drop-shadow(0 0 5px ${neonColor}) drop-shadow(0 0 10px ${neonColor});
+     color: #ffffff; /* Optional: Flash text to white at peak */
+     text-shadow: 0 0 5px #ffffff, 0 0 10px ${neonColor}; /* Enhance text-shadow */
+  }
+`;
+// --- *** Add GlowingText Style *** ---
+export const GlowingText = styled.span`
+  /* Apply a base glow immediately */
+  filter: drop-shadow(0 0 3px ${neonColor}) drop-shadow(0 0 6px ${neonColor});
+  color: ${neonColor}; /* Make the text itself glowy */
+  text-shadow: 0 0 3px ${neonColor};
+  /* Apply the pulsing animation */
+  animation: ${neonGlow} 2s infinite ease-in-out;
+  /* Ensure it behaves like normal text */
+  display: inline;
+  font-weight: 600; // Make it slightly bolder to stand out
+`;
+// ---
 // --- ADDED: Contract Address Styling ---
 export const ContractAddress = styled.p`
   font-size: 0.95em;
