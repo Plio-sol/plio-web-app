@@ -175,7 +175,8 @@ const DexScreenerVolume: FC<DexScreenerVolumeProps> = ({ onClose }) => {
           <S.Title>DexScreener Volume Leaders</S.Title>
           <S.Subtitle>
             Top tokens sorted by{" "}
-            {activeTimeFrame === "5m" ? "5 minute" : "24 hour"} volume/trending score
+            {activeTimeFrame === "5m" ? "5 minute" : "24 hour"} volume/trending
+            score
           </S.Subtitle>
           {/* --- Add Switch --- */}
           <S.SwitchContainer>
@@ -214,103 +215,108 @@ const DexScreenerVolume: FC<DexScreenerVolumeProps> = ({ onClose }) => {
                 initial="hidden"
                 animate="visible"
               >
-                {volumeData.filter((token) => token.priceUsd !== null).map((token) => {
-                  const { rank, symbol } = parseTokenInfo(token.tokenSymbol);
-                  const dexScreenerLink = `https://dexscreener.com/solana/${token.address}`;
+                {volumeData
+                  .filter((token) => token.priceUsd !== null)
+                  .map((token) => {
+                    const { rank, symbol } = parseTokenInfo(token.tokenSymbol);
+                    const dexScreenerLink = `https://dexscreener.com/solana/${token.address}`;
 
-                  const displayVolume =
-                    activeTimeFrame === "5m"
-                      ? token.volumeUsd
-                      : token.volumeUsd;
-                  const displayVolumeLabel = "Volume (24h)";
+                    const displayVolume =
+                      activeTimeFrame === "5m"
+                        ? token.volumeUsd
+                        : token.volumeUsd;
+                    const displayVolumeLabel = "Volume (24h)";
 
-                  return (
-                    <S.TokenCard key={token.address} variants={cardVariants}>
-                      <S.CardHeader>
-                        <S.TokenRank>{rank}</S.TokenRank>
-                        <S.TokenNameSymbol>
-                          <S.TokenName>{token.tokenName}</S.TokenName>
-                          <S.TokenSymbol>{symbol}</S.TokenSymbol>
-                        </S.TokenNameSymbol>
-                      </S.CardHeader>
+                    return (
+                      <S.TokenCard key={token.address} variants={cardVariants}>
+                        <S.CardHeader>
+                          <S.TokenRank>{rank}</S.TokenRank>
+                          <S.TokenNameSymbol>
+                            <S.TokenName>{token.tokenName}</S.TokenName>
+                            <S.TokenSymbol>{symbol}</S.TokenSymbol>
+                          </S.TokenNameSymbol>
+                        </S.CardHeader>
 
-                      <S.TokenDataGrid>
-                        <S.DataRow>
-                          <S.DataLabel>Price</S.DataLabel>
-                          <S.DataValue>
-                            {formatCurrency(token.priceUsd)}
-                          </S.DataValue>
-                        </S.DataRow>
-                        <S.DataRow>
-                          {/* --- Display Correct Volume --- */}
-                          <S.DataLabel>{displayVolumeLabel}</S.DataLabel>
-                          <S.DataValue>
-                            ${formatCompactNumber(displayVolume)}
-                          </S.DataValue>
-                          {/* --- End Display Correct Volume --- */}
-                        </S.DataRow>
-                        <S.DataRow>
-                          <S.DataLabel>Market Cap</S.DataLabel>
-                          <S.DataValue>
-                            ${formatCompactNumber(token.marketCapUsd)}
-                          </S.DataValue>
-                        </S.DataRow>
-                        <S.DataRow>
-                          <S.DataLabel>Liquidity</S.DataLabel>
-                          <S.DataValue>
-                            ${formatCompactNumber(token.liquidityUsd)}
-                          </S.DataValue>
-                        </S.DataRow>
-                        <S.DataRow>
-                          {/* Display 5m change if available */}
-                          <S.DataLabel>Change (5m)</S.DataLabel>
-                          <S.PriceChange value={token.priceChange5m}>
-                            {formatPercentage(token.priceChange5m)}
-                          </S.PriceChange>
-                        </S.DataRow>
-                        <S.DataRow>
-                          <S.DataLabel>Change (1h)</S.DataLabel>
-                          <S.PriceChange value={token.priceChange1h}>
-                            {formatPercentage(token.priceChange1h)}
-                          </S.PriceChange>
-                        </S.DataRow>
-                        <S.DataRow>
-                          <S.DataLabel>Change (24h)</S.DataLabel>
-                          <S.PriceChange value={token.priceChange24h}>
-                            {formatPercentage(token.priceChange24h)}
-                          </S.PriceChange>
-                        </S.DataRow>
-                        <S.DataRow>
-                          <S.DataLabel>Age (hrs)</S.DataLabel>
-                          <S.DataValue>
-                            {token.age !== null
-                              ? (token.age / 60).toFixed(1)
-                              : "N/A"}
-                          </S.DataValue>
-                        </S.DataRow>
-                        {/* Removed Makers row as it wasn't in the new API data example */}
-                        {/* <S.DataRow>
+                        <S.TokenDataGrid>
+                          <S.DataRow>
+                            <S.DataLabel>Price</S.DataLabel>
+                            <S.DataValue>
+                              {formatCurrency(token.priceUsd)}
+                            </S.DataValue>
+                          </S.DataRow>
+                          <S.DataRow>
+                            {/* --- Display Correct Volume --- */}
+                            <S.DataLabel>{displayVolumeLabel}</S.DataLabel>
+                            <S.DataValue>
+                              ${formatCompactNumber(displayVolume)}
+                            </S.DataValue>
+                            {/* --- End Display Correct Volume --- */}
+                          </S.DataRow>
+                          <S.DataRow>
+                            <S.DataLabel>Market Cap</S.DataLabel>
+                            <S.DataValue>
+                              ${formatCompactNumber(token.marketCapUsd)}
+                            </S.DataValue>
+                          </S.DataRow>
+                          <S.DataRow>
+                            <S.DataLabel>Liquidity</S.DataLabel>
+                            <S.DataValue>
+                              ${formatCompactNumber(token.liquidityUsd)}
+                            </S.DataValue>
+                          </S.DataRow>
+                          <S.DataRow>
+                            {/* Display 5m change if available */}
+                            <S.DataLabel>Change (5m)</S.DataLabel>
+                            <S.PriceChange value={token.priceChange5m}>
+                              {formatPercentage(token.priceChange5m)}
+                            </S.PriceChange>
+                          </S.DataRow>
+                          <S.DataRow>
+                            <S.DataLabel>Change (1h)</S.DataLabel>
+                            <S.PriceChange value={token.priceChange1h}>
+                              {formatPercentage(token.priceChange1h)}
+                            </S.PriceChange>
+                          </S.DataRow>
+                          <S.DataRow>
+                            <S.DataLabel>Change (24h)</S.DataLabel>
+                            <S.PriceChange value={token.priceChange24h}>
+                              {formatPercentage(token.priceChange24h)}
+                            </S.PriceChange>
+                          </S.DataRow>
+                          <S.DataRow>
+                            <S.DataLabel>Age (hrs)</S.DataLabel>
+                            <S.DataValue>
+                              {token.age !== null
+                                ? (token.age / 60).toFixed(1)
+                                : "N/A"}
+                            </S.DataValue>
+                          </S.DataRow>
+                          {/* Removed Makers row as it wasn't in the new API data example */}
+                          {/* <S.DataRow>
                           <S.DataLabel>Makers</S.DataLabel>
                           <S.DataValue>
                             {formatCompactNumber(token.makerCount)}
                           </S.DataValue>
                         </S.DataRow> */}
-                      </S.TokenDataGrid>
+                        </S.TokenDataGrid>
 
-                      <S.DexLink
-                        href={dexScreenerLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View on DexScreener{" "}
-                        <FaExternalLinkAlt
-                          size="0.8em"
-                          style={{ marginLeft: "5px", verticalAlign: "middle" }}
-                        />
-                      </S.DexLink>
-                    </S.TokenCard>
-                  );
-                })}
+                        <S.DexLink
+                          href={dexScreenerLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View on DexScreener{" "}
+                          <FaExternalLinkAlt
+                            size="0.8em"
+                            style={{
+                              marginLeft: "5px",
+                              verticalAlign: "middle",
+                            }}
+                          />
+                        </S.DexLink>
+                      </S.TokenCard>
+                    );
+                  })}
               </S.VolumeGrid>
             </AnimatePresence>
           )}

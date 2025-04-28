@@ -9,6 +9,7 @@ import {
   FaComments,
   FaCoins,
   FaSearchDollar,
+  FaUsers,
 } from "react-icons/fa"; // Import appropriate icons
 
 export type DrawerItemType =
@@ -19,7 +20,8 @@ export type DrawerItemType =
   | "image"
   | "roadmap"
   | "chat"
-  | "market";
+  | "market"
+  | "kol";
 
 interface IconBarProps {
   onSelectItem: (itemType: DrawerItemType) => void;
@@ -80,6 +82,12 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay }) => {
       >
         {/*@ts-ignore*/}
         <FaCoins />
+      </S.IconButton>
+      <S.IconButton
+        onClick={() => onSelectItem("kol")} // <-- Add onClick
+        title="KOL Tracker" // <-- Add title
+      >
+        <FaUsers />
       </S.IconButton>
     </S.IconBarContainer>
   );

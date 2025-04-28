@@ -33,6 +33,7 @@ import CryptoMarketTracker from "./CryptoMarketTracker";
 import { FaTelegramPlane } from "react-icons/fa";
 import AxiomIcon from "../icons/AxiomIcon"; // Import Message and Personality types
 import BullXIcon from "../icons/BullXIcon";
+import KolTracker from "./KolTracker"; // <-- Import the new component
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -303,6 +304,8 @@ const AppContent: FC = () => {
         return (
           <CryptoMarketTracker key="market-tracker" onClose={closeOverlay} />
         );
+      case "kol":
+        return <KolTracker key="kol-tracker" onClose={closeOverlay} />;
       case "image":
         return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
       case "roadmap":
@@ -400,18 +403,18 @@ const AppContent: FC = () => {
               />
             </S.SocialLink>
             <S.SocialLink
-                href={`https://axiom.trade/t/${CONTRACT_ADDRESS}/@plio`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Plio on Axiom"
+              href={`https://axiom.trade/t/${CONTRACT_ADDRESS}/@plio`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Plio on Axiom"
             >
               <AxiomIcon></AxiomIcon>
             </S.SocialLink>
             <S.SocialLink
-                href={`https://neo.bullx.io/terminal?chainId=1399811149&address=${CONTRACT_ADDRESS}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Plio on BullX Neo"
+              href={`https://neo.bullx.io/terminal?chainId=1399811149&address=${CONTRACT_ADDRESS}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Plio on BullX Neo"
             >
               <BullXIcon></BullXIcon>
             </S.SocialLink>
