@@ -148,11 +148,12 @@ export const SwitchToggle = styled.label`
   }
 
   input:checked + span:before {
-    transform: translateX(24px); // Move knob to the right (width - knob_width - 2*padding)
+    transform: translateX(
+      24px
+    ); // Move knob to the right (width - knob_width - 2*padding)
   }
 `;
 // --- End Switch Styles ---
-
 
 export const ContentContainer = styled.div`
   flex-grow: 1;
@@ -298,10 +299,10 @@ export const DataValue = styled.span`
 export const PriceChange = styled(DataValue)<{ value: number | null }>`
   color: ${(props) =>
     props.value === null || props.value === 0
-        ? "#8892b0" // Grey for no change or null
-        : props.value > 0
-            ? "#33cc99" // Green for positive
-            : "#ff7b7b"}; // Red for negative
+      ? "#8892b0" // Grey for no change or null
+      : props.value > 0
+        ? "#33cc99" // Green for positive
+        : "#ff7b7b"}; // Red for negative
 `;
 
 export const DexLink = styled.a`

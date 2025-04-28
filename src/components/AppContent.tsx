@@ -296,9 +296,7 @@ const AppContent: FC = () => {
       case "dex":
         return <DexScreenerLatest key="dex-tokens" onClose={closeOverlay} />;
       case "volume":
-        return (
-            <DexScreenerVolume key="dex-volume" onClose={closeOverlay} />
-        );
+        return <DexScreenerVolume key="dex-volume" onClose={closeOverlay} />;
       case "market":
         return (
           <CryptoMarketTracker key="market-tracker" onClose={closeOverlay} />
