@@ -37,6 +37,7 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
 
     return (
         <S.IconBarContainer>
+            <S.ButtonScrollArea>
             <S.Logo
                 onClick={closeOverlay}
                 title="Close Tool"
@@ -113,6 +114,7 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
             >
                 <FaCommentDots />
             </S.IconButton>
+                </S.ButtonScrollArea>
         </S.IconBarContainer>
     );
 };
