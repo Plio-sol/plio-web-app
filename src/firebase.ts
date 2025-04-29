@@ -10,15 +10,14 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyC_LrrHB90fRUMXNkqSHswWeQQv6Tls6EQ",
-    authDomain: "plio-cb051.firebaseapp.com",
-    projectId: "plio-cb051",
-    storageBucket: "plio-cb051.firebasestorage.app",
-    messagingSenderId: "1051182495734",
-    appId: "1:1051182495734:web:693d6957824912ca7ff9d7",
-    measurementId: "G-PZ8QCL3Y3Z"
+  apiKey: "AIzaSyC_LrrHB90fRUMXNkqSHswWeQQv6Tls6EQ",
+  authDomain: "plio-cb051.firebaseapp.com",
+  projectId: "plio-cb051",
+  storageBucket: "plio-cb051.firebasestorage.app",
+  messagingSenderId: "1051182495734",
+  appId: "1:1051182495734:web:693d6957824912ca7ff9d7",
+  measurementId: "G-PZ8QCL3Y3Z",
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

@@ -30,29 +30,28 @@ export const OverlayContainer = styled(motion.div)`
   }
 `;
 
-
 export const ModalWindow = styled(motion.div)`
-    background-color: ${primaryBg};
-    width: 100%; // Keep width 100%
-    // height: 100%; // <-- REMOVE height: 100%
-    border: none;
-    // position: relative; // <-- REMOVE position: relative
+  background-color: ${primaryBg};
+  width: 100%; // Keep width 100%
+  // height: 100%; // <-- REMOVE height: 100%
+  border: none;
+  // position: relative; // <-- REMOVE position: relative
 
-    position: absolute; // <-- ADD absolute positioning
-    top: 0;           // <-- ADD top: 0
-    left: 0;          // <-- ADD left: 0
-    right: 0;         // <-- ADD right: 0
-    bottom: 0;        // <-- ADD bottom: 0
-    box-sizing: border-box; // <-- ADD box-sizing
+  position: absolute; // <-- ADD absolute positioning
+  top: 0; // <-- ADD top: 0
+  left: 0; // <-- ADD left: 0
+  right: 0; // <-- ADD right: 0
+  bottom: 0; // <-- ADD bottom: 0
+  box-sizing: border-box; // <-- ADD box-sizing
 
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; // Keep this to hide potential overflow during transitions etc.
-    padding: 20px; // Keep padding
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // Keep this to hide potential overflow during transitions etc.
+  padding: 20px; // Keep padding
 
-    @media (min-width: 769px) {
-        padding: 30px 40px; // Keep responsive padding
-    }
+  @media (min-width: 769px) {
+    padding: 30px 40px; // Keep responsive padding
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -165,7 +164,7 @@ export const MessageListContainer = styled.div`
   border: 1px solid ${borderColor};
   border-radius: 4px;
   background-color: ${tertiaryBg}; // Slightly different background for contrast
-    min-height: 0;
+  min-height: 0;
   /* Custom Scrollbar Styles */
   &::-webkit-scrollbar {
     width: 8px;
@@ -182,8 +181,8 @@ export const MessageListContainer = styled.div`
 
 // Props interface for styled components needing conditional styles
 interface MessageStyleProps {
-    issender?: boolean;
-    isbot?: boolean;
+  issender?: boolean;
+  isbot?: boolean;
 }
 
 export const MessageItem = styled(motion.div)<MessageStyleProps>`
@@ -206,22 +205,22 @@ export const MessageBubble = styled.div<MessageStyleProps>`
   /* Conditional Background Colors */
   ${(props) => {
     if (props.isbot) {
-        return css`
+      return css`
         background-color: #2a4c6d; // Distinct bot color
         color: #a6c8e8; // Lighter text for bot
       `;
     } else if (props.issender) {
-        return css`
+      return css`
         background-color: #1d3a5f; // Sender color (e.g., slightly darker blue)
         border-bottom-right-radius: 4px; // Tail effect for sender
       `;
     } else {
-        return css`
+      return css`
         background-color: ${darkerBorderColor}; // Receiver color
         border-bottom-left-radius: 4px; // Tail effect for receiver
       `;
     }
-}}
+  }}
 `;
 
 export const SenderName = styled.span<MessageStyleProps>`
@@ -233,10 +232,10 @@ export const SenderName = styled.span<MessageStyleProps>`
   /* Conditional Color */
   color: ${(props) =>
     props.isbot
-        ? "#a6c8e8" // Bot name color matches bot text
-        : props.issender
-            ? neonColor // Highlight sender's name
-            : mediumText}; // Default color for others
+      ? "#a6c8e8" // Bot name color matches bot text
+      : props.issender
+        ? neonColor // Highlight sender's name
+        : mediumText}; // Default color for others
 `;
 
 export const Timestamp = styled.span`

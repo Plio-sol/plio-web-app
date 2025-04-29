@@ -123,42 +123,42 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
         const profileDocRef = doc(db, PROFILES_COLLECTION, walletAddress);
         const profileSnap = await getDoc(profileDocRef);
         const currentName = profileSnap.exists()
-            ? profileSnap.data().displayName
-            : walletAddress.substring(0, 6); // Fallback
+          ? profileSnap.data().displayName
+          : walletAddress.substring(0, 6); // Fallback
         setDisplayName(currentName);
         setTempDisplayName(currentName);
 
         // 2. Setup Messages Listener
         const messagesQuery = query(
-            collection(db, MESSAGES_COLLECTION),
-            orderBy("timestamp", "asc"), // Get oldest first for correct order
-            limit(MESSAGE_LOAD_LIMIT) // Limit initial load
+          collection(db, MESSAGES_COLLECTION),
+          orderBy("timestamp", "asc"), // Get oldest first for correct order
+          limit(MESSAGE_LOAD_LIMIT), // Limit initial load
         );
 
         unsubscribeMessages = onSnapshot(
-            messagesQuery,
-            (querySnapshot) => {
-              const fetchedMessages: ChatMessage[] = [];
-              querySnapshot.forEach((doc) => {
-                // Ensure timestamp exists before pushing
-                if (doc.data().timestamp) {
-                  fetchedMessages.push({
-                    id: doc.id,
-                    ...doc.data(),
-                  } as ChatMessage);
-                } else {
-                  console.warn("Message missing timestamp:", doc.id, doc.data());
-                }
-              });
-              setMessages(fetchedMessages); // Set the fetched messages
-              setIsLoading(false); // Loading complete after first fetch
-              setTimeout(forceScrollToBottom, 50);
-            },
-            (err) => {
-              console.error("Error fetching chat messages:", err);
-              setError("Could not load chat messages. Please try again later.");
-              setIsLoading(false);
-            }
+          messagesQuery,
+          (querySnapshot) => {
+            const fetchedMessages: ChatMessage[] = [];
+            querySnapshot.forEach((doc) => {
+              // Ensure timestamp exists before pushing
+              if (doc.data().timestamp) {
+                fetchedMessages.push({
+                  id: doc.id,
+                  ...doc.data(),
+                } as ChatMessage);
+              } else {
+                console.warn("Message missing timestamp:", doc.id, doc.data());
+              }
+            });
+            setMessages(fetchedMessages); // Set the fetched messages
+            setIsLoading(false); // Loading complete after first fetch
+            setTimeout(forceScrollToBottom, 50);
+          },
+          (err) => {
+            console.error("Error fetching chat messages:", err);
+            setError("Could not load chat messages. Please try again later.");
+            setIsLoading(false);
+          },
         );
       } catch (err) {
         console.error("Error setting up chat:", err);
@@ -197,7 +197,6 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 0);
-
     } catch (err) {
       console.error("Error sending message:", err);
       toast.error("Failed to send message.");
@@ -226,12 +225,12 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
 
     try {
       await setDoc(
-          profileDocRef,
-          {
-            displayName: newName,
-            lastUpdated: serverTimestamp(),
-          },
-          { merge: true } // Create or update
+        profileDocRef,
+        {
+          displayName: newName,
+          lastUpdated: serverTimestamp(),
+        },
+        { merge: true }, // Create or update
       );
 
       setDisplayName(newName); // Update local state
@@ -266,7 +265,9 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
     } catch (err: any) {
       console.error("Error calling bot function:", err);
       toast.dismiss("bot-loading");
-      toast.error(`Plio Bot error: ${err.message || "Could not get response."}`);
+      toast.error(
+        `Plio Bot error: ${err.message || "Could not get response."}`,
+      );
     } finally {
       setIsSending(false);
     }
@@ -274,169 +275,165 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
 
   // --- Render ---
   return (
-      <S.OverlayContainer
-          key="globalchat-overlay"
-          variants={backdropVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          onClick={onClose}
+    <S.OverlayContainer
+      key="globalchat-overlay"
+      variants={backdropVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      onClick={onClose}
+    >
+      <S.ModalWindow
+        variants={modalVariants}
+        onClick={(e) => e.stopPropagation()}
       >
-        <S.ModalWindow
-            variants={modalVariants}
-            onClick={(e) => e.stopPropagation()}
-        >
-          <S.CloseButton onClick={onClose} aria-label="Close Chat">
-            &times;
-          </S.CloseButton>
+        <S.CloseButton onClick={onClose} aria-label="Close Chat">
+          &times;
+        </S.CloseButton>
 
-          <S.HeaderContainer>
-            <S.Title>Global Holder Chat</S.Title>
-            {!isSettingName && walletAddress && (
-                <S.SetNameButton onClick={() => setIsSettingName(true)}>
-                  {displayName ? `Name: ${displayName}` : "Set Name"}
-                </S.SetNameButton>
-            )}
-          </S.HeaderContainer>
+        <S.HeaderContainer>
+          <S.Title>Global Holder Chat</S.Title>
+          {!isSettingName && walletAddress && (
+            <S.SetNameButton onClick={() => setIsSettingName(true)}>
+              {displayName ? `Name: ${displayName}` : "Set Name"}
+            </S.SetNameButton>
+          )}
+        </S.HeaderContainer>
 
-          <AnimatePresence>
-            {isSettingName && (
-                <S.NameInputContainer
-                    key="name-input"
-                    variants={nameInputVariants}
+        <AnimatePresence>
+          {isSettingName && (
+            <S.NameInputContainer
+              key="name-input"
+              variants={nameInputVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <S.NameInput
+                type="text"
+                value={tempDisplayName}
+                onChange={(e) => setTempDisplayName(e.target.value)}
+                placeholder="Enter display name (max 30)"
+                maxLength={30}
+              />
+              <S.SaveNameButton onClick={handleSetDisplayName}>
+                Save
+              </S.SaveNameButton>
+              <S.SetNameButton onClick={() => setIsSettingName(false)}>
+                Cancel
+              </S.SetNameButton>
+            </S.NameInputContainer>
+          )}
+        </AnimatePresence>
+
+        <S.MessageListContainer ref={messageListRef}>
+          {/* Loading State */}
+          {isLoading && (
+            <S.LoadingContainer>
+              <S.LoadingSpinner // Use S. prefix for consistency
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              />
+            </S.LoadingContainer>
+          )}
+
+          {/* Error State */}
+          {!isLoading && error && <S.ErrorMessage>{error}</S.ErrorMessage>}
+
+          {/* Empty State */}
+          {!isLoading && !error && messages.length === 0 && (
+            <S.ErrorMessage>
+              No messages yet. Start the conversation!
+            </S.ErrorMessage>
+          )}
+
+          {/* Messages */}
+          {!isLoading && !error && messages.length > 0 && (
+            // No AnimatePresence needed here if layout prop handles additions well
+            <>
+              {messages.map((msg) => {
+                // Define variables needed for this message item
+                const isSender = msg.senderWallet === walletAddress;
+                const messageDate = msg.timestamp?.toDate(); // Convert to JS Date
+                const displayTime = messageDate
+                  ? messageDate.toLocaleTimeString("en-US", {
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })
+                  : ""; // Handle case where timestamp might be null briefly
+
+                // *** CORRECTED RETURN BLOCK FOR EACH MESSAGE ***
+                return (
+                  <S.MessageItem
+                    key={msg.id} // Use Firestore doc ID as key
+                    issender={isSender} // Pass prop
+                    isbot={msg.isBot} // Pass prop
+                    variants={messageVariants}
                     initial="hidden"
                     animate="visible"
-                    exit="exit"
-                >
-                  <S.NameInput
-                      type="text"
-                      value={tempDisplayName}
-                      onChange={(e) => setTempDisplayName(e.target.value)}
-                      placeholder="Enter display name (max 30)"
-                      maxLength={30}
-                  />
-                  <S.SaveNameButton onClick={handleSetDisplayName}>
-                    Save
-                  </S.SaveNameButton>
-                  <S.SetNameButton onClick={() => setIsSettingName(false)}>
-                    Cancel
-                  </S.SetNameButton>
-                </S.NameInputContainer>
-            )}
-          </AnimatePresence>
+                    layout // Enable layout animation for smooth additions
+                  >
+                    <S.SenderName
+                      issender={isSender} // Pass prop
+                      isbot={msg.isBot} // Pass prop
+                    >
+                      {msg.senderName || "Anon"} {/* Fallback name */}
+                    </S.SenderName>
+                    <S.MessageBubble
+                      issender={isSender} // Pass prop
+                      isbot={msg.isBot} // Pass prop
+                    >
+                      {msg.text}
+                    </S.MessageBubble>
+                    {displayTime && <S.Timestamp>{displayTime}</S.Timestamp>}
+                  </S.MessageItem>
+                );
+                // *** END CORRECTED RETURN BLOCK ***
+              })}
+            </>
+          )}
+        </S.MessageListContainer>
 
-          <S.MessageListContainer ref={messageListRef}>
-            {/* Loading State */}
-            {isLoading && (
-                <S.LoadingContainer>
-                  <S.LoadingSpinner // Use S. prefix for consistency
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                  />
-                </S.LoadingContainer>
-            )}
-
-            {/* Error State */}
-            {!isLoading && error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-
-            {/* Empty State */}
-            {!isLoading && !error && messages.length === 0 && (
-                <S.ErrorMessage>
-                  No messages yet. Start the conversation!
-                </S.ErrorMessage>
-            )}
-
-            {/* Messages */}
-            {!isLoading && !error && messages.length > 0 && (
-                // No AnimatePresence needed here if layout prop handles additions well
-                <>
-                  {messages.map((msg) => {
-                    // Define variables needed for this message item
-                    const isSender = msg.senderWallet === walletAddress;
-                    const messageDate = msg.timestamp?.toDate(); // Convert to JS Date
-                    const displayTime = messageDate
-                        ? messageDate.toLocaleTimeString("en-US", {
-                          hour: "numeric",
-                          minute: "2-digit",
-                          hour12: true,
-                        })
-                        : ""; // Handle case where timestamp might be null briefly
-
-                    // *** CORRECTED RETURN BLOCK FOR EACH MESSAGE ***
-                    return (
-                        <S.MessageItem
-                            key={msg.id} // Use Firestore doc ID as key
-                            issender={isSender} // Pass prop
-                            isbot={msg.isBot} // Pass prop
-                            variants={messageVariants}
-                            initial="hidden"
-                            animate="visible"
-                            layout // Enable layout animation for smooth additions
-                        >
-                          <S.SenderName
-                              issender={isSender} // Pass prop
-                              isbot={msg.isBot} // Pass prop
-                          >
-                            {msg.senderName || "Anon"} {/* Fallback name */}
-                          </S.SenderName>
-                          <S.MessageBubble
-                              issender={isSender} // Pass prop
-                              isbot={msg.isBot} // Pass prop
-                          >
-                            {msg.text}
-                          </S.MessageBubble>
-                          {displayTime && <S.Timestamp>{displayTime}</S.Timestamp>}
-                        </S.MessageItem>
-                    );
-                    // *** END CORRECTED RETURN BLOCK ***
-                  })}
-                </>
-            )}
-          </S.MessageListContainer>
-
-          <S.InputArea>
-            <S.MessageInput
-                  ref={inputRef}
-                type="text"
-                placeholder="Type your message..."
-                value={newMessage}
-                // Use standard React event type
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setNewMessage(e.target.value)
-                }
-                // Use standard React event type
-                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                    e.key === "Enter" && !isSending && handleSendMessage()
-                }
-                disabled={
-                    isSending || isLoading || !!error || !walletAddress
-                }
-            />
-            <S.BotButton
-                onClick={handleCallBot}
-                disabled={
-                    isSending || isLoading || !!error || !walletAddress
-                }
-                title="Call Plio Bot"
-            >
-              <FaRobot />
-            </S.BotButton>
-            <S.SendButton
-                onClick={handleSendMessage}
-                disabled={
-                    isSending ||
-                    isLoading ||
-                    !!error ||
-                    !newMessage.trim() || // Disable if message is empty
-                    !walletAddress
-                }
-                title="Send Message"
-            >
-              <FaPaperPlane />
-            </S.SendButton>
-          </S.InputArea>
-        </S.ModalWindow>
-      </S.OverlayContainer>
+        <S.InputArea>
+          <S.MessageInput
+            ref={inputRef}
+            type="text"
+            placeholder="Type your message..."
+            value={newMessage}
+            // Use standard React event type
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setNewMessage(e.target.value)
+            }
+            // Use standard React event type
+            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
+              e.key === "Enter" && !isSending && handleSendMessage()
+            }
+            disabled={isSending || isLoading || !!error || !walletAddress}
+          />
+          <S.BotButton
+            onClick={handleCallBot}
+            disabled={isSending || isLoading || !!error || !walletAddress}
+            title="Call Plio Bot"
+          >
+            <FaRobot />
+          </S.BotButton>
+          <S.SendButton
+            onClick={handleSendMessage}
+            disabled={
+              isSending ||
+              isLoading ||
+              !!error ||
+              !newMessage.trim() || // Disable if message is empty
+              !walletAddress
+            }
+            title="Send Message"
+          >
+            <FaPaperPlane />
+          </S.SendButton>
+        </S.InputArea>
+      </S.ModalWindow>
+    </S.OverlayContainer>
   );
 };
 

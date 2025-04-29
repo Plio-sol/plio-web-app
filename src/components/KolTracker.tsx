@@ -80,13 +80,12 @@ const formatCompactNumber = (value: number | null | undefined): string => {
 const formatUpdateTime = (date: Date | null): string => {
   if (!date) return "fetching time..."; // Placeholder while loading
   try {
-    return date
-      .toLocaleString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-        timeZoneName: "short",
-      })
+    return date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZoneName: "short",
+    });
   } catch (e) {
     console.error("Error formatting date:", e);
     return "invalid time"; // Fallback on error

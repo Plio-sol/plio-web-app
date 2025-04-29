@@ -56,11 +56,7 @@ const MOBILE_BREAKPOINT = 769; // Define breakpoint constant
 
 // --- *** Define Restricted Features List Here *** ---
 const restrictedFeatures: DrawerItemType[] = [
-  "image",
-  "dex",
-  "volume",
-  "kol",
-    "globalChat"
+
 ];
 // --- *** End Definition *** ---
 
@@ -157,7 +153,6 @@ const AppContent: FC = () => {
 
   // New handler for when an item is selected in the drawer
   const handleSelectItem = (itemType: DrawerItemType) => {
-
     if (restrictedFeatures.includes(itemType)) {
       // 1. Check if wallet is connected
       if (!connected) {
@@ -314,7 +309,7 @@ const AppContent: FC = () => {
       case "roadmap":
         return <Roadmap key="roadmap-overlay" onClose={closeOverlay} />;
       case "globalChat":
-        return <GlobalChat key="global-chat-overlay" onClose={closeOverlay}  />;
+        return <GlobalChat key="global-chat-overlay" onClose={closeOverlay} />;
       case "chat":
         return (
           <AIChat
@@ -367,7 +362,11 @@ const AppContent: FC = () => {
           },
         }}
       />
-      <IconBar onSelectItem={handleSelectItem} closeOverlay={closeOverlay}  restrictedFeatures={restrictedFeatures} />
+      <IconBar
+        onSelectItem={handleSelectItem}
+        closeOverlay={closeOverlay}
+        restrictedFeatures={restrictedFeatures}
+      />
       <S.AppContentWrapper
         variants={S.containerVariants}
         initial="hidden"
@@ -444,7 +443,10 @@ const AppContent: FC = () => {
             {copyStatus === "copied" && "Copied!"}
             {copyStatus === "error" && "Copy Failed"}
           </S.ContractAddress>
-          <S.Title>Dive deep into advanced Solana insights, AI-powered tools, and unique utilities, exclusively enhanced for $Plio token holders.</S.Title>
+          <S.Title>
+            Dive deep into advanced Solana insights, AI-powered tools, and
+            unique utilities, exclusively enhanced for $Plio token holders.
+          </S.Title>
         </S.Header>
 
         <S.StyledWalletMultiButton />
