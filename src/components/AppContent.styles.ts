@@ -243,8 +243,7 @@ export const StyledWalletMultiButton = styled(WalletMultiButton)`
     }
   }
 `;
-
-export const StyledButton = styled(motion.button)`
+styled(motion.button)`
   padding: 12px 20px; /* Adjust padding for size */
   font-size: 1em; /* Adjust font size if needed */
   cursor: pointer;
@@ -281,7 +280,6 @@ export const StyledButton = styled(motion.button)`
     }
   }
 `;
-
 // Use motion.div for animation control
 export const WalletInfoWrapper = styled(motion.div)`
   width: 80%; // Keep filling parent width

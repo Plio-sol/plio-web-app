@@ -124,7 +124,7 @@ export const ButtonScrollArea = styled.div`
 `;
 
 // --- Icon Button ---
-export const IconButton = styled.button<{ isGated?: boolean }>`
+export const IconButton = styled.button<{ isGated?: boolean, hideOnMobile?: boolean }>`
     background: none;
     border: none;
     color: ${mediumText}; // Default icon color
@@ -153,6 +153,12 @@ export const IconButton = styled.button<{ isGated?: boolean }>`
     @media (max-width: 768px) {
         font-size: 1.5rem; // Slightly smaller icons on mobile
         padding: 10px; // Adjust padding for horizontal layout
+        /* *** ADD CONDITIONAL HIDE FOR MOBILE *** */
+        ${(props) =>
+                props.hideOnMobile &&
+                css`
+                display: none;
+            `}
     }
 
     /* Conditional Glow */

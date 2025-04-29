@@ -62,7 +62,7 @@ const restrictedFeatures: DrawerItemType[] = [
   "dex",
   "volume",
   "kol",
-    "globalChat"
+   // "globalChat"
 ];
 // --- *** End Definition *** ---
 

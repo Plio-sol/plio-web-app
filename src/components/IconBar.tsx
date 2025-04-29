@@ -48,6 +48,7 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
                 onClick={() => onSelectItem("games")}
                 title="Game Torrents"
                 isGated={isGated("games")} // <-- Check if gated
+                hideOnMobile
             >
                 <FaGamepad />
             </S.IconButton>
@@ -55,6 +56,7 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
                 onClick={() => onSelectItem("movies")}
                 title="Movie Torrents"
                 isGated={isGated("movies")} // <-- Check if gated
+                hideOnMobile
             >
                 <FaFilm />
             </S.IconButton>
