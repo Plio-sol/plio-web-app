@@ -1,8 +1,6 @@
 import React from "react";
 import * as S from "./IconBar.styles"; // Renamed styles import
 import {
-    FaGamepad,
-    FaFilm,
     FaChartLine,
     FaImage,
     FaMapSigns,
