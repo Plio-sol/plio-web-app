@@ -1,15 +1,15 @@
 import React from "react";
 import * as S from "./IconBar.styles"; // Renamed styles import
 import {
-  FaGamepad,
-  FaFilm,
-  FaChartLine,
-  FaImage,
-  FaMapSigns,
-  FaComments,
-  FaCoins,
-  FaSearchDollar,
-  FaUsers,
+    FaGamepad,
+    FaFilm,
+    FaChartLine,
+    FaImage,
+    FaMapSigns,
+    FaComments,
+    FaCoins,
+    FaSearchDollar,
+    FaUsers, FaCommentDots,
 } from "react-icons/fa"; // Import appropriate icons
 
 export type DrawerItemType =
@@ -21,7 +21,8 @@ export type DrawerItemType =
   | "roadmap"
   | "chat"
   | "market"
-  | "kol";
+  | "kol"
+    | "globalChat";
 
 interface IconBarProps {
   onSelectItem: (itemType: DrawerItemType) => void;
@@ -104,6 +105,13 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
                 isGated={isGated("kol")} // <-- Check if gated
             >
                 <FaUsers />
+            </S.IconButton>
+            <S.IconButton
+                onClick={() => onSelectItem("globalChat")}
+                title="Global Chat"
+                isGated={isGated("globalChat")} // <-- Check if gated
+            >
+                <FaCommentDots />
             </S.IconButton>
         </S.IconBarContainer>
     );

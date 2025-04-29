@@ -33,7 +33,8 @@ import CryptoMarketTracker from "./CryptoMarketTracker";
 import { FaTelegramPlane } from "react-icons/fa";
 import AxiomIcon from "../icons/AxiomIcon"; // Import Message and Personality types
 import BullXIcon from "../icons/BullXIcon";
-import KolTracker from "./KolTracker"; // <-- Import the new component
+import KolTracker from "./KolTracker";
+import GlobalChat from "./GlobalChat"; // <-- Import the new component
 // --- Type Definition for window.Jupiter ---
 declare global {
   interface Window {
@@ -61,6 +62,7 @@ const restrictedFeatures: DrawerItemType[] = [
   "dex",
   "volume",
   "kol",
+    "globalChat"
 ];
 // --- *** End Definition *** ---
 
@@ -319,6 +321,8 @@ const AppContent: FC = () => {
         return <ImageGenerator key="image-generator" onClose={closeOverlay} />;
       case "roadmap":
         return <Roadmap key="roadmap-overlay" onClose={closeOverlay} />;
+      case "globalChat":
+        return <GlobalChat key="global-chat-overlay" onClose={closeOverlay}  />;
       case "chat":
         return (
           <AIChat
