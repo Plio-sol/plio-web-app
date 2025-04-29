@@ -269,7 +269,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
   };
 
   const handleCallBot = async () => {
-    if (!walletAddress || isSending) return; // Prevent call if no wallet or already sending/calling
+    if ( isSending) return; // Prevent call if no wallet or already sending/calling
 
     setIsSending(true); // Use isSending to disable buttons during bot call
     toast.loading("Plio Bot is thinking...", { id: "bot-loading" });
