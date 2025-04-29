@@ -80,6 +80,9 @@ const MESSAGES_COLLECTION = "globalChatMessages";
 const PROFILES_COLLECTION = "userProfiles";
 const MESSAGE_LOAD_LIMIT = 50; // Load last 50 messages initially
 const NETLIFY_BOT_FUNCTION_ENDPOINT = "/.netlify/functions/call-plio-bot"; // Define Netlify endpoint
+const ANONYMOUS_WALLET_ID = "ANONYMOUS"; // Identifier for anonymous users
+const DEFAULT_ANON_NAME = "Anon"; // Default name for anonymous users
+
 // --- Component ---
 const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
   const { publicKey } = useWallet();
@@ -106,11 +109,11 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
   // --- Setup Effect ---
   useEffect(() => {
     // Wallet connection check
-    if (!walletAddress) {
-      setError("Please connect your wallet.");
-      setIsLoading(false);
-      return;
-    }
+    // if (!walletAddress) {
+    //   setError("Please connect your wallet.");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     // Reset state for setup
     setError(null);
@@ -119,22 +122,34 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
 
     let unsubscribeMessages: () => void = () => {};
 
+
     const setupChat = async () => {
       try {
-        // 1. Fetch User Profile
-        const profileDocRef = doc(db, PROFILES_COLLECTION, walletAddress);
-        const profileSnap = await getDoc(profileDocRef);
-        const currentName = profileSnap.exists()
-            ? profileSnap.data().displayName
-            : walletAddress.substring(0, 6); // Fallback
+        // 1. Fetch User Profile ONLY if wallet is connected
+        let currentName = DEFAULT_ANON_NAME; // Default to Anon
+        if (walletAddress) {
+          try {
+            const profileDocRef = doc(db, PROFILES_COLLECTION, walletAddress);
+            const profileSnap = await getDoc(profileDocRef);
+            if (profileSnap.exists()) {
+              currentName = profileSnap.data().displayName;
+            } else {
+              currentName = walletAddress.substring(0, 6); // Fallback for connected user without profile
+            }
+          } catch (profileError) {
+            console.error("Error fetching user profile:", profileError);
+            // Keep currentName as the fallback (short wallet address) if profile fetch fails
+            currentName = walletAddress.substring(0, 6);
+          }
+        }
         setDisplayName(currentName);
-        setTempDisplayName(currentName);
+        setTempDisplayName(currentName); // Initialize temp name for editing if connected
 
-        // 2. Setup Messages Listener
+        // 2. Setup Messages Listener (This part works without wallet)
         const messagesQuery = query(
             collection(db, MESSAGES_COLLECTION),
-            orderBy("timestamp", "desc"), // Get oldest first for correct order
-            limit(MESSAGE_LOAD_LIMIT) // Limit initial load
+            orderBy("timestamp", "desc"), // Get latest first
+            limit(MESSAGE_LOAD_LIMIT)
         );
 
         unsubscribeMessages = onSnapshot(
@@ -180,14 +195,21 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
 
   // --- Handle Sending Message ---
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || !walletAddress || isSending) return;
+    if (!newMessage.trim()  || isSending) return;
 
     setIsSending(true);
+
+    // Determine sender info based on wallet connection
+    const senderWalletForDb = walletAddress || ANONYMOUS_WALLET_ID;
+    const senderNameForDb = walletAddress
+        ? displayName // Use profile/fallback name if connected
+        : DEFAULT_ANON_NAME; // Use 'Anon' if not connected
+
     const messageData = {
       text: newMessage.trim(),
-      senderWallet: walletAddress,
-      senderName: displayName || walletAddress.substring(0, 6),
-      timestamp: serverTimestamp(), // Use server timestamp
+      senderWallet: senderWalletForDb,
+      senderName: senderNameForDb,
+      timestamp: serverTimestamp(),
       isBot: false,
     };
 
@@ -210,6 +232,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
 
   // --- Handle Setting Display Name ---
   const handleSetDisplayName = async () => {
+    if (!walletAddress) return;
     if (!tempDisplayName.trim() || !walletAddress) {
       toast.error("Display name cannot be empty.");
       return;
@@ -437,13 +460,13 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
                     e.key === "Enter" && !isSending && handleSendMessage()
                 }
                 disabled={
-                    isSending || isLoading || !!error || !walletAddress
+                    isSending || isLoading || !!error //|| !walletAddress
                 }
             />
             <S.BotButton
                 onClick={handleCallBot}
                 disabled={
-                    isSending || isLoading || !!error || !walletAddress
+                    isSending || isLoading || !!error//|| !walletAddress
                 }
                 title="Call Plio Bot"
             >
@@ -455,8 +478,8 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
                     isSending ||
                     isLoading ||
                     !!error ||
-                    !newMessage.trim() || // Disable if message is empty
-                    !walletAddress
+                    !newMessage.trim()  // Disable if message is empty
+                   // !walletAddress
                 }
                 title="Send Message"
             >
