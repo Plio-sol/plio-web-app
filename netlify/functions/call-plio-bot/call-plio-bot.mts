@@ -55,7 +55,7 @@ ${APP_CONTEXT_FOR_PROMPT}
 `.trim();
 
 // --- Netlify Function Handler ---
-export const handler = async (event, context) => {
+export const handler = async (event: { httpMethod: string; body: any; }) => {
   // 1. Check HTTP Method
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
