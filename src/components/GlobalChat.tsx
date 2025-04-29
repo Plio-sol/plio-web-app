@@ -133,7 +133,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
         // 2. Setup Messages Listener
         const messagesQuery = query(
             collection(db, MESSAGES_COLLECTION),
-            orderBy("timestamp", "asc"), // Get oldest first for correct order
+            orderBy("timestamp", "desc"), // Get oldest first for correct order
             limit(MESSAGE_LOAD_LIMIT) // Limit initial load
         );
 
@@ -152,7 +152,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
                   console.warn("Message missing timestamp:", doc.id, doc.data());
                 }
               });
-              setMessages(fetchedMessages); // Set the fetched messages
+              setMessages(fetchedMessages.reverse()); // Set the fetched messages
               setIsLoading(false); // Loading complete after first fetch
               setTimeout(forceScrollToBottom, 50);
             },
