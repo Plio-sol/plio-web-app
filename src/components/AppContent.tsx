@@ -245,8 +245,8 @@ const AppContent: FC = () => {
             // --- Optional: Widget-specific settings ---
             widgetStyle: {
               zIndex: 99,
-              position: "bottom-right", // 'bottom-left', 'top-left', 'top-right'
-              size: "default", // 'sm', 'default'
+              position: "bottom-left", // 'bottom-left', 'top-left', 'top-right'
+              size: "sm", // 'sm', 'default'
             },
             // --- Other Optional Props ---
             strictTokenList: false,

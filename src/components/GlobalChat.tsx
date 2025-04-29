@@ -90,20 +90,17 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // <-- Add ref for input
 
   const walletAddress = publicKey?.toBase58();
 
-  // --- Scroll to Bottom ---
-  const scrollToBottom = useCallback(() => {
+  // --- Unconditional Scroll (Always scrolls to bottom) ---
+  const forceScrollToBottom = useCallback(() => {
     if (messageListRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = messageListRef.current;
-      const isScrolledToBottom = scrollHeight - scrollTop <= clientHeight + 100;
-      if (isScrolledToBottom) {
-        messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
-      }
+      // Directly set scroll top to the maximum scroll height
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-  }, []);
-
+  }, []); // No dependencies needed
   // --- Setup Effect ---
   useEffect(() => {
     // Wallet connection check
@@ -155,7 +152,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
               });
               setMessages(fetchedMessages); // Set the fetched messages
               setIsLoading(false); // Loading complete after first fetch
-              setTimeout(scrollToBottom, 50); // Scroll after messages render
+              setTimeout(forceScrollToBottom, 50);
             },
             (err) => {
               console.error("Error fetching chat messages:", err);
@@ -177,7 +174,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
       unsubscribeMessages();
       console.log("Chat listener unsubscribed.");
     };
-  }, [walletAddress, scrollToBottom]); // Dependencies
+  }, [walletAddress, forceScrollToBottom]); // Dependencies
 
   // --- Handle Sending Message ---
   const handleSendMessage = async () => {
@@ -196,6 +193,11 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
       await addDoc(collection(db, MESSAGES_COLLECTION), messageData);
       setNewMessage(""); // Clear input on success
       // Real-time listener (onSnapshot) will handle adding the message to state
+
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+
     } catch (err) {
       console.error("Error sending message:", err);
       toast.error("Failed to send message.");
@@ -394,6 +396,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
 
           <S.InputArea>
             <S.MessageInput
+                  ref={inputRef}
                 type="text"
                 placeholder="Type your message..."
                 value={newMessage}
