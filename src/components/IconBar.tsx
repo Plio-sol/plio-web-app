@@ -110,7 +110,8 @@ const IconBar: React.FC<IconBarProps> = ({ onSelectItem, closeOverlay, restricte
             <S.IconButton
                 onClick={() => onSelectItem("globalChat")}
                 title="Global Chat"
-                isGated={isGated("globalChat")} // <-- Check if gated
+                //isGated={isGated("globalChat")} // <-- Check if gated
+                isGated={false}
             >
                 <FaCommentDots />
             </S.IconButton>
