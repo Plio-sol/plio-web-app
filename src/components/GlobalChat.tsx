@@ -21,10 +21,6 @@ import {
   getDoc, // For fetching user profile
   Timestamp as FirestoreTimestamp, // Rename to avoid conflict with native Timestamp
 } from "firebase/firestore";
-// Removed direct import of LoadingSpinner, will use S.LoadingSpinner
-// Import functions later if needed for the bot
-// import { functions } from "../firebase";
-// import { httpsCallable } from "firebase/functions";
 
 // --- Types ---
 interface GlobalChatProps {
@@ -40,6 +36,13 @@ interface ChatMessage {
   timestamp: FirestoreTimestamp | null; // Firestore timestamp object
   isBot?: boolean;
 }
+
+// Interface for expected success response FROM the Netlify function
+interface CallBotResult {
+  success: boolean;
+  message?: string; // Optional message from function (e.g., error details)
+}
+
 
 // --- Animation Variants ---
 const backdropVariants = {
@@ -76,8 +79,7 @@ const messageVariants = {
 const MESSAGES_COLLECTION = "globalChatMessages";
 const PROFILES_COLLECTION = "userProfiles";
 const MESSAGE_LOAD_LIMIT = 50; // Load last 50 messages initially
-// const BOT_FUNCTION_NAME = "callPlioBot"; // For Phase 3
-
+const NETLIFY_BOT_FUNCTION_ENDPOINT = "/.netlify/functions/call-plio-bot"; // Define Netlify endpoint
 // --- Component ---
 const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
   const { publicKey } = useWallet();
@@ -243,31 +245,57 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
     }
   };
 
-  // --- Handle Calling Plio Bot (Placeholder for Phase 3) ---
   const handleCallBot = async () => {
-    if (!walletAddress || isSending) return;
+    if (!walletAddress || isSending) return; // Prevent call if no wallet or already sending/calling
 
-    setIsSending(true);
+    setIsSending(true); // Use isSending to disable buttons during bot call
     toast.loading("Plio Bot is thinking...", { id: "bot-loading" });
 
     try {
-      // --- Phase 3: Call Firebase Function ---
-      // const callPlioBot = httpsCallable(functions, BOT_FUNCTION_NAME);
-      // const contextMessages = messages.slice(-10).map(msg => `${msg.senderName}: ${msg.text}`).join("\n");
-      // const result = await callPlioBot({ context: contextMessages });
-      // console.log("Bot function result:", result.data);
-      // ---------------------------------------
+      // 1. Prepare the context from recent messages
+      const contextMessages = messages
+          .slice(-10) // Get the last 10 messages as context
+          .map(msg => `${msg.senderName || 'Anon'}: ${msg.text}`) // Format as "Sender: Text"
+          .join("\n"); // Join messages with newlines
 
-      // Placeholder behavior for now:
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate delay
-      toast.dismiss("bot-loading");
-      toast.success("Plio Bot called (placeholder action)!");
-      // Bot function would write to Firestore, listener would display message.
+      console.log("Sending context to bot:", contextMessages); // Log for debugging
+
+      // 2. Call the Netlify function using fetch
+      const response = await fetch(NETLIFY_BOT_FUNCTION_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          context: contextMessages,
+          senderWallet: walletAddress, // Pass wallet address
+        }),
+      });
+
+      // 3. Process the response
+      const result: CallBotResult = await response.json(); // Parse the JSON response
+      console.log("Bot function result:", result); // Log the raw result
+
+      toast.dismiss("bot-loading"); // Dismiss loading toast regardless of outcome below
+
+      // Check if the HTTP request itself failed OR if the function reported failure
+      if (!response.ok || !result.success) {
+        // Construct a meaningful error message
+        const errorMessage = result?.message || `Request failed with status ${response.status}`;
+        throw new Error(errorMessage);
+      }
+
+      // Success: The bot's message should appear via the onSnapshot listener.
+      // No need to add the message manually here.
+      // toast.success("Bot responded!"); // Optional success toast
+
     } catch (err: any) {
+      // Handle errors during the fetch call or from the function's failure response
       console.error("Error calling bot function:", err);
-      toast.dismiss("bot-loading");
-      toast.error(`Plio Bot error: ${err.message || "Could not get response."}`);
+      toast.dismiss("bot-loading"); // Ensure loading toast is dismissed on error
+      toast.error(`Plio Bot error: ${err.message || "Could not reach the bot."}`);
     } finally {
+      // Re-enable buttons regardless of success/failure
       setIsSending(false);
     }
   };

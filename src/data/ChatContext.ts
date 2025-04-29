@@ -18,6 +18,16 @@ const availableTools = [
     icon: "FaGamepad",
   },
   {
+    name: "KOL Tracker",
+    description: "Track the latest tweets and mentions from key opinion leaders (KOLs) in the Solana ecosystem.", // fill out -> DONE
+    icon: "FaUserCheck", // fill out -> DONE (Example: FaUserCheck, FaBullhorn, FaSearchDollar)
+  },
+  {
+    name: "Holder only group chat",
+    description: "Engage in real-time chat with other $Plio holders. Share insights, news, and connect with the community.", // fill out -> DONE
+    icon: "FaUsers", // fill out -> DONE (Example: FaUsers, FaComments)
+  },
+  {
     name: "Movie Torrents",
     description: "Search for movie torrents from 1337x.",
     icon: "FaFilm",

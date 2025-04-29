@@ -29,6 +29,7 @@
     "@vercel/analytics": "^1.5.0",
     "animated-backgrounds": "^1.1.0",
     "firebase": "^11.6.1",
+    "firebase-admin": "^13.3.0",
     "framer-motion": "^12.8.0",
     "gifenc": "^1.0.3",
     "react": "^19.1.0",
