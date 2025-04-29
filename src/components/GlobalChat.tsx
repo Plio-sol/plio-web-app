@@ -291,7 +291,7 @@ const GlobalChat: FC<GlobalChatProps> = ({ onClose }) => {
         },
         body: JSON.stringify({
           context: contextMessages,
-          senderWallet: walletAddress, // Pass wallet address
+          senderWallet: walletAddress || ANONYMOUS_WALLET_ID, // Pass wallet address
         }),
       });
 
