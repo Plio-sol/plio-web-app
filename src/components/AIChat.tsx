@@ -124,9 +124,10 @@ const AIChat: FC<AIChatProps> = ({
 
     try {
       // Call your Netlify function endpoint
-      const response = await fetch("/.netlify/functions/ai-chat", {
+      const response = await fetch("https://plio.fun/.netlify/functions/ai-chat", {
         // Use relative path for Netlify proxying
         method: "POST",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },

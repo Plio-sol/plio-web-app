@@ -40,8 +40,8 @@ export const ModalWindow = styled(motion.div)`
 
 export const CloseButton = styled.button`
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 20px;
+  right: 20px;
   background: none;
   border: none;
   font-size: 2rem;

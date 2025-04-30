@@ -63,8 +63,9 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ onClose }) => {
       );
 
       // --- Call the backend Netlify function ---
-      const response = await fetch("/.netlify/functions/image-generator", {
+      const response = await fetch("https://plio.fun/.netlify/functions/image-generator", {
         method: "POST",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },

@@ -16,6 +16,15 @@ interface Message {
 }
 type Personality = "crude" | "nice";
 
+// --- CORS Configuration ---
+const allowedWebOrigins = [ // Renamed for clarity
+  "https://plio.fun", // Your production domain
+  "http://localhost", // Default React dev port (Ensure port is correct)
+  // Add other specific web/dev origins if needed:
+  // "http://localhost:3001",
+  // "http://localhost:8888",
+];
+
 // --- Context Data (Copied from src/data/ChatContext.ts or imported if possible) ---
 // It's often simpler to copy static context here for serverless function isolation
 
@@ -43,7 +52,7 @@ ${APP_CONTEXT_FOR_PROMPT}
 `.trim();
 
 // --- Model and Safety Settings ---
-const MODEL_NAME = "gemini-2.0-flash-lite"; // Use a valid model
+const MODEL_NAME = "gemini-2.0-flash-lite"; // Use a valid model like 1.5-flash
 const safetySettings = [
   {
     category: HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -65,11 +74,59 @@ const safetySettings = [
 
 // --- Netlify Function Handler ---
 export default async (request: Request, context: Context) => {
-  // 1. Check Method
+  // --- CORS Handling ---
+  const origin = request.headers.get("Origin");
+  const corsHeaders: { [key: string]: string } = {};
+  let allowOriginValue: string | null = null; // Store the value to set for Access-Control-Allow-Origin
+
+  // Check if the origin is one of the allowed web origins OR if it's null (for Android/local files)
+  if (origin && allowedWebOrigins.includes(origin)) {
+    allowOriginValue = origin; // Reflect the specific web origin
+  } else if (origin === null) {
+    // Allow requests that send Origin: null (common from mobile apps, local files)
+    // Reflecting "null" is the technically correct way to handle this.
+    allowOriginValue = "null";
+  }
+
+  // If an origin was allowed (either web or null), set the CORS headers
+  if (allowOriginValue) {
+    corsHeaders["Access-Control-Allow-Origin"] = allowOriginValue;
+    corsHeaders["Access-Control-Allow-Methods"] = "POST, OPTIONS"; // Allowed methods
+    corsHeaders["Access-Control-Allow-Headers"] = "Content-Type"; // Allowed headers
+  } else if (origin) {
+    // If origin was present but not in the allowed list and not null, log it
+    console.warn(`CORS: Disallowed origin attempted: ${origin}`);
+  }
+  // --- End CORS Header Determination ---
+
+
+  // --- Handle OPTIONS preflight request ---
+  if (request.method === "OPTIONS") {
+    // Only return CORS headers if an origin was allowed (web or null)
+    if (allowOriginValue) {
+      return new Response(null, {
+        status: 204, // No Content
+        headers: corsHeaders, // Send the determined CORS headers
+      });
+    } else {
+      // If origin is not allowed, return a standard response without CORS headers
+      return new Response("OPTIONS request not allowed from this origin", {
+        status: 403,
+      });
+    }
+  }
+  // --- End OPTIONS Handling ---
+
+  // 1. Check Method (for non-OPTIONS requests)
   if (request.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method Not Allowed" }), {
       status: 405,
-      headers: { "Content-Type": "application/json", Allow: "POST" },
+      // *** Add determined CORS headers to response ***
+      headers: {
+        "Content-Type": "application/json",
+        Allow: "POST",
+        ...corsHeaders, // Spread the determined headers (will be empty if origin wasn't allowed)
+      },
     });
   }
 
@@ -81,7 +138,8 @@ export default async (request: Request, context: Context) => {
         JSON.stringify({ error: "AI configuration error on server." }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" },
+          // *** Add determined CORS headers to response ***
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         },
     );
   }
@@ -98,7 +156,8 @@ export default async (request: Request, context: Context) => {
     } catch (e) {
       return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
         status: 400,
-        headers: { "Content-Type": "application/json" },
+        // *** Add determined CORS headers to response ***
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
 
@@ -115,7 +174,8 @@ export default async (request: Request, context: Context) => {
           }),
           {
             status: 400,
-            headers: { "Content-Type": "application/json" },
+            // *** Add determined CORS headers to response ***
+            headers: { "Content-Type": "application/json", ...corsHeaders },
           },
       );
     }
@@ -173,20 +233,29 @@ export default async (request: Request, context: Context) => {
           }),
           {
             status: 422, // Unprocessable Entity might be suitable
-            headers: { "Content-Type": "application/json" },
+            // *** Add determined CORS headers to response ***
+            headers: { "Content-Type": "application/json", ...corsHeaders },
           },
       );
     }
 
-    if (!response.candidates || response.candidates.length === 0) {
-      console.warn("Gemini returned no candidates (possibly blocked).");
+    // Check for empty candidates or empty text response
+    if (
+        !response.candidates ||
+        response.candidates.length === 0 ||
+        !response.text() // Added check for empty text
+    ) {
+      console.warn(
+          "Gemini returned no valid candidates or empty text (possibly blocked).",
+      );
       return new Response(
           JSON.stringify({
             error: "No response received from AI (content may have been blocked).",
           }),
           {
             status: 502, // Bad Gateway - upstream error
-            headers: { "Content-Type": "application/json" },
+            // *** Add determined CORS headers to response ***
+            headers: { "Content-Type": "application/json", ...corsHeaders },
           },
       );
     }
@@ -196,7 +265,8 @@ export default async (request: Request, context: Context) => {
     // 8. Send Success Response to Frontend
     return new Response(JSON.stringify({ reply: aiResponseText }), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      // *** Add determined CORS headers to response ***
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (error: any) {
     console.error("Error processing AI chat request:", error);
@@ -206,7 +276,8 @@ export default async (request: Request, context: Context) => {
         }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" },
+          // *** Add determined CORS headers to response ***
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         },
     );
   }

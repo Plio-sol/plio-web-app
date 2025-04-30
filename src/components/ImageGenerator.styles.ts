@@ -48,6 +48,7 @@ export const OverlayContainer = styled(motion.div)`
 
 export const CloseButton = styled(motion.button)`
   position: absolute;
+ 
   background: none;
   border: none;
   color: #ccd6f6; // Match text color
@@ -64,8 +65,8 @@ export const CloseButton = styled(motion.button)`
 
   /* Mobile Styles */
   right: 45%;
-  top: 0.2%;
-  font-size: 2.1em; // Slightly smaller maybe
+  top: 2%;
+  font-size: 2.2em; // Slightly smaller maybe
 
   /* Desktop Overrides */
   @media (min-width: 769px) {

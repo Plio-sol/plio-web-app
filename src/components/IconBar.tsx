@@ -61,44 +61,37 @@ const IconBar: React.FC<IconBarProps> = ({
           <FaComments />
         </S.IconButton>
         <S.IconButton
-          onClick={() => onSelectItem("market")}
-          title="Crypto Market"
-          isGated={isGated("market")} // <-- Check if gated
-        >
-          <FaCoins />
-        </S.IconButton>
-        <S.IconButton
           onClick={() => onSelectItem("dex")}
           title="Dex Paid Tokens"
-          isGated={isGated("dex")} // <-- Check if gated
+          isGated={false} // <-- Check if gated
         >
           <FaChartLine />
         </S.IconButton>
         <S.IconButton
           onClick={() => onSelectItem("volume")}
           title="Tokens Pumping NOW"
-          isGated={isGated("volume")} // <-- Check if gated
+          isGated={false} // <-- Check if gated
         >
           <FaSearchDollar />
         </S.IconButton>
         <S.IconButton
           onClick={() => onSelectItem("image")}
           title="Image Generator"
-          isGated={isGated("image")} // <-- Check if gated
+          isGated={false} // <-- Check if gated
         >
           <FaImage />
         </S.IconButton>
         <S.IconButton
           onClick={() => onSelectItem("kol")}
           title="KOL Tracker"
-          isGated={isGated("kol")} // <-- Check if gated
+          isGated={false} // <-- Check if gated
         >
           <FaUsers />
         </S.IconButton>
         <S.IconButton
           onClick={() => onSelectItem("globalChat")}
           title="Global Chat"
-          isGated={isGated("globalChat")} // <-- Check if gated
+          isGated={false} // <-- Check if gated
         >
           <FaCommentDots />
         </S.IconButton>
